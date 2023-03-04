@@ -29,20 +29,23 @@ def get_model_path(model_name: str):
         return model_path
     else:
         os.makedirs(model_path)
-        with tempfile.NamedTemporaryFile() as temp_file:
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
             print("Downloading model: %s from %s" % (model_name, model_url))
             try:
                 http_get(model_url, temp_file)
                 tar = tarfile.open(temp_file.name)
             except BaseException as exc:
-                print("Failed to download model: %s"% model_name)
+                print("Failed to download model: %s" % model_name)
                 os.rmdir(model_path)
                 raise exc
-
 
             temp_file.flush()
             temp_file.seek(0)
             tar.extractall(model_path)
+
+            tar.close()
+            temp_file.close()
+            os.unlink(temp_file.name)
 
             return model_path
 
