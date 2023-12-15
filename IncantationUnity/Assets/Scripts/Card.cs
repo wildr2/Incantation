@@ -11,6 +11,7 @@ public class Card : MonoBehaviour
 	public float extinguishFireTime = -1;
 	public float glow;
 	public float glowDuration;
+	private Vector3 initialPos;
 	
 	public void LightFire(float intensity)
 	{
@@ -21,6 +22,33 @@ public class Card : MonoBehaviour
 	public void ExtinguishFire()
 	{
 		extinguishFireTime = Time.time;
+	}
+
+	public void Shake(float intensity)
+	{
+		float maxAngle = 8;
+		float maxRotation = 3;
+		float rotateAngle = maxRotation * intensity * (Random.value > 0.5f ? -1 : 1);
+		if (Mathf.Abs(transform.rotation.eulerAngles.z + rotateAngle) > maxAngle)
+		{
+			rotateAngle *= -1;
+		}
+		transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + rotateAngle);
+
+		float maxOffset = 1.0f;
+		float dirAngle = Random.Range(0, Mathf.PI);
+		Vector3 dir = new Vector3(Mathf.Cos(dirAngle), Mathf.Sin(dirAngle));
+		Vector3 translation = dir * intensity * 0.2f;
+		if (Vector3.Distance(transform.position + translation, initialPos) > maxOffset)
+		{
+			translation = (initialPos - transform.position) * translation.magnitude;
+		}
+		transform.position += translation;
+	}
+
+	private void Awake()
+	{
+		initialPos = transform.position;
 	}
 
 	private void Update()

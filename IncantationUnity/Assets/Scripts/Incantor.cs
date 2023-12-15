@@ -49,10 +49,19 @@ public class Incantor : MonoBehaviour
 		{
 			float intensity = Util.Map(0.9f, 1.2f, 0.0f, 1.0f, score);
 			card.LightFire(intensity);
+			card.Shake(Util.Map(0.9f, 1.2f, 0.5f, 1.0f, score));
 		}
 		else
 		{
-			card.ExtinguishFire();
+			if (card.lightFireTime > card.extinguishFireTime)
+			{
+				card.ExtinguishFire();
+				card.Shake(Util.Map(0.9f, 1.2f, 0.5f, 1.0f, score));
+			}
+			else
+			{
+				card.Shake(Util.Map(0.0f, 0.9f, 0.0f, 0.3f, score));
+			}
 		}
 
 		Debug.Log(string.Format("rwdbg {0} {1}", incantation, score));
