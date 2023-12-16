@@ -13,6 +13,11 @@ public class Card : MonoBehaviour
 	public float glowDuration;
 	private Vector3 initialPos;
 	
+	public bool IsFireLit()
+	{
+		return lightFireTime > extinguishFireTime;
+	}
+
 	public void LightFire(float intensity)
 	{
 		lightFireTime = Time.time;
