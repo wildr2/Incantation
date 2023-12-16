@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   incantationText: {fileID: 4124446126611855375}
+  book: {fileID: 0}
+  lightFireSpellSound: {fileID: 8300000, guid: 2d0edff026af26a4e859161154b074f5, type: 3}
+  extinguishFireSpellSound: {fileID: 8300000, guid: dea0deb11a683674e9612ac328ea879f, type: 3}
 --- !u!1001 &8218269934614805926
 PrefabInstance:
   m_ObjectHideFlags: 0

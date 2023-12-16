@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7587507212174719786}
   - component: {fileID: 7910089665828686672}
+  - component: {fileID: 506153870411773171}
   m_Layer: 3
   m_Name: Book
   m_TagString: Untagged
@@ -85,6 +86,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &506153870411773171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076209005144140109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29d628e4892526046a23548cc2d6f265, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openSound: {fileID: 8300000, guid: 1d7f789f36a9c91419782c903d9b38bc, type: 3}
+  closeSound: {fileID: 8300000, guid: 2bab18d8ae12c0a44a46fa0621de71e3, type: 3}
 --- !u!1001 &2936574615831487988
 PrefabInstance:
   m_ObjectHideFlags: 0

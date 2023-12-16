@@ -33,6 +33,39 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!243 &-564160782577007770
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Music
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: ea929b0bd1cd77647a5e59a96ab5170b
+  m_Children: []
+  m_Volume: 7cff2de95da42eb41902f90582a63b20
+  m_Pitch: 80282be53b298bd4096ebf38254793f2
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -214914146385950858}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &-214914146385950858
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 3e2ba116c5ec02e42a117434c30efcbf
+  m_EffectName: Attenuation
+  m_MixLevel: 81211416b21add54ebeb8548eeb9125e
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!241 &24100000
 AudioMixerController:
   m_ObjectHideFlags: 0
@@ -55,6 +88,7 @@ AudioMixerController:
     - ca1398c91a32b124ab2710947aded681
     - a6411de20f9c25a41b78c98da48979a0
     - b3991948624f81546a1173a245f6aa88
+    - ea929b0bd1cd77647a5e59a96ab5170b
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -71,6 +105,7 @@ AudioMixerGroupController:
   - {fileID: 2757559285587864537}
   - {fileID: -1765757500116521530}
   - {fileID: 129181383506067498}
+  - {fileID: -564160782577007770}
   m_Volume: 65e62f95d22e6ba429f08e9afa4c6ab8
   m_Pitch: 0f160e0e9ba156a4d9d54f61da1940a1
   m_Send: 00000000000000000000000000000000
@@ -106,6 +141,7 @@ AudioMixerSnapshotController:
   m_FloatValues:
     b98462c1a9d5e3740ba108c47509751e: -6.133707
     e6924b789909d214cb8978d6bba6ba42: -5.7224774
+    7cff2de95da42eb41902f90582a63b20: -9.332112
   m_TransitionOverrides: {}
 --- !u!243 &129181383506067498
 AudioMixerGroupController:

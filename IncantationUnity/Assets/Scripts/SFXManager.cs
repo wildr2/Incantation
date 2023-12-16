@@ -9,6 +9,7 @@ public enum MixerGroup
 	Ambient,
 	Book,
 	Magic,
+	Music,
 }
 
 public class SFXManager : Singleton<SFXManager>
