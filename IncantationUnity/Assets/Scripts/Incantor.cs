@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum SpellType
+{
+	LightFire,
+	ExtinguishFire,
+}
+
 public class Incantor : MonoBehaviour
 {
 	public Text incantationText;
@@ -10,7 +16,7 @@ public class Incantor : MonoBehaviour
 	private string inputText;
 	private string incantation;
 	private float startFadeTime = -1;
-	private float score;
+	ScoreIncantationResponse scoreResponse;
 
 	public AudioClip lightFireSpellSound;
 	public AudioClip extinguishFireSpellSound;
@@ -39,7 +45,7 @@ public class Incantor : MonoBehaviour
 			incantationText.color = Util.SetAlpha(incantationText.color, 0);
 			inputText = "";
 			startFadeTime = -1;
-			CastSpell(score);
+			CastSpell();
 		}
 		else
 		{
@@ -73,28 +79,34 @@ public class Incantor : MonoBehaviour
 			{
 				incantation = inputText;
 				MagicClient magicClient = FindObjectOfType<MagicClient>();
-				magicClient.CheckSpell(incantation, CheckSpellCallback);
+				magicClient.ScoreIncantation(incantation, CheckSpellCallback);
 			}
 		}
 
 		incantationText.text = inputText;
 	}
 
-	private void CheckSpellCallback(float score)
+	private void CheckSpellCallback(ScoreIncantationResponse response)
 	{
 		startFadeTime = Time.time;
-		this.score = score;
-		Debug.Log(string.Format("rwdbg {0} {1}", incantation, score));
+		scoreResponse = response;
+		SpellType spell = GetHighestScoreSpellType(scoreResponse.spellScores);
+		Debug.Log(string.Format("rwdbg {0} {1} {2}", incantation, spell, string.Join(", ", response.spellScores)));
 	}
 
-	private void CastSpell(float score)
+	private void CastSpell()
 	{
 		Card card = FindAnyObjectByType<Card>();
 		AmbientFire fire = FindAnyObjectByType<AmbientFire>();
 
-		bool lightFire = score > 0.9f;
+		SpellType spell = GetHighestScoreSpellType(scoreResponse.spellScores);
+		float score = scoreResponse.spellScores[(int)spell];
+		if (score < 0.9f)
+		{
+			return;
+		}
 
-		if (lightFire)
+		if (spell == SpellType.LightFire)
 		{
 			float intensity = Util.Map(0.9f, 1.2f, 0.0f, 1.0f, score);
 			if (!card.IsFireLit() || (!fire || fire.IsLit()))
@@ -109,7 +121,7 @@ public class Incantor : MonoBehaviour
 				SFXManager.Play(lightFireSpellSound, MixerGroup.Magic, fire.transform.position);
 			}
 		}
-		else
+		else if (spell == SpellType.ExtinguishFire)
 		{
 			if (card.IsFireLit())
 			{
@@ -127,5 +139,20 @@ public class Incantor : MonoBehaviour
 				card.Shake(Util.Map(0.0f, 0.9f, 0.0f, 0.3f, score));
 			}
 		}
+	}
+
+	private SpellType GetHighestScoreSpellType(float[] scores)
+	{
+		float bestScore = 0;
+		int bestIndex = 0;
+		for (int i = 0; i < scores.Length; ++i)
+		{
+			if (scores[i] > bestScore)
+			{
+				bestScore = scores[i];
+				bestIndex = i;
+			}
+		}
+		return (SpellType)bestIndex;
 	}
 }

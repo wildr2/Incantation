@@ -5,21 +5,26 @@ using UnityEngine;
 using System.Threading;
 using System.Globalization;
 
+public class ScoreIncantationResponse
+{
+	public float[] spellScores;
+}
+
 public class MagicClient : MonoBehaviour
 {
 	private string incantation;
-	private float score;
-	private System.Action<float> callback;
+	private ScoreIncantationResponse scoreIncantationResponse;
+	private System.Action<ScoreIncantationResponse> callback;
 	private int request_state;
 
 	private Thread thread;
 	private bool is_running;
 
-	public void CheckSpell(string incantation, System.Action<float> callback)
+	public void ScoreIncantation(string incantation, System.Action<ScoreIncantationResponse> callback)
 	{
 		this.incantation = incantation;
 		this.callback = callback;
-		score = -1;
+		scoreIncantationResponse = null;
 		request_state = 1;
 	}
 
@@ -34,7 +39,7 @@ public class MagicClient : MonoBehaviour
 	{
 		if (request_state == 3)
 		{
-			callback(score);
+			callback(scoreIncantationResponse);
 			request_state = 0;
 		}
 	}
@@ -67,13 +72,14 @@ public class MagicClient : MonoBehaviour
 					{
 						if (client.TryReceiveFrameString(out string response))
 						{
-							if (float.TryParse(response, NumberStyles.Any, CultureInfo.InvariantCulture, out score))
+							if (TryParseFloatArray(response, out float[] scores))
 							{
-								Debug.Log(string.Format("rwdbg score {0} {1}", response, score));
+								scoreIncantationResponse = new ScoreIncantationResponse();
+								scoreIncantationResponse.spellScores = scores;
 							}
 							else
 							{
-								Debug.Log(string.Format("rwdbg bad score {0} {1}", response, score));
+								Debug.Log(string.Format("rwdbg Unexpected response: ", response));
 							}
 							request_state = 3;
 							break;
@@ -85,5 +91,37 @@ public class MagicClient : MonoBehaviour
 
 		// Prevent unity freeze after one use?
 		NetMQConfig.Cleanup();
+	}
+
+	static bool TryParseFloatArray(string input, out float[] result)
+	{
+		result = null;
+
+		try
+		{
+			// Remove square brackets and split the input string into an array of strings
+			string[] stringValues = input
+				.Trim('[', ']')
+				.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
+
+			// Convert each string to a float and store in the result array
+			result = new float[stringValues.Length];
+			for (int i = 0; i < stringValues.Length; i++)
+			{
+				if (!float.TryParse(stringValues[i], out result[i]))
+				{
+					// Parsing failed for at least one element
+					return false;
+				}
+			}
+
+			// Parsing successful
+			return true;
+		}
+		catch (System.Exception)
+		{
+			// An exception occurred during parsing
+			return false;
+		}
 	}
 }
