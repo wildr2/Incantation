@@ -15,6 +15,22 @@ public class BookCard : Card
 	public SpriteRenderer burningOpenSprite;
 	public SpriteRenderer burningShutSprite;
 
+	public override bool IsComplete()
+	{
+		return
+			goalSpellID == SpellID.Activate ? open && !vanished :
+			goalSpellID == SpellID.Deactivate ? !open && !vanished :
+			false;
+	}
+
+	public override bool IsSkippable()
+	{
+		return
+			goalSpellID == SpellID.Activate ? vanished :
+			goalSpellID == SpellID.Deactivate ? vanished :
+			false;
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();

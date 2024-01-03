@@ -12,6 +12,20 @@ public class DungeonCard : Card
 	public SpriteRenderer litTorchSprite;
 	public SpriteRenderer unlitTorchSprite;
 
+	public override bool IsComplete()
+	{
+		return
+			goalSpellID == SpellID.Vanish ? chrVanished || !torchLit :
+			false;
+	}
+
+	public override bool IsSkippable()
+	{
+		return
+			goalSpellID == SpellID.Vanish ? false :
+			false;
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();

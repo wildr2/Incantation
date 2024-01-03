@@ -16,6 +16,16 @@ public class Card : SpellTarget
 	private Vector3 initialPos;
 	private CommonCardData commonCardData;
 
+	public virtual bool IsComplete()
+	{
+		return false;
+	}
+
+	public virtual bool IsSkippable()
+	{
+		return false;
+	}
+
 	public virtual float GetGlowIntensity()
 	{
 		return 0.0f;
@@ -65,6 +75,8 @@ public class Card : SpellTarget
 		}
 
 		string text = "";
+
+		// Statums.
 		System.Type cardType = GetType();
 		foreach (FieldInfo field in cardType.GetFields(BindingFlags.Public | BindingFlags.Instance))
 		{
@@ -79,6 +91,12 @@ public class Card : SpellTarget
 				text += string.Format("{2}{0}: {1}", field.Name, statum.value, text.Length > 0 ? "\n" : "");
 			}
 		}
+
+		// Completion state.
+		text += "\n";
+		text += string.Format("\ncomplete: {0}", IsComplete());
+		text += string.Format("\nskippable: {0}", IsSkippable());
+
 		commonCardData.debugText.text = text;
 	}
 

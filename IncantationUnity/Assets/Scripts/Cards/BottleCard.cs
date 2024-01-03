@@ -14,6 +14,20 @@ public class BottleCard : Card
 	public SpriteRenderer brokenGlassSprite;
 	public SpriteRenderer wineSprite;
 
+	public override bool IsComplete()
+	{
+		return
+			goalSpellID == SpellID.Refill ? filledWithWine && !vanished :
+			false;
+	}
+
+	public override bool IsSkippable()
+	{
+		return
+			goalSpellID == SpellID.Refill ? vanished || broken :
+			false;
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();

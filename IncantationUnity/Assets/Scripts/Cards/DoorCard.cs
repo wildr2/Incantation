@@ -13,6 +13,22 @@ public class DoorCard : Card
 	public SpriteRenderer shutSprite;
 	public SpriteRenderer explodedSprite;
 
+	public override bool IsComplete()
+	{
+		return
+			goalSpellID == SpellID.Unlock ? !locked :
+			goalSpellID == SpellID.Lock ? !locked :
+			false;
+	}
+
+	public override bool IsSkippable()
+	{
+		return
+			goalSpellID == SpellID.Unlock ? false :
+			goalSpellID == SpellID.Lock ? exploded :
+			false;
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();

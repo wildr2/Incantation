@@ -17,6 +17,20 @@ public class GlassCard : Card
 	public SpriteRenderer waterSprite;
 	public SpriteRenderer plantSprite;
 
+	public override bool IsComplete()
+	{
+		return
+			goalSpellID == SpellID.Refill ? (filledWithWater || filledWithPlant) && !vanished && !broken :
+			false;
+	}
+
+	public override bool IsSkippable()
+	{
+		return
+			goalSpellID == SpellID.Refill ? vanished || broken :
+			false;
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();

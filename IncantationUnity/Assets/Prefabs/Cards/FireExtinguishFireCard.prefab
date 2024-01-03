@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8063552758156916096, guid: c5a3d138a50c0da4a84df7deeeb1a477, type: 3}
       propertyPath: m_Text
-      value: Extinguish
+      value: Extinguish Fire
       objectReference: {fileID: 0}
     - target: {fileID: 8833591034212286749, guid: c5a3d138a50c0da4a84df7deeeb1a477, type: 3}
       propertyPath: goalSpellID

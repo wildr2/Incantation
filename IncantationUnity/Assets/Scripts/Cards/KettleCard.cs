@@ -14,11 +14,25 @@ public class KettleCard : Card
 	public SpriteRenderer offSprite;
 	public SpriteRenderer brokenSprite;
 
+	public override bool IsComplete()
+	{
+		return
+			goalSpellID == SpellID.Activate ? on && !vanished :
+			false;
+	}
+
+	public override bool IsSkippable()
+	{
+		return
+			goalSpellID == SpellID.Activate ? vanished || broken :
+			false;
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();
 
-		on = goalSpellID == SpellID.Deactivate;
+		on = false;
 		broken = false;
 		levitating = false;
 		vanished = false;

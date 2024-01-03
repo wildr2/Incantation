@@ -16,6 +16,24 @@ public class PlantpotCard : Card
 	public SpriteRenderer brokenUnsproutedSprite;
 	public SpriteRenderer brokenSproutedSprite;
 
+	public override bool IsComplete()
+	{
+		return
+			goalSpellID == SpellID.Grow ? sprouted && !vanished :
+			goalSpellID == SpellID.Break ? broken && !vanished :
+			goalSpellID == SpellID.Mend ? !broken && !vanished :
+			false;
+	}
+
+	public override bool IsSkippable()
+	{
+		return
+			goalSpellID == SpellID.Grow ? vanished :
+			goalSpellID == SpellID.Break ? vanished :
+			goalSpellID == SpellID.Mend ? vanished :
+			false;
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();

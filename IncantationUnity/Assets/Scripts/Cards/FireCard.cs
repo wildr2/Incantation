@@ -19,6 +19,22 @@ public class FireCard : Card
 	[HideInInspector]
 	public float flamesGlowDuration;
 
+	public override bool IsComplete()
+	{
+		return
+			goalSpellID == SpellID.CreateFire ? lit && !vanished :
+			goalSpellID == SpellID.ExtinguishFire ? !lit || vanished : 
+			false;
+	}
+
+	public override bool IsSkippable()
+	{
+		return
+			goalSpellID == SpellID.CreateFire ? vanished :
+			goalSpellID == SpellID.ExtinguishFire ? false :
+			false;
+	}
+
 	public override float GetGlowIntensity()
 	{
 		return flamesGlowIntensity;

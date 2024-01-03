@@ -13,6 +13,22 @@ public class PotholeCard : Card
 	public SpriteRenderer emptySprite;
 	public SpriteRenderer filledWithWaterSprite;
 
+	public override bool IsComplete()
+	{
+		return
+			goalSpellID == SpellID.Mend ? mended || vanished :
+			goalSpellID == SpellID.Rain ? raining :
+			false;
+	}
+
+	public override bool IsSkippable()
+	{
+		return
+			goalSpellID == SpellID.Mend ? false :
+			goalSpellID == SpellID.Rain ? false :
+			false;
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();

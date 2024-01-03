@@ -13,6 +13,22 @@ public class BarrelCard: Card
 	public SpriteRenderer unexplodedSprite;
 	public SpriteRenderer explodedSprite;
 
+	public override bool IsComplete()
+	{
+		return
+			goalSpellID == SpellID.Explode ? exploded && !vanished :
+			goalSpellID == SpellID.Levitate ? levitating && !vanished : 
+			false;
+	}
+
+	public override bool IsSkippable()
+	{
+		return
+			goalSpellID == SpellID.Explode ? vanished :
+			goalSpellID == SpellID.Levitate ? vanished :
+			false;
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();

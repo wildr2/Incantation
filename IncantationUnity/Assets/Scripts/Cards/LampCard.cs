@@ -14,6 +14,22 @@ public class LampCard : Card
 	public SpriteRenderer offSprite;
 	public SpriteRenderer brokenSprite;
 
+	public override bool IsComplete()
+	{
+		return
+			goalSpellID == SpellID.Activate ? on && !vanished :
+			goalSpellID == SpellID.Deactivate ? !on || vanished : 
+			false;
+	}
+
+	public override bool IsSkippable()
+	{
+		return
+			goalSpellID == SpellID.Activate ? vanished || broken :
+			goalSpellID == SpellID.Deactivate ? false :
+			false;
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();
