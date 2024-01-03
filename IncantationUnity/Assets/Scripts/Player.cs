@@ -8,6 +8,10 @@ public class Player : Singleton<Player>
 	public Spell genericSpell = new Spell(SpellID.Generic);
 	public Spell createFireSpell = new Spell(SpellID.CreateFire);
 	public Spell extinguishFireSpell = new Spell(SpellID.ExtinguishFire);
+	public Spell explodeSpell = new Spell(SpellID.Explode);
+	public Spell vanishSpell = new Spell(SpellID.Vanish);
+	public Spell rainSpell = new Spell(SpellID.Rain);
+	public Spell levitate = new Spell(SpellID.Levitate);
 	public Dictionary<SpellID, Spell> spells;
 
 	private Book book;

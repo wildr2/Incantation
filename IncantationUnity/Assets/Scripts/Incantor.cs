@@ -161,7 +161,7 @@ public class Incantor : MonoBehaviour
 		// Cast the spell on a single target that can be affected by it.
 		SpellTarget[] targets = FindObjectsOfType<SpellTarget>();
 		Util.Shuffle(targets);
-		System.Array.Sort(targets, new SpellTarget.ComparerPriority());
+		System.Array.Sort(targets, new SpellTarget.PriorityComparer());
 
 		SpellTarget castTarget = null;
 		foreach (SpellTarget target in targets)

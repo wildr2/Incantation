@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SpellEffect : MonoBehaviour
+[System.Serializable]
+public abstract class SpellEffect
 {
 	public abstract SpellID SpellID { get; }
 	public SpellTarget Target { private set; get; }
 	public AudioClip sfx;
+
+	public virtual void Init(SpellTarget target)
+	{
+		Target = target;
+	}
 
 	// A spell can only be cast if conditions are met for some matching effect of some target.
 	public virtual bool AreConditionsMet()
@@ -25,10 +31,5 @@ public abstract class SpellEffect : MonoBehaviour
 		{
 			SFXManager.Play(sfx, MixerGroup.Magic);
 		}
-	}
-
-	protected virtual void Awake()
-	{
-		Target = GetComponent<SpellTarget>();
 	}
 }

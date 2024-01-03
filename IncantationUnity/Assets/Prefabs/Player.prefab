@@ -220,6 +220,18 @@ MonoBehaviour:
     spellID: 2
     debugIncantation: extinguish
     castSFX: {fileID: 8300000, guid: dea0deb11a683674e9612ac328ea879f, type: 3}
+  explodeSpell:
+    spellID: 9
+    debugIncantation: explode
+    castSFX: {fileID: 0}
+  vanishSpell:
+    spellID: 10
+    debugIncantation: vanish
+    castSFX: {fileID: 8300000, guid: bd74508c93d4ae54c82f1adfc3de1e68, type: 3}
+  rainSpell:
+    spellID: 11
+    debugIncantation: rain
+    castSFX: {fileID: 0}
 --- !u!1 &8601665277575618821
 GameObject:
   m_ObjectHideFlags: 0

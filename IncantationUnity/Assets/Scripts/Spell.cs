@@ -15,7 +15,7 @@ public enum SpellID
 	Lock,
 	Explode,
 	Vanish,
-	MakeRain,
+	Rain,
 	Grow,
 	Mend,
 	Levitate,

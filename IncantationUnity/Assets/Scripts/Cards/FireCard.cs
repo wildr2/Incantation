@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CardType = FireCard;
 
-[RequireComponent(typeof(FireCardCreateFireSE))]
-[RequireComponent(typeof(FireCardExtinguishFireSE))]
 public class FireCard : Card
 {
+	public CreateFireSE createFireSE;
+	public ExplodeSE explodeSE;
+	public ExtinguishFireSE extinguishFireSE;
+	public LevitateSE levitateSE;
+	public RainSE rainSE;
+	public VanishSE vanishSE;
+
 	public Statum lit;
 	public Statum woodBroken;
 	public Statum levitating;
@@ -61,5 +67,121 @@ public class FireCard : Card
 		flamesBlack.color = Util.SetAlpha(flamesBlack.color, lit ? 1 : 0);
 		flamesColor.color = Util.SetAlpha(flamesColor.color, flamesGlowIntensity);
 		flamesGlow.color = Util.SetAlpha(flamesGlow.color, flamesGlowIntensity);
+	}
+
+	[System.Serializable]
+	public class CreateFireSE : CardSE
+	{
+		public override SpellID SpellID => SpellID.CreateFire;
+		public new CardType Target => (CardType)base.Target;
+
+		public override bool AreConditionsMet()
+		{
+			return !Target.vanished;
+		}
+
+		public override void Apply(float intensity)
+		{
+			base.Apply(intensity);
+			Target.lit = true;
+			Target.sprouted = false;
+			Target.flamesGlowDuration = Mathf.Lerp(3.0f, 9.0f, intensity);
+		}
+	}
+
+	[System.Serializable]
+	public class ExplodeSE : CardSE
+	{
+		public override SpellID SpellID => SpellID.Explode;
+		public new CardType Target => (CardType)base.Target;
+
+		public override bool AreConditionsMet()
+		{
+			return !Target.vanished;
+		}
+
+		public override void Apply(float intensity)
+		{
+			base.Apply(intensity);
+			Target.lit = true;
+			Target.sprouted = false;
+			Target.flamesGlowDuration = Mathf.Lerp(3.0f, 9.0f, intensity);
+		}
+	}
+	
+	[System.Serializable]
+	public class ExtinguishFireSE : CardSE
+	{
+		public override SpellID SpellID => SpellID.ExtinguishFire;
+		public new CardType Target => (CardType)base.Target;
+
+		public override bool AreConditionsMet()
+		{
+			return Target.lit && !Target.vanished;
+		}
+
+		public override void Apply(float intensity)
+		{
+			base.Apply(intensity);
+			Target.lit = false;
+		}
+	}
+	
+	[System.Serializable]
+	public class LevitateSE : CardSE
+	{
+		public override SpellID SpellID => SpellID.Levitate;
+		public new CardType Target => (CardType)base.Target;
+
+		public override bool AreConditionsMet()
+		{
+			return !Target.levitating && !Target.vanished;
+		}
+
+		public override void Apply(float intensity)
+		{
+			base.Apply(intensity);
+			Target.levitating = true;
+
+			CardData.contentParent.transform.localPosition = CardData.levitatePos;
+		}
+	}
+
+	[System.Serializable]
+	public class RainSE : CardSE
+	{
+		public override SpellID SpellID => SpellID.Rain;
+		public new CardType Target => (CardType)base.Target;
+
+		public override bool AreConditionsMet()
+		{
+			return !Target.raining;
+		}
+
+		public override void Apply(float intensity)
+		{
+			base.Apply(intensity);
+			Target.raining = true;
+		}
+	}
+
+	[System.Serializable]
+	public class VanishSE : CardSE
+	{
+		public override SpellID SpellID => SpellID.Vanish;
+		public new CardType Target => (CardType)base.Target;
+
+		public override bool AreConditionsMet()
+		{
+			return !Target.vanished;
+		}
+
+		public override void Apply(float intensity)
+		{
+			base.Apply(intensity);
+			Target.vanished = true;
+
+			CardData.contentParent.SetActive(false);
+		}
 	}
 }

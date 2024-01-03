@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Reflection;
+using CardType = Card;
 
-[RequireComponent(typeof(CardSE))]
+[RequireComponent(typeof(CommonCardData))]
 public class Card : SpellTarget
 {
+	public override int Priority => 1;
+
 	public SpellID goalSpellID;
-	public Text debugText;
+	public GenericSE genericSE;
 	[HideInInspector]
 	public SpellID lastSpellID;
 	private Vector3 initialPos;
+	private CommonCardData commonCardData;
 
 	public virtual float GetGlowIntensity()
 	{
@@ -40,9 +44,11 @@ public class Card : SpellTarget
 		transform.position += translation;
 	}
 
-	protected virtual void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
 		initialPos = transform.position;
+		commonCardData = GetComponent<CommonCardData>();
 	}
 
 	protected virtual void Update()
@@ -53,7 +59,7 @@ public class Card : SpellTarget
 	private void UpdateDebugText()
 	{
 		bool enable = DebugSettings.Instance.enableCardDebugText;
-		debugText.enabled = enable;
+		commonCardData.debugText.enabled = enable;
 		if (!enable)
 		{
 			return;
@@ -69,28 +75,43 @@ public class Card : SpellTarget
 				text += string.Format("{2}{0}: {1}", field.Name, statum.value, text.Length > 0 ? "\n" : "");
 			}
 		}
-		debugText.text = text;
-	}
-}
-
-public abstract class CardSE : SpellEffect
-{
-	public new Card Target => (Card)base.Target;
-
-	public override bool AreConditionsMet()
-	{
-		return true;
+		commonCardData.debugText.text = text;
 	}
 
-	public override void Apply(float intensity)
+	[System.Serializable]
+	public abstract class CardSE : SpellEffect
 	{
-		base.Apply(intensity);
-		Target.lastSpellID = SpellID;
-		Shake(intensity);
+		public new CardType Target => (CardType)base.Target;
+		public CommonCardData CardData => Target.commonCardData;
+
+		public override void Apply(float intensity)
+		{
+			base.Apply(intensity);
+			Target.lastSpellID = SpellID;
+			Shake(intensity);
+		}
+
+		protected virtual void Shake(float intensity)
+		{
+			Target.Shake(Util.Map(0, 1, 0.5f, 1.0f, intensity));
+		}
 	}
 
-	protected virtual void Shake(float intensity)
+	[System.Serializable]
+	public class GenericSE : CardSE
 	{
-		Target.Shake(Util.Map(0, 1, 0.5f, 1.0f, intensity));
+		public override SpellID SpellID => SpellID.Generic;
+
+		public override void Apply(float intensity)
+		{
+			base.Apply(intensity);
+			SFXManager.Play(CardData.genericSpellSFX, MixerGroup.Magic);
+		}
+
+		protected override void Shake(float intensity)
+		{
+			// Shake the card only a small amount.
+			Target.Shake(Util.Map(0, 1, 0.2f, 0.3f, intensity));
+		}
 	}
 }
