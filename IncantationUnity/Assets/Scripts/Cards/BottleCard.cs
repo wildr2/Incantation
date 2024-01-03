@@ -1,24 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CardType = LampCard;
+using CardType = BottleCard;
 
-public class LampCard : Card
+public class BottleCard : Card
 {
-	public Statum on;
+	public Statum filledWithWine;
 	public Statum broken;
 	public Statum levitating;
 	public Statum vanished;
 
-	public SpriteRenderer onSprite;
-	public SpriteRenderer offSprite;
-	public SpriteRenderer brokenSprite;
+	public SpriteRenderer glassSprite;
+	public SpriteRenderer brokenGlassSprite;
+	public SpriteRenderer wineSprite;
 
 	protected override void Awake()
 	{
 		base.Awake();
 
-		on = goalSpellID == SpellID.Deactivate;
+		filledWithWine = false;
 		broken = false;
 		levitating = false;
 		vanished = false;
@@ -27,29 +27,10 @@ public class LampCard : Card
 	protected override void Update()
 	{
 		base.Update();
-		onSprite.enabled = on;
-		offSprite.enabled = !on && !broken;
-		brokenSprite.enabled = broken;
+		glassSprite.enabled = !broken;
+		brokenGlassSprite.enabled = broken;
+		wineSprite.enabled = filledWithWine;
 	}
-
-	[System.Serializable]
-	public class CreateFireSE : CardSE
-	{
-		public override SpellID SpellID => SpellID.CreateFire;
-		public new CardType Target => (CardType)base.Target;
-
-		public override bool AreConditionsMet()
-		{
-			return !Target.vanished && !Target.broken;
-		}
-
-		public override void Apply(float intensity)
-		{
-			base.Apply(intensity);
-			Target.on = true;
-		}
-	}
-	public CreateFireSE createFireSE;
 
 	[System.Serializable]
 	public class ExplodeSE : CardSE
@@ -66,29 +47,11 @@ public class LampCard : Card
 		{
 			base.Apply(intensity);
 			Target.broken = true;
-			Target.on = false;
+			Target.filledWithWine = false;
+			Target.levitating = false;
 		}
 	}
 	public ExplodeSE explodeSE;
-	
-	[System.Serializable]
-	public class ExtinguishFireSE : CardSE
-	{
-		public override SpellID SpellID => SpellID.ExtinguishFire;
-		public new CardType Target => (CardType)base.Target;
-
-		public override bool AreConditionsMet()
-		{
-			return Target.on && !Target.vanished;
-		}
-
-		public override void Apply(float intensity)
-		{
-			base.Apply(intensity);
-			Target.on = false;
-		}
-	}
-	public ExtinguishFireSE extinguishFireSE;
 	
 	[System.Serializable]
 	public class LevitateSE : CardSE
@@ -98,7 +61,7 @@ public class LampCard : Card
 
 		public override bool AreConditionsMet()
 		{
-			return !Target.levitating && !Target.vanished;
+			return !Target.levitating && !Target.vanished && !Target.broken;
 		}
 
 		public override void Apply(float intensity)
@@ -110,44 +73,6 @@ public class LampCard : Card
 		}
 	}
 	public LevitateSE levitateSE;
-
-	[System.Serializable]
-	public class ActivateSE : CardSE
-	{
-		public override SpellID SpellID => SpellID.Activate;
-		public new CardType Target => (CardType)base.Target;
-
-		public override bool AreConditionsMet()
-		{
-			return !Target.on && !Target.broken && !Target.vanished;
-		}
-
-		public override void Apply(float intensity)
-		{
-			base.Apply(intensity);
-			Target.on = true;
-		}
-	}
-	public ActivateSE activateSE;
-
-	[System.Serializable]
-	public class DeactivateSE : CardSE
-	{
-		public override SpellID SpellID => SpellID.Deactivate;
-		public new CardType Target => (CardType)base.Target;
-
-		public override bool AreConditionsMet()
-		{
-			return Target.on && !Target.vanished;
-		}
-
-		public override void Apply(float intensity)
-		{
-			base.Apply(intensity);
-			Target.on = false;
-		}
-	}
-	public DeactivateSE deactivateSE;
 
 	[System.Serializable]
 	public class BreakSE : CardSE
@@ -164,7 +89,8 @@ public class LampCard : Card
 		{
 			base.Apply(intensity);
 			Target.broken = true;
-			Target.on = false;
+			Target.filledWithWine = false;
+			Target.levitating = false;
 		}
 	}
 	public BreakSE breakSE;
@@ -208,4 +134,23 @@ public class LampCard : Card
 		}
 	}
 	public VanishSE vanishSE;
+
+	[System.Serializable]
+	public class RefillSE : CardSE
+	{
+		public override SpellID SpellID => SpellID.Refill;
+		public new CardType Target => (CardType)base.Target;
+
+		public override bool AreConditionsMet()
+		{
+			return !Target.vanished && !Target.broken && !Target.filledWithWine;
+		}
+
+		public override void Apply(float intensity)
+		{
+			base.Apply(intensity);
+			Target.filledWithWine = true;
+		}
+	}
+	public RefillSE refillSE;
 }

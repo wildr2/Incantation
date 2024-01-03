@@ -1,25 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CardType = LampCard;
+using CardType = BookCard;
 
-public class LampCard : Card
+public class BookCard : Card
 {
-	public Statum on;
-	public Statum broken;
+	public Statum open;
+	public Statum burning;
 	public Statum levitating;
 	public Statum vanished;
 
-	public SpriteRenderer onSprite;
-	public SpriteRenderer offSprite;
-	public SpriteRenderer brokenSprite;
+	public SpriteRenderer openSprite;
+	public SpriteRenderer shutSprite;
+	public SpriteRenderer burningOpenSprite;
+	public SpriteRenderer burningShutSprite;
 
 	protected override void Awake()
 	{
 		base.Awake();
 
-		on = goalSpellID == SpellID.Deactivate;
-		broken = false;
+		open = goalSpellID == SpellID.Deactivate;
+		burning = false;
 		levitating = false;
 		vanished = false;
 	}
@@ -27,9 +28,10 @@ public class LampCard : Card
 	protected override void Update()
 	{
 		base.Update();
-		onSprite.enabled = on;
-		offSprite.enabled = !on && !broken;
-		brokenSprite.enabled = broken;
+		openSprite.enabled = open && !burning;
+		shutSprite.enabled = !open && !burning;
+		burningOpenSprite.enabled = open && burning;
+		burningShutSprite.enabled = !open && burning;
 	}
 
 	[System.Serializable]
@@ -40,36 +42,16 @@ public class LampCard : Card
 
 		public override bool AreConditionsMet()
 		{
-			return !Target.vanished && !Target.broken;
+			return !Target.vanished;
 		}
 
 		public override void Apply(float intensity)
 		{
 			base.Apply(intensity);
-			Target.on = true;
+			Target.burning = true;
 		}
 	}
 	public CreateFireSE createFireSE;
-
-	[System.Serializable]
-	public class ExplodeSE : CardSE
-	{
-		public override SpellID SpellID => SpellID.Explode;
-		public new CardType Target => (CardType)base.Target;
-
-		public override bool AreConditionsMet()
-		{
-			return !Target.vanished && !Target.broken;
-		}
-
-		public override void Apply(float intensity)
-		{
-			base.Apply(intensity);
-			Target.broken = true;
-			Target.on = false;
-		}
-	}
-	public ExplodeSE explodeSE;
 	
 	[System.Serializable]
 	public class ExtinguishFireSE : CardSE
@@ -79,13 +61,13 @@ public class LampCard : Card
 
 		public override bool AreConditionsMet()
 		{
-			return Target.on && !Target.vanished;
+			return Target.burning && !Target.vanished;
 		}
 
 		public override void Apply(float intensity)
 		{
 			base.Apply(intensity);
-			Target.on = false;
+			Target.burning = false;
 		}
 	}
 	public ExtinguishFireSE extinguishFireSE;
@@ -119,13 +101,13 @@ public class LampCard : Card
 
 		public override bool AreConditionsMet()
 		{
-			return !Target.on && !Target.broken && !Target.vanished;
+			return !Target.open && !Target.vanished;
 		}
 
 		public override void Apply(float intensity)
 		{
 			base.Apply(intensity);
-			Target.on = true;
+			Target.open = true;
 		}
 	}
 	public ActivateSE activateSE;
@@ -138,55 +120,54 @@ public class LampCard : Card
 
 		public override bool AreConditionsMet()
 		{
-			return Target.on && !Target.vanished;
+			return Target.open && !Target.vanished;
 		}
 
 		public override void Apply(float intensity)
 		{
 			base.Apply(intensity);
-			Target.on = false;
+			Target.open = false;
 		}
 	}
 	public DeactivateSE deactivateSE;
 
 	[System.Serializable]
-	public class BreakSE : CardSE
+	public class UnlockSE : CardSE
 	{
-		public override SpellID SpellID => SpellID.Break;
+		public override SpellID SpellID => SpellID.Unlock;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()
 		{
-			return !Target.broken && !Target.vanished;
+			return !Target.open && !Target.vanished;
 		}
 
 		public override void Apply(float intensity)
 		{
 			base.Apply(intensity);
-			Target.broken = true;
-			Target.on = false;
+			Target.open = true;
 		}
 	}
-	public BreakSE breakSE;
+	public UnlockSE unlockSE;
 
 	[System.Serializable]
-	public class MendSE : CardSE
+	public class LockSE : CardSE
 	{
-		public override SpellID SpellID => SpellID.Mend;
+		public override SpellID SpellID => SpellID.Lock;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()
 		{
-			return Target.broken && !Target.vanished;
+			return Target.open && !Target.vanished;
 		}
 
 		public override void Apply(float intensity)
 		{
 			base.Apply(intensity);
-			Target.broken = false;
+			Target.open = false;
 		}
 	}
-	public MendSE mendSE;
+	public LockSE lockSE;
 
 	[System.Serializable]
 	public class VanishSE : CardSE

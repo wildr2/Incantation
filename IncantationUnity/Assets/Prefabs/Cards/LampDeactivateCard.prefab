@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2789195474058787463, guid: 82675bc670e73e345be9f91cba317f47, type: 3}
       propertyPath: goalSpellID
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3451293511606467664, guid: 82675bc670e73e345be9f91cba317f47, type: 3}
       propertyPath: m_Name
-      value: DeactivateLampCard
+      value: LampDeactivateCard
       objectReference: {fileID: 0}
     - target: {fileID: 7156408783031867904, guid: 82675bc670e73e345be9f91cba317f47, type: 3}
       propertyPath: m_LocalPosition.x
@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8063552758156916096, guid: 82675bc670e73e345be9f91cba317f47, type: 3}
       propertyPath: m_Text
-      value: Turn off Lamp
+      value: Turn Off Lamp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -6,15 +6,14 @@ using CardType = FireCard;
 public class FireCard : Card
 {
 	public Statum lit;
-	public Statum woodBroken;
 	public Statum levitating;
 	public Statum vanished;
 	public Statum raining;
 	public Statum sprouted;
 
-	public SpriteRenderer flamesBlack;
-	public SpriteRenderer flamesColor;
-	public SpriteRenderer flamesGlow;
+	public SpriteRenderer flamesBlackSprite;
+	public SpriteRenderer flamesColorSprite;
+	public SpriteRenderer flamesGlowSprite;
 	[HideInInspector]
 	public float flamesGlowIntensity;
 	[HideInInspector]
@@ -30,7 +29,6 @@ public class FireCard : Card
 		base.Awake();
 
 		lit = goalSpellID == SpellID.ExtinguishFire;
-		woodBroken = false;
 		levitating = false;
 		vanished = false;
 		raining = false;
@@ -57,9 +55,9 @@ public class FireCard : Card
 			flamesGlowIntensity = 0;
 		}
 
-		flamesBlack.color = Util.SetAlpha(flamesBlack.color, lit ? 1 : 0);
-		flamesColor.color = Util.SetAlpha(flamesColor.color, flamesGlowIntensity);
-		flamesGlow.color = Util.SetAlpha(flamesGlow.color, flamesGlowIntensity);
+		flamesBlackSprite.color = Util.SetAlpha(flamesBlackSprite.color, lit ? 1 : 0);
+		flamesColorSprite.color = Util.SetAlpha(flamesColorSprite.color, flamesGlowIntensity);
+		flamesGlowSprite.color = Util.SetAlpha(flamesGlowSprite.color, flamesGlowIntensity);
 	}
 
 	[System.Serializable]
@@ -159,6 +157,8 @@ public class FireCard : Card
 		{
 			base.Apply(intensity);
 			Target.raining = true;
+			Target.sprouted = true;
+			Target.lit = false; 
 		}
 	}
 	public RainSE rainSE;
@@ -183,4 +183,23 @@ public class FireCard : Card
 		}
 	}
 	public VanishSE vanishSE;
+
+	[System.Serializable]
+	public class GrowSE : CardSE
+	{
+		public override SpellID SpellID => SpellID.Grow;
+		public new CardType Target => (CardType)base.Target;
+
+		public override bool AreConditionsMet()
+		{
+			return !Target.vanished && !Target.lit && !Target.sprouted;
+		}
+
+		public override void Apply(float intensity)
+		{
+			base.Apply(intensity);
+			Target.sprouted = true;
+		}
+	}
+	public GrowSE growSE;
 }

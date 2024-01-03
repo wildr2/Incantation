@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CardType = LampCard;
+using CardType = KettleCard;
 
-public class LampCard : Card
+public class KettleCard : Card
 {
 	public Statum on;
 	public Statum broken;
@@ -50,26 +50,6 @@ public class LampCard : Card
 		}
 	}
 	public CreateFireSE createFireSE;
-
-	[System.Serializable]
-	public class ExplodeSE : CardSE
-	{
-		public override SpellID SpellID => SpellID.Explode;
-		public new CardType Target => (CardType)base.Target;
-
-		public override bool AreConditionsMet()
-		{
-			return !Target.vanished && !Target.broken;
-		}
-
-		public override void Apply(float intensity)
-		{
-			base.Apply(intensity);
-			Target.broken = true;
-			Target.on = false;
-		}
-	}
-	public ExplodeSE explodeSE;
 	
 	[System.Serializable]
 	public class ExtinguishFireSE : CardSE

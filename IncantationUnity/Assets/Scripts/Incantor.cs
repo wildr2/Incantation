@@ -174,7 +174,10 @@ public class Incantor : MonoBehaviour
 		}
 		if (castTarget)
 		{
-			Debug.Log(string.Format("Cast '{0}' => {1} ({2}) at {3}", incantation, spell.SpellID, intensity, castTarget));
+			if (DebugSettings.Instance.enableSpellDebugPrints)
+			{
+				Debug.Log(string.Format("Cast '{0}' => {1} ({2}) at {3}", incantation, spell.SpellID, intensity, castTarget));
+			}
 		}
 		else
 		{
@@ -188,7 +191,10 @@ public class Incantor : MonoBehaviour
 					break;
 				}
 			}
-			Debug.Log(string.Format("Cast '{0}' => {1} ({2}) no target => {3} ({4}) at {5}", incantation, spell.SpellID, intensity, genericSpell.SpellID, intensity, castTarget));
+			if (DebugSettings.Instance.enableSpellDebugPrints)
+			{
+				Debug.Log(string.Format("Cast '{0}' => {1} ({2}) no target => {3} ({4}) at {5}", incantation, spell.SpellID, intensity, genericSpell.SpellID, intensity, castTarget));
+			}
 		}
 	}
 

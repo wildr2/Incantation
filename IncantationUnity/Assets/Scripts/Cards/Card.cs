@@ -71,6 +71,11 @@ public class Card : SpellTarget
 			if (field.FieldType == typeof(Statum))
 			{
 				Statum statum = (Statum)field.GetValue(this);
+				if (statum == null)
+				{
+					Debug.LogError(string.Format("Statum '{0}' of card '{1}' not initialized.", field.Name, transform.name));
+					continue;
+				}
 				text += string.Format("{2}{0}: {1}", field.Name, statum.value, text.Length > 0 ? "\n" : "");
 			}
 		}

@@ -6,7 +6,6 @@ public enum SpellID
 {
 	Activate,
 	Break,
-	ConjureRock,
 	CreateFire,
 	Deactivate,
 	Explode,

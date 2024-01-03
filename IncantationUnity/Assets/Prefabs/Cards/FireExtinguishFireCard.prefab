@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3451293511606467664, guid: c5a3d138a50c0da4a84df7deeeb1a477, type: 3}
       propertyPath: m_Name
-      value: ExtinguishFireCard
+      value: FireExtinguishFireCard
       objectReference: {fileID: 0}
     - target: {fileID: 3451293511606467664, guid: c5a3d138a50c0da4a84df7deeeb1a477, type: 3}
       propertyPath: m_Layer
@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8833591034212286749, guid: c5a3d138a50c0da4a84df7deeeb1a477, type: 3}
       propertyPath: goalSpellID
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -7,7 +7,6 @@ public class Player : Singleton<Player>
 {
 	public Spell activateSpell = new Spell(SpellID.Activate);
 	public Spell breakSpell = new Spell(SpellID.Break);
-	public Spell conjureRockSpell = new Spell(SpellID.ConjureRock);
 	public Spell createFireSpell = new Spell(SpellID.CreateFire);
 	public Spell deactivateSpell = new Spell(SpellID.Deactivate);
 	public Spell explodeSpell = new Spell(SpellID.Explode);
