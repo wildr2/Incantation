@@ -21,6 +21,10 @@ public class SFXManager : Singleton<SFXManager>
 
 	public static void Play(AudioClip clip, MixerGroup mixerGroup = MixerGroup.Master, Vector3? position=null, float pitchOffset=0.0f, float pitchVariance=0.0f, float volume=1.0f, float delay=0.0f)
 	{
+		if (!clip)
+		{
+			return;
+		}
 		SFXManager instance = Instance;
 		AudioSource source = Instantiate(instance.worldSFXSource, instance.transform);
 		source.clip = clip;

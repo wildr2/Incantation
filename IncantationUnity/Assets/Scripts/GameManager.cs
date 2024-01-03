@@ -9,6 +9,6 @@ public class GameManager : MonoBehaviour
 	private void Update()
 	{
 		Card card = FindObjectOfType<Card>();
-		deskHighlights.color = Util.SetAlpha(deskHighlights.color, card.glow);
+		deskHighlights.color = Util.SetAlpha(deskHighlights.color, card.GetGlowIntensity());
 	}
 }

@@ -3,16 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum SpellType
-{
-	LightFire,
-	ExtinguishFire,
-}
-
 public class Incantor : MonoBehaviour
 {
 	public Text incantationText;
-	public Book book;
+	private Book book;
 	private string inputText;
 	private string incantation;
 	private float startFadeTime = -1;
@@ -20,6 +14,11 @@ public class Incantor : MonoBehaviour
 
 	public AudioClip lightFireSpellSound;
 	public AudioClip extinguishFireSpellSound;
+
+	private void Awake()
+	{
+		book = FindObjectOfType<Book>();
+	}
 
 	private void Update()
 	{
@@ -90,58 +89,49 @@ public class Incantor : MonoBehaviour
 	{
 		startFadeTime = Time.time;
 		scoreResponse = response;
-		SpellType spell = GetHighestScoreSpellType(scoreResponse.spellScores);
+		SpellID spell = GetHighestScoreSpellID(scoreResponse.spellScores);
 		Debug.Log(string.Format("rwdbg {0} {1} {2}", incantation, spell, string.Join(", ", response.spellScores)));
+	}
+
+	private Spell DetermineSpell(out float intensity)
+	{
+		SpellID spellID = GetHighestScoreSpellID(scoreResponse.spellScores);
+		float score = scoreResponse.spellScores[(int)spellID];
+
+		// TODO: possibly handle score thresholding/normalization on server.
+		const float minSuccessScore = 0.9f;
+		const float maxIntensityScore = 1.2f;
+		if (score < minSuccessScore)
+		{
+			spellID = SpellID.Generic;
+			intensity = Util.Map(0.0f, minSuccessScore, 0.0f, 1.0f, score);
+		}
+		else
+		{
+			intensity = Util.Map(minSuccessScore, maxIntensityScore, 0.0f, 1.0f, score);
+		}
+
+		return Player.Instance.spells[spellID];
 	}
 
 	private void CastSpell()
 	{
-		Card card = FindAnyObjectByType<Card>();
-		AmbientFire fire = FindAnyObjectByType<AmbientFire>();
+		Spell spell = DetermineSpell(out float intensity);
 
-		SpellType spell = GetHighestScoreSpellType(scoreResponse.spellScores);
-		float score = scoreResponse.spellScores[(int)spell];
-		if (score < 0.9f)
-		{
-			return;
-		}
+		// Cast the spell on a single target that can be affected by it.
+		SpellTarget[] targets = FindObjectsOfType<SpellTarget>();
+		Util.Shuffle(targets);
 
-		if (spell == SpellType.LightFire)
+		foreach (SpellTarget target in targets)
 		{
-			float intensity = Util.Map(0.9f, 1.2f, 0.0f, 1.0f, score);
-			if (!card.IsFireLit() || (!fire || fire.IsLit()))
+			if (spell.TryCastSpell(target, intensity))
 			{
-				card.LightFire(intensity);
-				card.Shake(Util.Map(0.9f, 1.2f, 0.5f, 1.0f, score));
-				SFXManager.Play(lightFireSpellSound, MixerGroup.Magic);
-			}
-			else if (fire && !fire.IsLit())
-			{
-				fire.Light();
-				SFXManager.Play(lightFireSpellSound, MixerGroup.Magic, fire.transform.position);
-			}
-		}
-		else if (spell == SpellType.ExtinguishFire)
-		{
-			if (card.IsFireLit())
-			{
-				card.ExtinguishFire();
-				SFXManager.Play(extinguishFireSpellSound, MixerGroup.Magic);
-				card.Shake(Util.Map(0.9f, 1.2f, 0.5f, 1.0f, score));
-			}
-			else if (fire && fire.IsLit())
-			{
-				fire.Extinguish();
-				SFXManager.Play(extinguishFireSpellSound, MixerGroup.Magic, fire.transform.position);
-			}
-			else 
-			{
-				card.Shake(Util.Map(0.0f, 0.9f, 0.0f, 0.3f, score));
+				break;
 			}
 		}
 	}
 
-	private SpellType GetHighestScoreSpellType(float[] scores)
+	private SpellID GetHighestScoreSpellID(float[] scores)
 	{
 		float bestScore = 0;
 		int bestIndex = 0;
@@ -153,6 +143,6 @@ public class Incantor : MonoBehaviour
 				bestIndex = i;
 			}
 		}
-		return (SpellType)bestIndex;
+		return (SpellID)bestIndex;
 	}
 }

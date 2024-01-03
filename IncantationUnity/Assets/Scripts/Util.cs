@@ -254,6 +254,18 @@ public class Util : MonoBehaviour
 
 		return -1;
 	}
+
+	public static void Shuffle<T>(IList<T> list)
+	{
+		int n = list.Count;
+		for (int i = 0; i < (n - 1); ++i)
+		{
+			int r = i + Random.Range(0, n - i);
+			T t = list[r];
+			list[r] = list[i];
+			list[i] = t;
+		}
+	}
 }
 
 public static class Extensions

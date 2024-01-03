@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Book : MonoBehaviour
+public class Book : Prop
 {
 	public AudioClip openSound;
 	public AudioClip closeSound;
