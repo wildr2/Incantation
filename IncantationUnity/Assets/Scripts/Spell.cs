@@ -25,19 +25,18 @@ public enum SpellID
 [System.Serializable]
 public class Spell
 {
-	[HideInInspector]
-	public SpellID spellID;
+	public SpellID SpellID { get; private set; }
 	public string debugIncantation;
 	public AudioClip castSFX;
 
 	public Spell(SpellID id)
 	{
-		spellID = id;
+		SpellID = id;
 	}
 
 	public bool TryCastSpell(SpellTarget target, float intensity)
 	{
-		SpellEffect effect = System.Array.Find(target.SpellEffects, e => e.SpellID == spellID && e.AreConditionsMet());
+		SpellEffect effect = System.Array.Find(target.SpellEffects, e => e.SpellID == SpellID && e.AreConditionsMet());
 		if (effect == null)
 		{
 			return false;

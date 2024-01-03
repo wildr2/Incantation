@@ -109,7 +109,7 @@ public class Incantor : MonoBehaviour
 		{
 			if (spell.debugIncantation == incantation)
 			{
-				response.spellScores[(int)spell.spellID] = Random.Range(0.9f, 1.2f);
+				response.spellScores[(int)spell.SpellID] = Random.Range(0.9f, 1.2f);
 			}
 		}
 	}
@@ -174,7 +174,7 @@ public class Incantor : MonoBehaviour
 		}
 		if (castTarget)
 		{
-			Debug.Log(string.Format("Cast TryCastSpell '{0}' => {1} ({2}) at {3}", incantation, spell.spellID, intensity, castTarget));
+			Debug.Log(string.Format("Cast '{0}' => {1} ({2}) at {3}", incantation, spell.SpellID, intensity, castTarget));
 		}
 		else
 		{
@@ -188,7 +188,7 @@ public class Incantor : MonoBehaviour
 					break;
 				}
 			}
-			Debug.Log(string.Format("Cast '{0}' => {1} ({2}) no target => {3} ({4}) at {5}", incantation, spell.spellID, intensity, genericSpell.spellID, intensity, castTarget));
+			Debug.Log(string.Format("Cast '{0}' => {1} ({2}) no target => {3} ({4}) at {5}", incantation, spell.SpellID, intensity, genericSpell.SpellID, intensity, castTarget));
 		}
 	}
 

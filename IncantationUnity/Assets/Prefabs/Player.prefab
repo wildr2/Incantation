@@ -208,50 +208,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffbfe77bab6f2de48826e073874176be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  genericSpell:
+  activateSpell:
     spellID: 0
-    debugIncantation: generic
-    castSFX: {fileID: 0}
-  createFireSpell:
-    spellID: 1
-    debugIncantation: fire
-    castSFX: {fileID: 8300000, guid: 2d0edff026af26a4e859161154b074f5, type: 3}
-  extinguishFireSpell:
-    spellID: 2
-    debugIncantation: extinguish
-    castSFX: {fileID: 8300000, guid: dea0deb11a683674e9612ac328ea879f, type: 3}
-  explodeSpell:
-    spellID: 9
-    debugIncantation: explode
-    castSFX: {fileID: 0}
-  vanishSpell:
-    spellID: 10
-    debugIncantation: vanish
-    castSFX: {fileID: 8300000, guid: bd74508c93d4ae54c82f1adfc3de1e68, type: 3}
-  rainSpell:
-    spellID: 11
-    debugIncantation: rain
-    castSFX: {fileID: 0}
-  levitate:
-    spellID: 14
-    debugIncantation: levitate
-    castSFX: {fileID: 0}
-  activate:
-    spellID: 3
     debugIncantation: on
-    castSFX: {fileID: 0}
-  deactivate:
-    spellID: 4
-    debugIncantation: off
     castSFX: {fileID: 0}
   breakSpell:
     spellID: 6
     debugIncantation: break
     castSFX: {fileID: 0}
-  mend:
-    spellID: 13
+  conjureRockSpell:
+    spellID: 2
+    debugIncantation: rock
+    castSFX: {fileID: 0}
+  createFireSpell:
+    spellID: 1
+    debugIncantation: fire
+    castSFX: {fileID: 8300000, guid: 2d0edff026af26a4e859161154b074f5, type: 3}
+  deactivateSpell:
+    spellID: 4
+    debugIncantation: off
+    castSFX: {fileID: 0}
+  explodeSpell:
+    spellID: 9
+    debugIncantation: explode
+    castSFX: {fileID: 0}
+  extinguishFireSpell:
+    spellID: 2
+    debugIncantation: out
+    castSFX: {fileID: 8300000, guid: dea0deb11a683674e9612ac328ea879f, type: 3}
+  genericSpell:
+    spellID: 0
+    debugIncantation: generic
+    castSFX: {fileID: 0}
+  growSpell:
+    spellID: 8
+    debugIncantation: grow
+    castSFX: {fileID: 0}
+  levitateSpell:
+    spellID: 9
+    debugIncantation: levitate
+    castSFX: {fileID: 0}
+  lockSpell:
+    spellID: 10
+    debugIncantation: lock
+    castSFX: {fileID: 0}
+  mendSpell:
+    spellID: 11
     debugIncantation: mend
     castSFX: {fileID: 0}
+  rainSpell:
+    spellID: 11
+    debugIncantation: rain
+    castSFX: {fileID: 0}
+  refillSpell:
+    spellID: 13
+    debugIncantation: refill
+    castSFX: {fileID: 0}
+  unlockSpell:
+    spellID: 14
+    debugIncantation: unlock
+    castSFX: {fileID: 0}
+  vanishSpell:
+    spellID: 10
+    debugIncantation: vanish
+    castSFX: {fileID: 8300000, guid: bd74508c93d4ae54c82f1adfc3de1e68, type: 3}
 --- !u!1 &8601665277575618821
 GameObject:
   m_ObjectHideFlags: 0
