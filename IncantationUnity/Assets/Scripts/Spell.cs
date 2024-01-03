@@ -27,6 +27,7 @@ public class Spell
 {
 	[HideInInspector]
 	public SpellID spellID;
+	public string debugIncantation;
 	public AudioClip castSFX;
 
 	public Spell(SpellID id)

@@ -5,7 +5,7 @@ using UnityEngine;
 public class FirePropExtinguishFireSE : SpellEffect
 {
 	public override SpellID SpellID => SpellID.ExtinguishFire;
-	public new FireProp Target => Target;
+	public new FireProp Target => (FireProp)base.Target;
 
 	public override bool AreConditionsMet()
 	{

@@ -7,15 +7,16 @@ using UnityEngine;
 public class FireProp : Prop
 {
 	public Statum lit;
-	private AudioSource fireSFX;
+	private AudioSource fireSFXSource;
 
 	private void Awake()
 	{
-		fireSFX = GetComponent<AudioSource>();
+		fireSFXSource = GetComponent<AudioSource>();
+		lit = true;
 	}
 
 	private void Update()
 	{
-		fireSFX.volume = lit ? 1.0f : 0.0f;
+		fireSFXSource.volume = lit ? 1.0f : 0.0f;
 	}
 }

@@ -12,9 +12,6 @@ public class Incantor : MonoBehaviour
 	private float startFadeTime = -1;
 	ScoreIncantationResponse scoreResponse;
 
-	public AudioClip lightFireSpellSound;
-	public AudioClip extinguishFireSpellSound;
-
 	private void Awake()
 	{
 		book = FindObjectOfType<Book>();
@@ -44,7 +41,7 @@ public class Incantor : MonoBehaviour
 			incantationText.color = Util.SetAlpha(incantationText.color, 0);
 			inputText = "";
 			startFadeTime = -1;
-			CastSpell();
+			TryCastSpell();
 		}
 		else
 		{
@@ -77,19 +74,56 @@ public class Incantor : MonoBehaviour
 			if (inputText.Length > 0)
 			{
 				incantation = inputText;
-				MagicClient magicClient = FindObjectOfType<MagicClient>();
-				magicClient.ScoreIncantation(incantation, CheckSpellCallback);
+
+				if (DebugSettings.Instance.enableMagicServer)
+				{
+					MagicClient magicClient = FindObjectOfType<MagicClient>();
+					magicClient.ScoreIncantation(incantation, ScoreIncantationCallback);
+				}
+				else
+				{
+					ScoreIncantationCallback(CreateDummyResponse());
+				}
 			}
 		}
 
 		incantationText.text = inputText;
 	}
 
-	private void CheckSpellCallback(ScoreIncantationResponse response)
+	private ScoreIncantationResponse CreateDummyResponse()
 	{
+		ScoreIncantationResponse response = new ScoreIncantationResponse();
+		int count = System.Enum.GetNames(typeof(SpellID)).Length;
+		response.spellScores = new float[count];
+		for (int i = 0; i < count; ++i)
+		{
+			response.spellScores[i] = 0.0f;
+		}
+		return response;
+	}
+
+	private void DebugScoreIncantation(ScoreIncantationResponse response)
+	{
+		Player player = Player.Instance;
+		foreach (Spell spell in player.spells.Values)
+		{
+			if (spell.debugIncantation == incantation)
+			{
+				response.spellScores[(int)spell.spellID] = Random.Range(0.9f, 1.2f);
+			}
+		}
+	}
+
+	private void ScoreIncantationCallback(ScoreIncantationResponse response)
+	{
+		if (DebugSettings.Instance.enableDebugIncantations)
+		{
+			DebugScoreIncantation(response);
+		}
+
 		startFadeTime = Time.time;
 		scoreResponse = response;
-		SpellID spell = GetHighestScoreSpellID(scoreResponse.spellScores);
+		SpellID spell = GetHighestScoreSpellID(response.spellScores);
 		Debug.Log(string.Format("rwdbg {0} {1} {2}", incantation, spell, string.Join(", ", response.spellScores)));
 	}
 
@@ -101,6 +135,10 @@ public class Incantor : MonoBehaviour
 		// TODO: possibly handle score thresholding/normalization on server.
 		const float minSuccessScore = 0.9f;
 		const float maxIntensityScore = 1.2f;
+		if (score <= 0.0f)
+		{
+			intensity = 0.0f;
+		}
 		if (score < minSuccessScore)
 		{
 			spellID = SpellID.Generic;
@@ -111,12 +149,16 @@ public class Incantor : MonoBehaviour
 			intensity = Util.Map(minSuccessScore, maxIntensityScore, 0.0f, 1.0f, score);
 		}
 
-		return Player.Instance.spells[spellID];
+		return intensity > 0 ? Player.Instance.spells[spellID] : null;
 	}
 
-	private void CastSpell()
+	private void TryCastSpell()
 	{
 		Spell spell = DetermineSpell(out float intensity);
+		if (spell == null)
+		{
+			return;
+		}
 
 		// Cast the spell on a single target that can be affected by it.
 		SpellTarget[] targets = FindObjectsOfType<SpellTarget>();

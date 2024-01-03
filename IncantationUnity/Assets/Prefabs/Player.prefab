@@ -210,14 +210,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   genericSpell:
     spellID: 0
+    debugIncantation: generic
     castSFX: {fileID: 0}
   createFireSpell:
     spellID: 1
+    debugIncantation: fire
     castSFX: {fileID: 8300000, guid: 2d0edff026af26a4e859161154b074f5, type: 3}
   extinguishFireSpell:
     spellID: 2
+    debugIncantation: extinguish
     castSFX: {fileID: 8300000, guid: dea0deb11a683674e9612ac328ea879f, type: 3}
-  spells: []
 --- !u!1 &8601665277575618821
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,5 +266,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   incantationText: {fileID: 544170890710204021}
-  lightFireSpellSound: {fileID: 8300000, guid: 2d0edff026af26a4e859161154b074f5, type: 3}
-  extinguishFireSpellSound: {fileID: 8300000, guid: dea0deb11a683674e9612ac328ea879f, type: 3}

@@ -5,7 +5,7 @@ using UnityEngine;
 public class FireCardExtinguishFireSE : CardSE
 {
 	public override SpellID SpellID => SpellID.ExtinguishFire;
-	public new FireCard Target => Target;
+	public new FireCard Target => (FireCard)base.Target;
 
 	public override bool AreConditionsMet()
 	{

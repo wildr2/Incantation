@@ -31,6 +31,11 @@ public class FireCard : Card
 		base.Awake();
 
 		lit = goalSpellID == SpellID.ExtinguishFire;
+		woodBroken = false;
+		levitating = false;
+		vanished = false;
+		raining = false;
+		sprouted = false;
 	}
 
 	protected override void Update()

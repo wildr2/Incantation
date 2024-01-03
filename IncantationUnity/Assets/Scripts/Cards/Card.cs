@@ -52,7 +52,7 @@ public class Card : SpellTarget
 
 public abstract class CardSE : SpellEffect
 {
-	public new Card Target => Target;
+	public new Card Target => (Card)base.Target;
 
 	public override bool AreConditionsMet()
 	{
