@@ -408,10 +408,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cc20d6bc4050d343b270f1ae3a960f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalSpellID: 0
+  goalSpellID: 7
+  lastSpellID: 0
   genericSE:
     sfx: {fileID: 0}
-  lastSpellID: 0
 --- !u!114 &1794026534807902811
 MonoBehaviour:
   m_ObjectHideFlags: 0

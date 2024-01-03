@@ -5,9 +5,6 @@ using PropType = FireProp;
 
 public class FireProp : Prop
 {
-	public CreateFireSE createFireSE;
-	public ExtinguishFireSE extinguishFireSE;
-
 	public Statum lit;
 	private AudioSource fireSFXSource;
 
@@ -40,6 +37,7 @@ public class FireProp : Prop
 			Target.lit = true;
 		}
 	}
+	public CreateFireSE createFireSE;
 
 	[System.Serializable]
 	public class ExtinguishFireSE : SpellEffect
@@ -58,4 +56,5 @@ public class FireProp : Prop
 			Target.lit = false;
 		}
 	}
+	public ExtinguishFireSE extinguishFireSE;
 }

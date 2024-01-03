@@ -12,6 +12,10 @@ public class Player : Singleton<Player>
 	public Spell vanishSpell = new Spell(SpellID.Vanish);
 	public Spell rainSpell = new Spell(SpellID.Rain);
 	public Spell levitate = new Spell(SpellID.Levitate);
+	public Spell activate = new Spell(SpellID.Activate);
+	public Spell deactivate = new Spell(SpellID.Deactivate);
+	public Spell breakSpell = new Spell(SpellID.Break);
+	public Spell mend = new Spell(SpellID.Mend);
 	public Dictionary<SpellID, Spell> spells;
 
 	private Book book;

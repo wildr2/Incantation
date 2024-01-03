@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8833591034212286749, guid: c5a3d138a50c0da4a84df7deeeb1a477, type: 3}
       propertyPath: goalSpellID
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

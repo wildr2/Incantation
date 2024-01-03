@@ -11,7 +11,6 @@ public class Card : SpellTarget
 	public override int Priority => 1;
 
 	public SpellID goalSpellID;
-	public GenericSE genericSE;
 	[HideInInspector]
 	public SpellID lastSpellID;
 	private Vector3 initialPos;
@@ -114,4 +113,5 @@ public class Card : SpellTarget
 			Target.Shake(Util.Map(0, 1, 0.2f, 0.3f, intensity));
 		}
 	}
+	public GenericSE genericSE;
 }

@@ -4,22 +4,22 @@ using UnityEngine;
 
 public enum SpellID
 {
-	Generic,
-	CreateFire,
-	ExtinguishFire,
 	Activate,
-	Deactivate,
-	Refill,
 	Break,
-	Unlock,
-	Lock,
-	Explode,
-	Vanish,
-	Rain,
-	Grow,
-	Mend,
-	Levitate,
 	ConjureRock,
+	CreateFire,
+	Deactivate,
+	Explode,
+	ExtinguishFire,
+	Generic,
+	Grow,
+	Levitate,
+	Lock,
+	Mend,
+	Rain,
+	Refill,
+	Unlock,
+	Vanish,
 }
 
 [System.Serializable]

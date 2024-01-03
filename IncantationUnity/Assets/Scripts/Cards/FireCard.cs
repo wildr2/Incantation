@@ -5,13 +5,6 @@ using CardType = FireCard;
 
 public class FireCard : Card
 {
-	public CreateFireSE createFireSE;
-	public ExplodeSE explodeSE;
-	public ExtinguishFireSE extinguishFireSE;
-	public LevitateSE levitateSE;
-	public RainSE rainSE;
-	public VanishSE vanishSE;
-
 	public Statum lit;
 	public Statum woodBroken;
 	public Statum levitating;
@@ -88,6 +81,7 @@ public class FireCard : Card
 			Target.flamesGlowDuration = Mathf.Lerp(3.0f, 9.0f, intensity);
 		}
 	}
+	public CreateFireSE createFireSE;
 
 	[System.Serializable]
 	public class ExplodeSE : CardSE
@@ -108,6 +102,7 @@ public class FireCard : Card
 			Target.flamesGlowDuration = Mathf.Lerp(3.0f, 9.0f, intensity);
 		}
 	}
+	public ExplodeSE explodeSE;
 	
 	[System.Serializable]
 	public class ExtinguishFireSE : CardSE
@@ -126,6 +121,7 @@ public class FireCard : Card
 			Target.lit = false;
 		}
 	}
+	public ExtinguishFireSE extinguishFireSE;
 	
 	[System.Serializable]
 	public class LevitateSE : CardSE
@@ -146,6 +142,7 @@ public class FireCard : Card
 			CardData.contentParent.transform.localPosition = CardData.levitatePos;
 		}
 	}
+	public LevitateSE levitateSE;
 
 	[System.Serializable]
 	public class RainSE : CardSE
@@ -164,6 +161,7 @@ public class FireCard : Card
 			Target.raining = true;
 		}
 	}
+	public RainSE rainSE;
 
 	[System.Serializable]
 	public class VanishSE : CardSE
@@ -184,4 +182,5 @@ public class FireCard : Card
 			CardData.contentParent.SetActive(false);
 		}
 	}
+	public VanishSE vanishSE;
 }

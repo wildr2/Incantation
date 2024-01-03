@@ -232,6 +232,26 @@ MonoBehaviour:
     spellID: 11
     debugIncantation: rain
     castSFX: {fileID: 0}
+  levitate:
+    spellID: 14
+    debugIncantation: levitate
+    castSFX: {fileID: 0}
+  activate:
+    spellID: 3
+    debugIncantation: on
+    castSFX: {fileID: 0}
+  deactivate:
+    spellID: 4
+    debugIncantation: off
+    castSFX: {fileID: 0}
+  breakSpell:
+    spellID: 6
+    debugIncantation: break
+    castSFX: {fileID: 0}
+  mend:
+    spellID: 13
+    debugIncantation: mend
+    castSFX: {fileID: 0}
 --- !u!1 &8601665277575618821
 GameObject:
   m_ObjectHideFlags: 0
