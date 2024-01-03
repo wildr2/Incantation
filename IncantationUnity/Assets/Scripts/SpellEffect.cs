@@ -16,7 +16,15 @@ public abstract class SpellEffect : MonoBehaviour
 
 	public virtual void Apply(float intensity)
 	{
-		SFXManager.Play(sfx, MixerGroup.Magic);
+		Prop prop = Target as Prop;
+		if (prop)
+		{
+			SFXManager.Play(sfx, MixerGroup.Magic, prop.transform.position);
+		}
+		else
+		{
+			SFXManager.Play(sfx, MixerGroup.Magic);
+		}
 	}
 
 	protected virtual void Awake()

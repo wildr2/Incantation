@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Reflection;
 
 [RequireComponent(typeof(CardSE))]
 public class Card : SpellTarget
@@ -46,7 +47,29 @@ public class Card : SpellTarget
 
 	protected virtual void Update()
 	{
-		// display card state
+		UpdateDebugText();
+	}
+
+	private void UpdateDebugText()
+	{
+		bool enable = DebugSettings.Instance.enableCardDebugText;
+		debugText.enabled = enable;
+		if (!enable)
+		{
+			return;
+		}
+
+		string text = "";
+		System.Type cardType = GetType();
+		foreach (FieldInfo field in cardType.GetFields(BindingFlags.Public | BindingFlags.Instance))
+		{
+			if (field.FieldType == typeof(Statum))
+			{
+				Statum statum = (Statum)field.GetValue(this);
+				text += string.Format("{2}{0}: {1}", field.Name, statum.value, text.Length > 0 ? "\n" : "");
+			}
+		}
+		debugText.text = text;
 	}
 }
 

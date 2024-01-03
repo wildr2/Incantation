@@ -97,7 +97,7 @@ public class Incantor : MonoBehaviour
 		response.spellScores = new float[count];
 		for (int i = 0; i < count; ++i)
 		{
-			response.spellScores[i] = 0.0f;
+			response.spellScores[i] = Random.Range(0.0f, 0.9f);
 		}
 		return response;
 	}
@@ -123,8 +123,6 @@ public class Incantor : MonoBehaviour
 
 		startFadeTime = Time.time;
 		scoreResponse = response;
-		SpellID spell = GetHighestScoreSpellID(response.spellScores);
-		Debug.Log(string.Format("rwdbg {0} {1} {2}", incantation, spell, string.Join(", ", response.spellScores)));
 	}
 
 	private Spell DetermineSpell(out float intensity)
@@ -163,13 +161,34 @@ public class Incantor : MonoBehaviour
 		// Cast the spell on a single target that can be affected by it.
 		SpellTarget[] targets = FindObjectsOfType<SpellTarget>();
 		Util.Shuffle(targets);
+		System.Array.Sort(targets, new SpellTarget.ComparerPriority());
 
+		SpellTarget castTarget = null;
 		foreach (SpellTarget target in targets)
 		{
 			if (spell.TryCastSpell(target, intensity))
 			{
+				castTarget = target;
 				break;
 			}
+		}
+		if (castTarget)
+		{
+			Debug.Log(string.Format("Cast TryCastSpell '{0}' => {1} ({2}) at {3}", incantation, spell.spellID, intensity, castTarget));
+		}
+		else
+		{
+			// No target for spell, instead cast the generic spell at the same intensity.
+			Spell genericSpell = Player.Instance.spells[SpellID.Generic];
+			foreach (SpellTarget target in targets)
+			{
+				if (genericSpell.TryCastSpell(target, intensity))
+				{
+					castTarget = target;
+					break;
+				}
+			}
+			Debug.Log(string.Format("Cast '{0}' => {1} ({2}) no target => {3} ({4}) at {5}", incantation, spell.spellID, intensity, genericSpell.spellID, intensity, castTarget));
 		}
 	}
 

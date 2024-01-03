@@ -45,7 +45,16 @@ public class Spell
 
 		// Magic!
 		effect.Apply(intensity);
-		SFXManager.Play(castSFX, MixerGroup.Magic);
+
+		Prop prop = target as Prop;
+		if (prop)
+		{
+			SFXManager.Play(castSFX, MixerGroup.Magic, prop.transform.position);
+		}
+		else
+		{
+			SFXManager.Play(castSFX, MixerGroup.Magic);
+		}
 
 		return true;
 	}
