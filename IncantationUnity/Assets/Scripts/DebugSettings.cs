@@ -8,4 +8,5 @@ public class DebugSettings : Singleton<DebugSettings>
 	public bool enableMagicServer;
 	public bool enableCardDebugText;
 	public bool enableSpellDebugPrints;
+	public bool enableCardDealing;
 }

@@ -266,6 +266,12 @@ public class Util : MonoBehaviour
 			list[i] = t;
 		}
 	}
+
+	public static Vector2 RandomDir2D()
+	{
+		float angle = Random.Range(0.0f, Mathf.PI * 2.0f);
+		return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+	}
 }
 
 public static class Extensions

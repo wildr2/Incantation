@@ -46,3 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableDebugIncantations: 1
   enableMagicServer: 0
+  enableCardDebugText: 1
+  enableSpellDebugPrints: 1
+  enableCardDealing: 1
