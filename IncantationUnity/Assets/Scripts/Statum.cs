@@ -15,14 +15,7 @@ public class Statum
 		time = Time.time;
 	}
 
-	public static implicit operator Statum(bool value)
-	{
-		return new Statum(value);
-	}
-
-	public static implicit operator bool(Statum value)
-	{
-		return value.value;
-	}
+	public static implicit operator Statum(bool value) => new Statum(value);
+	public static implicit operator bool(Statum value) => value.value;
 }
 

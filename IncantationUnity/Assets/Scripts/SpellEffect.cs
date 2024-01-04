@@ -32,4 +32,8 @@ public abstract class SpellEffect
 			SFXManager.Play(sfx, MixerGroup.Magic);
 		}
 	}
+
+	public virtual void Update()
+	{
+	}
 }

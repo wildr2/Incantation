@@ -75,10 +75,10 @@ public class GlassCard : Card
 	public ExplodeSE explodeSE;
 	
 	[System.Serializable]
-	public class LevitateSE : CardSE
+	public new class LevitateSE : Card.LevitateSE
 	{
-		public override SpellID SpellID => SpellID.Levitate;
 		public new CardType Target => (CardType)base.Target;
+		protected override Statum Levitating { get => Target.levitating; set => Target.levitating = value; }
 
 		public override bool AreConditionsMet()
 		{
@@ -88,9 +88,15 @@ public class GlassCard : Card
 		public override void Apply(float intensity)
 		{
 			base.Apply(intensity);
-			Target.levitating = true;
+		}
 
-			CardData.contentParent.transform.localPosition = CardData.levitatePos;
+		protected override void EndLevitation()
+		{
+			base.EndLevitation();
+			// Break upon falling back down.
+			Target.broken = true;
+			Target.filledWithPlant = false;
+			Target.filledWithWater = false;
 		}
 	}
 	public LevitateSE levitateSE;

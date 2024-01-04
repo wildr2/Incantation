@@ -9,7 +9,6 @@ using CardType = Card;
 public class Card : SpellTarget
 {
 	public override int Priority => 1;
-
 	public SpellID goalSpellID;
 	[HideInInspector]
 	public SpellID lastSpellID;
@@ -60,8 +59,9 @@ public class Card : SpellTarget
 		commonCardData = GetComponent<CommonCardData>();
 	}
 
-	protected virtual void Update()
+	protected override void Update()
 	{
+		base.Update();
 		UpdateDebugText();
 	}
 
@@ -137,4 +137,51 @@ public class Card : SpellTarget
 		}
 	}
 	public GenericSE genericSE;
+
+	[System.Serializable]
+	public abstract class LevitateSE : CardSE
+	{
+		public override SpellID SpellID => SpellID.Levitate;
+		protected abstract Statum Levitating { get; set; }
+
+		private const float levitateDuration = 4.0f;
+		private bool active;
+
+		public override bool AreConditionsMet()
+		{
+			return !Levitating;
+		}
+
+		public override void Apply(float intensity)
+		{
+			base.Apply(intensity);
+			Levitating = true;
+			active = true;
+			SetContentPosition(true);
+		}
+
+		public override void Update()
+		{
+			base.Update();
+			if (active)
+			{
+				if (!Levitating || Time.time - Levitating.time > levitateDuration)
+				{
+					EndLevitation();
+				}
+			}
+		}
+
+		protected virtual void EndLevitation()
+		{
+			Levitating = false;
+			active = false;
+			SetContentPosition(false);
+		}
+
+		protected virtual void SetContentPosition(bool levitated)
+		{
+			CardData.contentParent.transform.localPosition = levitated ? CardData.levitatePos : Vector2.zero;
+		}
+	}
 }

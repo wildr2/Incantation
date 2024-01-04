@@ -15,8 +15,9 @@ public class FireProp : Prop
 		lit = true;
 	}
 
-	private void Update()
+	protected override void Update()
 	{
+		base.Update();
 		fireSFXSource.volume = lit ? 1.0f : 0.0f;
 	}
 

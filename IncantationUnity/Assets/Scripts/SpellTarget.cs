@@ -25,6 +25,14 @@ public class SpellTarget : MonoBehaviour
 		SpellEffects = effects.ToArray();
 	}
 
+	protected virtual void Update()
+	{
+		foreach (SpellEffect effect in SpellEffects)
+		{
+			effect.Update();
+		}
+	}
+
 	// Descending priority.
 	public class PriorityComparer : IComparer<SpellTarget>
 	{

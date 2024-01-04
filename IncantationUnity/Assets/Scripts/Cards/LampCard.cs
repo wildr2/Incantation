@@ -107,10 +107,10 @@ public class LampCard : Card
 	public ExtinguishFireSE extinguishFireSE;
 	
 	[System.Serializable]
-	public class LevitateSE : CardSE
+	public new class LevitateSE : Card.LevitateSE
 	{
-		public override SpellID SpellID => SpellID.Levitate;
 		public new CardType Target => (CardType)base.Target;
+		protected override Statum Levitating { get => Target.levitating; set => Target.levitating = value; }
 
 		public override bool AreConditionsMet()
 		{
@@ -120,9 +120,6 @@ public class LampCard : Card
 		public override void Apply(float intensity)
 		{
 			base.Apply(intensity);
-			Target.levitating = true;
-
-			CardData.contentParent.transform.localPosition = CardData.levitatePos;
 		}
 	}
 	public LevitateSE levitateSE;
