@@ -46,12 +46,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73f593099e429940b6d4de41f8d348a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardRemovalDelay: 2
+  cardRemovalDelay: 1.5
+  cardSpawnDelay: 0.6
+  preRoundDuration: 2
   deskHighlights: {fileID: 0}
   deck: {fileID: 0}
   cardDealPos: {fileID: 5101672855853455402}
   maxCardDealPosOffset: 1
   maxCardDealRotationDeg: 3
+  dealCardSFX: {fileID: 8300000, guid: 7029a0d62b2874642a72553d4ec02164, type: 3}
+  shuffleDeckSFX: {fileID: 8300000, guid: f483444cceca8cc41943186d262661ef, type: 3}
 --- !u!114 &8851642431030399940
 MonoBehaviour:
   m_ObjectHideFlags: 0

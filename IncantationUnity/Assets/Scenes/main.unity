@@ -251,12 +251,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 483624126698273152, guid: 6473c338521dc04428edf136a6810fde, type: 3}
+      propertyPath: nextCardDelay
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 483624126698273152, guid: 6473c338521dc04428edf136a6810fde, type: 3}
+      propertyPath: cardSpawnDelay
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 483624126698273152, guid: 6473c338521dc04428edf136a6810fde, type: 3}
       propertyPath: deskHighlights
       value: 
       objectReference: {fileID: 124476600}
     - target: {fileID: 483624126698273152, guid: 6473c338521dc04428edf136a6810fde, type: 3}
-      propertyPath: cardRemovalDelay
-      value: 1.5
+      propertyPath: spawnCardDelay
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 483624126698273152, guid: 6473c338521dc04428edf136a6810fde, type: 3}
+      propertyPath: removeCardDelay
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 1967226156817053802, guid: 6473c338521dc04428edf136a6810fde, type: 3}
       propertyPath: m_Name
@@ -700,6 +712,14 @@ PrefabInstance:
     - target: {fileID: 7260646581786950255, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
       propertyPath: m_Name
       value: DebugSettings
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
+      propertyPath: enableCardDebugText
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
+      propertyPath: enableSpellDebugPrints
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

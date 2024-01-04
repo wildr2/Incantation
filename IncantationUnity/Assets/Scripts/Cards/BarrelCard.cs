@@ -25,7 +25,7 @@ public class BarrelCard: Card
 	{
 		return
 			goalSpellID == SpellID.Explode ? vanished :
-			goalSpellID == SpellID.Levitate ? vanished :
+			goalSpellID == SpellID.Levitate ? vanished || exploded :
 			false;
 	}
 

@@ -17,7 +17,7 @@ public class DoorCard : Card
 	{
 		return
 			goalSpellID == SpellID.Unlock ? !locked :
-			goalSpellID == SpellID.Lock ? !locked :
+			goalSpellID == SpellID.Lock ? locked :
 			false;
 	}
 
