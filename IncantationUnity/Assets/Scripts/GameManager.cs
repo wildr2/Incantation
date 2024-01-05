@@ -9,7 +9,7 @@ public enum GameState
 	Round,
 }
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
 	public float nextCardDelay;
 	public float removeCardDelay;
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 	private GameState state = GameState.Init;
 	private float enterStateTime;
 	private bool dealingNextCard;
-	private Card currentCard;
+	public Card CurrentCard { get; private set; }
 	private float currentCardDoneTime = -1;
 
 	private float StateTime => Time.time - enterStateTime;
@@ -82,11 +82,11 @@ public class GameManager : MonoBehaviour
 
 	private void UpdateRound()
 	{
-		if (currentCard && !dealingNextCard)
+		if (CurrentCard && !dealingNextCard)
 		{
 			if (currentCardDoneTime < 0)
 			{
-				if (currentCard.IsComplete() || currentCard.IsSkippable())
+				if (CurrentCard.IsComplete() || CurrentCard.IsSkippable())
 				{
 					currentCardDoneTime = Time.time;
 				}
@@ -108,9 +108,9 @@ public class GameManager : MonoBehaviour
 	private void NextRound()
 	{
 		Debug.Log("Next round");
-		if (currentCard)
+		if (CurrentCard)
 		{
-			Destroy(currentCard.gameObject);
+			Destroy(CurrentCard.gameObject);
 
 			deck.AddRandomCard();
 			deck.AddRandomCard();
@@ -130,16 +130,16 @@ public class GameManager : MonoBehaviour
 
 		StartCoroutine(CoroutineUtil.DoAfterDelay(() =>
 		{
-			if (currentCard)
+			if (CurrentCard)
 			{
-				Destroy(currentCard.gameObject);
+				Destroy(CurrentCard.gameObject);
 			}
 		}, removeCardDelay));
 		StartCoroutine(CoroutineUtil.DoAfterDelay(() =>
 		{
 			Card cardPrefab = deck.Draw();
-			currentCard = Instantiate(cardPrefab, transform);
-			currentCard.transform.position = cardDealPos.position + (Vector3)Util.RandomDir2D() * maxCardDealPosOffset;
+			CurrentCard = Instantiate(cardPrefab, transform);
+			CurrentCard.transform.position = cardDealPos.position + (Vector3)Util.RandomDir2D() * maxCardDealPosOffset;
 			transform.rotation = Quaternion.Euler(0, 0, Random.Range(-maxCardDealRotationDeg, maxCardDealRotationDeg));
 			currentCardDoneTime = -1;
 			dealingNextCard = false;

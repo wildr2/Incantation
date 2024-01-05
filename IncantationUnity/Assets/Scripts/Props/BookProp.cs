@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Book : Prop
+public class BookProp : Prop
 {
+	public Text bookText;
 	public AudioClip openSound;
 	public AudioClip closeSound;
 
@@ -42,5 +44,28 @@ public class Book : Prop
 		}
 		gameObject.SetActive(false);
 		SFXManager.Play(closeSound, MixerGroup.Book, transform.position);
+	}
+
+	protected override void Update()
+	{
+		base.Update();
+		UpdateText();
+	}
+
+	private void UpdateText()
+	{
+		GameManager gm = GameManager.Instance;
+		Card card = gm.CurrentCard;
+		if (!card)
+		{
+			return;
+		}
+		Spell spell = Player.Instance.spells[card.goalSpellID];
+
+		bookText.text = string.Format("{0}\n\n", spell.SpellID.ToString());
+		foreach (IncantationRule rule in spell.incantationDef.rules)
+		{
+			bookText.text += string.Format("{0}\n", rule.GetDescription());
+		}
 	}
 }

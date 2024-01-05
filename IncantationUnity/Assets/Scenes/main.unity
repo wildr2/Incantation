@@ -128,6 +128,17 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 1116924076642940875, guid: 06e031373a5acff4da8a398534e9f3ef, type: 3}
   m_PrefabInstance: {fileID: 5268444139842489898}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &803435544 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6937084487590615631, guid: 4ab60092f00d87844836ca4411cb18ac, type: 3}
+  m_PrefabInstance: {fileID: 1237968742}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1237968742
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -136,9 +147,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 506153870411773171, guid: 4ab60092f00d87844836ca4411cb18ac, type: 3}
+      propertyPath: bookText
+      value: 
+      objectReference: {fileID: 803435544}
     - target: {fileID: 2076209005144140109, guid: 4ab60092f00d87844836ca4411cb18ac, type: 3}
       propertyPath: m_Name
-      value: Book
+      value: BookProp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6937084487590615631, guid: 4ab60092f00d87844836ca4411cb18ac, type: 3}
+      propertyPath: m_Text
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7587507212174719786, guid: 4ab60092f00d87844836ca4411cb18ac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -713,14 +732,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: DebugSettings
       objectReference: {fileID: 0}
-    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
-      propertyPath: enableCardDebugText
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
-      propertyPath: enableSpellDebugPrints
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -791,10 +802,10 @@ SceneRoots:
   - {fileID: 6742033288698324751}
   - {fileID: 5268444139842489898}
   - {fileID: 1237968742}
+  - {fileID: 4427018509232672232}
   - {fileID: 2087104825}
-  - {fileID: 831564790189360152}
   - {fileID: 40142722235043380}
   - {fileID: 6318552138228748576}
   - {fileID: 7770578384208250290}
-  - {fileID: 4427018509232672232}
   - {fileID: 2063053200512020104}
+  - {fileID: 831564790189360152}

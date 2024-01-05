@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Incantor : MonoBehaviour
 {
 	public Text incantationText;
-	private Book book;
+	private BookProp book;
 	private string inputText;
 	private string incantation;
 	private float startFadeTime = -1;
@@ -14,7 +14,7 @@ public class Incantor : MonoBehaviour
 
 	private void Awake()
 	{
-		book = FindObjectOfType<Book>();
+		book = FindObjectOfType<BookProp>();
 	}
 
 	private void Update()
@@ -80,6 +80,10 @@ public class Incantor : MonoBehaviour
 					MagicClient magicClient = FindObjectOfType<MagicClient>();
 					magicClient.ScoreIncantation(incantation, ScoreIncantationCallback);
 				}
+				else if (DebugSettings.Instance.enableIncantationRules)
+				{
+					ScoreIncantationCallback(CreateIncantationRulesResponse());
+				}
 				else
 				{
 					ScoreIncantationCallback(CreateDummyResponse());
@@ -90,10 +94,35 @@ public class Incantor : MonoBehaviour
 		incantationText.text = inputText;
 	}
 
+	private ScoreIncantationResponse CreateIncantationRulesResponse()
+	{
+		SpellTarget[] targets = FindObjectsOfType<SpellTarget>();
+
+		ScoreIncantationResponse response = new ScoreIncantationResponse();
+		int count = Util.GetEnumCount<SpellID>();
+		response.spellScores = new float[count];
+
+		for (int i = 0; i < count; ++i)
+		{
+			if (Player.Instance.spells.TryGetValue((SpellID)i, out Spell spell))
+			{
+				response.spellScores[i] =
+					(spell.CheckIncantation(incantation) ? Random.Range(0.9f, 1.2f) : 0.0f) *
+					(spell.IsTargettable(targets) ? 1 : 0);
+			}
+			else
+			{
+				response.spellScores[i] = 0.0f;
+			}
+		}
+
+		return response;
+	}
+
 	private ScoreIncantationResponse CreateDummyResponse()
 	{
 		ScoreIncantationResponse response = new ScoreIncantationResponse();
-		int count = System.Enum.GetNames(typeof(SpellID)).Length;
+		int count = Util.GetEnumCount<SpellID>();
 		response.spellScores = new float[count];
 		for (int i = 0; i < count; ++i)
 		{
@@ -135,7 +164,6 @@ public class Incantor : MonoBehaviour
 		const float maxIntensityScore = 1.2f;
 		if (score <= 0.0f)
 		{
-			intensity = 0.0f;
 		}
 		if (score < minSuccessScore)
 		{

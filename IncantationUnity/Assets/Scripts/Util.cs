@@ -272,6 +272,16 @@ public class Util : MonoBehaviour
 		float angle = Random.Range(0.0f, Mathf.PI * 2.0f);
 		return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 	}
+
+	public static char RandomLetter()
+	{
+		return (char)Random.Range('a', 'z' + 1);
+	}
+
+	public static int GetEnumCount<T>() where T : System.Enum
+	{
+		return System.Enum.GetValues(typeof(T)).Length;
+	}
 }
 
 public static class Extensions

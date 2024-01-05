@@ -22,13 +22,13 @@ public class Player : Singleton<Player>
 	public Spell vanishSpell = new Spell(SpellID.Vanish);
 
 	public Dictionary<SpellID, Spell> spells;
-	private Book book;
+	private BookProp book;
 
 	private void Awake()
 	{
-		book = FindObjectOfType<Book>();
+		book = FindObjectOfType<BookProp>();
 
-		// Create dictionary of spells using reflection.
+		// Init spells, and create dictionary of spells using reflection.
 		spells = new Dictionary<SpellID, Spell>();
 		System.Type playerType = typeof(Player);
 		foreach (FieldInfo field in playerType.GetFields(BindingFlags.Public | BindingFlags.Instance))
@@ -36,6 +36,7 @@ public class Player : Singleton<Player>
 			if (field.FieldType == typeof(Spell))
 			{
 				Spell spell = (Spell)field.GetValue(this);
+				spell.Init();
 				spells[spell.SpellID] = spell;
 			}
 		}
