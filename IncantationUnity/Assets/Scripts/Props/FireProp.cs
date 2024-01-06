@@ -24,7 +24,7 @@ public class FireProp : Prop
 	[System.Serializable]
 	public class CreateFireSE : SpellEffect
 	{
-		public override SpellID SpellID => SpellID.CreateFire;
+		public override SpellID SpellID => SpellID.Ignite;
 		public new PropType Target => (PropType)base.Target;
 
 		public override bool AreConditionsMet()
@@ -43,7 +43,7 @@ public class FireProp : Prop
 	[System.Serializable]
 	public class ExtinguishFireSE : SpellEffect
 	{
-		public override SpellID SpellID => SpellID.ExtinguishFire;
+		public override SpellID SpellID => SpellID.Extinguish;
 		public new PropType Target => (PropType)base.Target;
 
 		public override bool AreConditionsMet()

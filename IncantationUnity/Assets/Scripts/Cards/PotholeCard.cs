@@ -69,7 +69,7 @@ public class PotholeCard : Card
 	[System.Serializable]
 	public class RefillSE : CardSE
 	{
-		public override SpellID SpellID => SpellID.Refill;
+		public override SpellID SpellID => SpellID.Fill;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()

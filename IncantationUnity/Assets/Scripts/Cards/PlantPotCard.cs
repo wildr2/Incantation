@@ -57,7 +57,7 @@ public class PlantpotCard : Card
 	[System.Serializable]
 	public class CreateFireSE : CardSE
 	{
-		public override SpellID SpellID => SpellID.CreateFire;
+		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()
@@ -209,7 +209,7 @@ public class PlantpotCard : Card
 	[System.Serializable]
 	public class RefillSE : CardSE
 	{
-		public override SpellID SpellID => SpellID.Refill;
+		public override SpellID SpellID => SpellID.Fill;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()

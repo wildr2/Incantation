@@ -18,6 +18,7 @@ public class KettleCard : Card
 	{
 		return
 			goalSpellID == SpellID.Activate ? on && !vanished :
+			goalSpellID == SpellID.Deactivate ? !on || vanished || broken :
 			false;
 	}
 
@@ -25,6 +26,7 @@ public class KettleCard : Card
 	{
 		return
 			goalSpellID == SpellID.Activate ? vanished || broken :
+			goalSpellID == SpellID.Deactivate ? false :
 			false;
 	}
 
@@ -32,7 +34,7 @@ public class KettleCard : Card
 	{
 		base.Awake();
 
-		on = false;
+		on = goalSpellID == SpellID.Deactivate;
 		broken = false;
 		levitating = false;
 		vanished = false;
@@ -49,7 +51,7 @@ public class KettleCard : Card
 	[System.Serializable]
 	public class CreateFireSE : CardSE
 	{
-		public override SpellID SpellID => SpellID.CreateFire;
+		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()
@@ -68,7 +70,7 @@ public class KettleCard : Card
 	[System.Serializable]
 	public class ExtinguishFireSE : CardSE
 	{
-		public override SpellID SpellID => SpellID.ExtinguishFire;
+		public override SpellID SpellID => SpellID.Extinguish;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()

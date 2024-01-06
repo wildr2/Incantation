@@ -17,14 +17,14 @@ public class BottleCard : Card
 	public override bool IsComplete()
 	{
 		return
-			goalSpellID == SpellID.Refill ? filledWithWine && !vanished :
+			goalSpellID == SpellID.Fill ? filledWithWine && !vanished :
 			false;
 	}
 
 	public override bool IsSkippable()
 	{
 		return
-			goalSpellID == SpellID.Refill ? vanished || broken :
+			goalSpellID == SpellID.Fill ? vanished || broken :
 			false;
 	}
 
@@ -158,7 +158,7 @@ public class BottleCard : Card
 	[System.Serializable]
 	public class RefillSE : CardSE
 	{
-		public override SpellID SpellID => SpellID.Refill;
+		public override SpellID SpellID => SpellID.Fill;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()

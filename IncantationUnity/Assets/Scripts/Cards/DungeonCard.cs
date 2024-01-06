@@ -64,7 +64,7 @@ public class DungeonCard : Card
 	[System.Serializable]
 	public class CreateFireSE : CardSE
 	{
-		public override SpellID SpellID => SpellID.CreateFire;
+		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()
@@ -83,7 +83,7 @@ public class DungeonCard : Card
 	[System.Serializable]
 	public class ExtinguishFireSE : CardSE
 	{
-		public override SpellID SpellID => SpellID.ExtinguishFire;
+		public override SpellID SpellID => SpellID.Extinguish;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()

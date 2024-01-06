@@ -22,16 +22,16 @@ public class FireCard : Card
 	public override bool IsComplete()
 	{
 		return
-			goalSpellID == SpellID.CreateFire ? lit && !vanished :
-			goalSpellID == SpellID.ExtinguishFire ? !lit || vanished : 
+			goalSpellID == SpellID.Ignite ? lit && !vanished :
+			goalSpellID == SpellID.Extinguish ? !lit || vanished : 
 			false;
 	}
 
 	public override bool IsSkippable()
 	{
 		return
-			goalSpellID == SpellID.CreateFire ? vanished :
-			goalSpellID == SpellID.ExtinguishFire ? false :
+			goalSpellID == SpellID.Ignite ? vanished :
+			goalSpellID == SpellID.Extinguish ? false :
 			false;
 	}
 
@@ -44,7 +44,7 @@ public class FireCard : Card
 	{
 		base.Awake();
 
-		lit = goalSpellID == SpellID.ExtinguishFire;
+		lit = goalSpellID == SpellID.Extinguish;
 		levitating = false;
 		vanished = false;
 		raining = false;
@@ -79,7 +79,7 @@ public class FireCard : Card
 	[System.Serializable]
 	public class CreateFireSE : CardSE
 	{
-		public override SpellID SpellID => SpellID.CreateFire;
+		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()
@@ -121,7 +121,7 @@ public class FireCard : Card
 	[System.Serializable]
 	public class ExtinguishFireSE : CardSE
 	{
-		public override SpellID SpellID => SpellID.ExtinguishFire;
+		public override SpellID SpellID => SpellID.Extinguish;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()
