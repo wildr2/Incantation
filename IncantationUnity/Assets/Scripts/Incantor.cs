@@ -97,6 +97,7 @@ public class Incantor : MonoBehaviour
 	private ScoreIncantationResponse CreateIncantationRulesResponse()
 	{
 		SpellTarget[] targets = FindObjectsOfType<SpellTarget>();
+		SpellID goalSpellID = GameManager.Instance.CurrentCard ? GameManager.Instance.CurrentCard.goalSpellID : SpellID.Generic;
 
 		ScoreIncantationResponse response = new ScoreIncantationResponse();
 		int count = Util.GetEnumCount<SpellID>();
@@ -106,9 +107,17 @@ public class Incantor : MonoBehaviour
 		{
 			if (Player.Instance.spells.TryGetValue((SpellID)i, out Spell spell))
 			{
-				response.spellScores[i] =
-					(spell.CheckIncantation(incantation) ? Random.Range(0.9f, 1.2f) : 0.0f) *
-					(spell.IsTargettable(targets) ? 1 : 0);
+				if (spell.SpellID == SpellID.Generic)
+				{
+					response.spellScores[i] = 0.1f;
+				}
+				else
+				{
+					response.spellScores[i] =
+						(spell.CheckIncantation(incantation) ? Random.Range(0.9f, 1.2f) : 0.0f) *
+						(spell.SpellID != goalSpellID ? 2.0f : 1.0f) *
+						(spell.IsTargettable(targets) ? 1 : 0);
+				}
 			}
 			else
 			{

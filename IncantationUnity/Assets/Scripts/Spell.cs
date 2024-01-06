@@ -37,12 +37,12 @@ public class Spell
 
 	public void Init()
 	{
-		incantationDef = new IncantationDef();
+		incantationDef = SpellID == SpellID.Generic ? null : new IncantationDef();
 	}
 
 	public bool CheckIncantation(string incantation)
 	{
-		return incantationDef.Passes(incantation);
+		return incantationDef == null || incantationDef.Passes(incantation);
 	}
 
 	public bool IsTargettable(SpellTarget target)
@@ -138,7 +138,8 @@ public class IncantationRule
 
 	public IncantationRule()
 	{
-		ruleType = (IncantationRuleType)Random.Range(0, Util.GetEnumCount<IncantationRuleType>());
+		//ruleType = (IncantationRuleType)Random.Range(0, Util.GetEnumCount<IncantationRuleType>());
+		ruleType = IncantationRuleType.ContainsLetter;
 		letter = Util.RandomLetter();
 	}
 
