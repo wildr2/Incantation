@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum GameState
 {
@@ -22,14 +23,17 @@ public class GameManager : Singleton<GameManager>
 	public float maxCardDealRotationDeg; 
 	public AudioClip dealCardSFX;
 	public AudioClip shuffleDeckSFX;
-	private Deck deck;
+	public GameObject skipCardText;
+	public Text scoreText;
+
 	private GameState state = GameState.Init;
+	private Deck deck;
 	private float enterStateTime;
 	private bool dealingNextCard;
 	public Card CurrentCard { get; private set; }
 	private float currentCardDoneTime = -1;
 	private float currentCardBecameSkippableTime = -1;
-	public GameObject skipCardText;
+	private int cardsCompleted;
 
 	private float StateTime => Time.time - enterStateTime;
 
@@ -42,7 +46,7 @@ public class GameManager : Singleton<GameManager>
 	{
 		UpdateDeskHighlights();
 		UpdateCardDealing();
-		UpdateSkipCardText();
+		UpdateText();
 	}
 
 	private void UpdateDeskHighlights()
@@ -116,7 +120,7 @@ public class GameManager : Singleton<GameManager>
 		}
 	}
 
-	private void UpdateSkipCardText()
+	private void UpdateText()
 	{
 		bool show =
 			state == GameState.Round &&
@@ -124,6 +128,8 @@ public class GameManager : Singleton<GameManager>
 			currentCardBecameSkippableTime >= 0 &&
 			Time.time - currentCardBecameSkippableTime > skippableDelay;
 		skipCardText.SetActive(show);
+
+		scoreText.text = string.Format("{0}\t\t{1}", Util.FormatTimeAsMinSec(Time.timeSinceLevelLoad), cardsCompleted);
 	}
 
 	private void NextRound()
@@ -158,6 +164,10 @@ public class GameManager : Singleton<GameManager>
 		{
 			if (CurrentCard)
 			{
+				if (currentCardBecameSkippableTime < 0)
+				{
+					++cardsCompleted;
+				}
 				Destroy(CurrentCard.gameObject);
 			}
 		}, removeCardDelay));

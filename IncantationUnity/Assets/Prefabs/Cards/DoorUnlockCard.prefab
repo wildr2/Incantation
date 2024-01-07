@@ -302,7 +302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4543248234763550247, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
       propertyPath: m_Text
-      value: Lock Door
+      value: Unlock Door
       objectReference: {fileID: 0}
     - target: {fileID: 9155492147455719415, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
       propertyPath: m_Name
@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goalSpellID: 13
-  lastSpellID: 0
+  commonCardData: {fileID: 0}
   openSprite: {fileID: 3380758007119384580}
   closedSprite: {fileID: 123781155882417727}
   explodedSprite: {fileID: 4016279024605151837}

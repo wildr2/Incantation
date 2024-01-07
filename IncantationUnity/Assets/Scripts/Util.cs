@@ -282,6 +282,14 @@ public class Util : MonoBehaviour
 	{
 		return System.Enum.GetValues(typeof(T)).Length;
 	}
+
+	public static string FormatTimeAsMinSec(float total_seconds)
+	{
+		float total_minutes = total_seconds / 60f;
+		float minute = (int)total_minutes;
+		float second = (int)((total_minutes - minute) * 60);
+		return minute + ":" + (second < 10 ? "0" + second : second.ToString());
+	}
 }
 
 public static class Extensions

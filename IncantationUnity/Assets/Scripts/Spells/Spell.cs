@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 public enum SpellID
 {
@@ -40,9 +41,9 @@ public class Spell
 		SpellID = id;
 	}
 
-	public void Init()
+	public void Init(IncantationDef incantationDef)
 	{
-		incantationDef = SpellID == SpellID.Generic ? null : new IncantationDef();
+		this.incantationDef = incantationDef;
 	}
 
 	public bool CheckIncantation(string incantation)
@@ -133,6 +134,9 @@ public enum IncantationRuleType
 	StartsWithLetter,
 	ContainsLetter,
 	EndsWithLetter,
+	NLettersLong,
+	LongWord,
+	TwoWords,
 }
 
 public class IncantationDef
@@ -156,18 +160,62 @@ public class IncantationDef
 		}
 		return true;
 	}
+
+	public bool IsEquivalent(IncantationDef other)
+	{
+		return rules[0].IsEquivalent(other.rules[0]);
+	}
+
+	public static IncantationDef CreateUnique(List<IncantationDef> defs)
+	{
+		IncantationDef newDef = null;
+		for (int i = 0; i < 20 && newDef == null; ++i)
+		{
+			newDef = new IncantationDef();
+			foreach (IncantationDef def in defs)
+			{
+				if (newDef.IsEquivalent(def))
+				{
+					newDef = null;
+					break;
+				}
+			}
+		}
+		if (newDef == null)
+		{
+			Debug.LogError("Failed to create unique IncatationDef.");
+		}
+		return newDef;
+	}
 }
 
 public class IncantationRule
 {
 	public IncantationRuleType ruleType;
 	public char letter;
+	public int n;
 
 	public IncantationRule()
 	{
-		//ruleType = (IncantationRuleType)Random.Range(0, Util.GetEnumCount<IncantationRuleType>());
-		ruleType = IncantationRuleType.ContainsLetter;
-		letter = Util.RandomLetter();
+		IncantationRuleType[] possibleRuleTypes = new IncantationRuleType[] 
+		{
+			IncantationRuleType.ContainsLetter,
+			IncantationRuleType.NLettersLong,
+			IncantationRuleType.LongWord,
+			IncantationRuleType.TwoWords,
+		};
+		ruleType = possibleRuleTypes[Random.Range(0, possibleRuleTypes.Length)];
+
+		if (ruleType == IncantationRuleType.ContainsLetter || 
+			ruleType == IncantationRuleType.StartsWithLetter ||
+			ruleType == IncantationRuleType.EndsWithLetter)
+		{
+			letter = Util.RandomLetter();
+		}
+		if (ruleType == IncantationRuleType.NLettersLong)
+		{
+			n = Random.Range(3, 5);
+		}
 	}
 
 	public bool Passes(string incantation)
@@ -180,6 +228,13 @@ public class IncantationRule
 				return incantation.Contains(letter);
 			case IncantationRuleType.EndsWithLetter:
 				return incantation.EndsWith(letter);
+			case IncantationRuleType.NLettersLong:
+				return incantation.Length == n;
+			case IncantationRuleType.LongWord:
+				return incantation.Length >= 6;
+			case IncantationRuleType.TwoWords:
+				Regex regex = new Regex(@"^\w+\s+\w+$");
+				return regex.Matches(incantation).Count > 0;
 			default:
 				break;
 		}
@@ -196,9 +251,20 @@ public class IncantationRule
 				return string.Format("Incantation contains {0}", letter);
 			case IncantationRuleType.EndsWithLetter:
 				return string.Format("Incantation ends with {0}", letter);
+			case IncantationRuleType.NLettersLong:
+				return string.Format("Incantation contains {0} letters", n);
+			case IncantationRuleType.LongWord:
+				return string.Format("Incantation is a long word", n);
+			case IncantationRuleType.TwoWords:
+				return string.Format("Incantation is two words", n);
 			default:
 				break;
 		}
 		return "";
+	}
+
+	public bool IsEquivalent(IncantationRule other)
+	{
+		return ruleType == other.ruleType && letter == other.letter && n == other.n;
 	}
 }

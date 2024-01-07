@@ -29,6 +29,7 @@ public class Player : Singleton<Player>
 		book = FindObjectOfType<BookProp>();
 
 		// Init spells, and create dictionary of spells using reflection.
+		List<IncantationDef> incantationDefs = new List<IncantationDef>();
 		spells = new Dictionary<SpellID, Spell>();
 		System.Type playerType = typeof(Player);
 		foreach (FieldInfo field in playerType.GetFields(BindingFlags.Public | BindingFlags.Instance))
@@ -36,7 +37,13 @@ public class Player : Singleton<Player>
 			Spell spell = field.GetValue(this) as Spell;
 			if (spell != null)
 			{
-				spell.Init();
+				IncantationDef incantationDef = null;
+				if (spell.SpellID != SpellID.Generic)
+				{
+					incantationDef = IncantationDef.CreateUnique(incantationDefs);
+					incantationDefs.Add(incantationDef);
+				}
+				spell.Init(incantationDef);
 				spells[spell.SpellID] = spell;
 			}
 		}
