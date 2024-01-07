@@ -41,7 +41,7 @@ public class PlantpotCard : Card
 	{
 		broken = true;
 		levitating = false;
-		SFXManager.Play(breakSFX);
+		SFXManager.Play(breakSFX, parent: transform);
 	}
 
 	public void Grow()
@@ -49,7 +49,7 @@ public class PlantpotCard : Card
 		if (!sprouted)
 		{
 			sprouted = true;
-			SFXManager.Play(growingSFX);
+			SFXManager.Play(growingSFX, parent: transform);
 		}
 	}
 

@@ -40,7 +40,7 @@ public class DoorCard : Card
 		if (!open)
 		{
 			open = true;
-			SFXManager.Play(openSFX, MixerGroup.Master);
+			SFXManager.Play(openSFX, MixerGroup.Master, parent: transform);
 		}
 	}
 
@@ -49,7 +49,7 @@ public class DoorCard : Card
 		if (open)
 		{
 			open = false;
-			SFXManager.Play(shutSFX, MixerGroup.Master);
+			SFXManager.Play(shutSFX, MixerGroup.Master, parent: transform);
 		}
 	}
 
@@ -58,7 +58,7 @@ public class DoorCard : Card
 		if (locked)
 		{
 			locked = false;
-			SFXManager.Play(unlockSFX, MixerGroup.Master);
+			SFXManager.Play(unlockSFX, MixerGroup.Master, parent: transform);
 		}
 	}
 
@@ -68,7 +68,7 @@ public class DoorCard : Card
 		if (!locked)
 		{
 			locked = true;
-			SFXManager.Play(lockSFX, MixerGroup.Master);
+			SFXManager.Play(lockSFX, MixerGroup.Master, parent: transform);
 		}
 	}
 
@@ -77,7 +77,7 @@ public class DoorCard : Card
 		exploded = true;
 		open = true;
 		locked = false;
-		SFXManager.Play(explodeSFX);
+		SFXManager.Play(explodeSFX, parent: transform);
 	}
 
 	protected override void Awake()

@@ -35,7 +35,7 @@ public class BottleCard : Card
 		broken = true;
 		filledWithWine = false;
 		levitating = false;
-		SFXManager.Play(breakSFX);
+		SFXManager.Play(breakSFX, parent: transform);
 	}
 
 	protected override void Awake()

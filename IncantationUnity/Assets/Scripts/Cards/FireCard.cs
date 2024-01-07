@@ -181,7 +181,7 @@ public class FireCard : Card
 		private void ExtinguishFire()
 		{
 			Target.lit = false;
-			SFXManager.Play(fireHiss);
+			SFXManager.Play(fireHiss, parent: Target.transform);
 		}
 	}
 	public RainSE rainSE;

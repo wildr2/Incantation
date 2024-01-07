@@ -35,7 +35,7 @@ public class BarrelCard: Card
 	{
 		exploded = true;
 		levitating = false;
-		SFXManager.Play(explodeSFX);
+		SFXManager.Play(explodeSFX, parent: transform);
 	}
 
 	protected override void Awake()

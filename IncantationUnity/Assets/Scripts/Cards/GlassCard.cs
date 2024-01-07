@@ -40,7 +40,7 @@ public class GlassCard : Card
 		filledWithPlant = false;
 		filledWithWater = false;
 		levitating = false;
-		SFXManager.Play(breakSFX);
+		SFXManager.Play(breakSFX, parent: transform);
 	}
 
 	public void Grow()
@@ -48,7 +48,7 @@ public class GlassCard : Card
 		if (!filledWithPlant)
 		{
 			filledWithPlant = true;
-			SFXManager.Play(growingSFX);
+			SFXManager.Play(growingSFX, parent: transform);
 		}
 	}
 

@@ -33,7 +33,7 @@ public class BookProp : Prop
 			return;
 		}
 		gameObject.SetActive(true);
-		SFXManager.Play(openSound, MixerGroup.Book, transform.position);
+		SFXManager.Play(openSound, MixerGroup.Book, transform.position, parent: transform);
 	}
 
 	public void Close()
@@ -43,7 +43,7 @@ public class BookProp : Prop
 			return;
 		}
 		gameObject.SetActive(false);
-		SFXManager.Play(closeSound, MixerGroup.Book, transform.position);
+		SFXManager.Play(closeSound, MixerGroup.Book, transform.position, parent: transform);
 	}
 
 	protected override void Update()

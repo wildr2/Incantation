@@ -158,7 +158,7 @@ public class KettleCard : Card
 			{
 				// Turn off on leave stand.
 				Target.on = false;
-				SFXManager.Play(Target.turnOffSFX);
+				SFXManager.Play(Target.turnOffSFX, parent: Target.transform);
 			}
 		}
 	}
@@ -179,7 +179,7 @@ public class KettleCard : Card
 		{
 			base.Apply(spellCast);
 			Target.on = true;
-			SFXManager.Play(Target.turnOnSFX);
+			SFXManager.Play(Target.turnOnSFX, parent: Target.transform);
 		}
 	}
 	public ActivateSE activateSE;
@@ -199,7 +199,7 @@ public class KettleCard : Card
 		{
 			base.Apply(spellCast);
 			Target.on = false;
-			SFXManager.Play(Target.turnOffSFX);
+			SFXManager.Play(Target.turnOffSFX, parent: Target.transform);
 		}
 	}
 	public DeactivateSE deactivateSE;

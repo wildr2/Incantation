@@ -19,7 +19,7 @@ public class SFXManager : Singleton<SFXManager>
 	public MixerGroup[] mixerGroupEnumValues;
 	public Dictionary<MixerGroup, AudioMixerGroup> mixerGroupMap;
 
-	public static AudioSource Play(AudioClip clip, MixerGroup mixerGroup = MixerGroup.Master, Vector3? position=null, float pitchOffset=0.0f, float pitchVariance=0.0f, float volume=1.0f, float delay=0.0f, bool loop=false)
+	public static AudioSource Play(AudioClip clip, MixerGroup mixerGroup = MixerGroup.Master, Vector3? position=null, Transform parent=null, float pitchOffset=0.0f, float pitchVariance=0.0f, float volume=1.0f, float delay=0.0f, bool loop=false)
 	{
 		if (!clip)
 		{
@@ -27,6 +27,10 @@ public class SFXManager : Singleton<SFXManager>
 		}
 		SFXManager instance = Instance;
 		AudioSource source = Instantiate(instance.worldSFXSource, instance.transform);
+		if (parent)
+		{
+			source.transform.SetParent(parent);
+		}
 		source.clip = clip;
 		source.transform.position = position != null ? (Vector3)position : Vector3.zero;
 		source.spatialBlend = position == null ? 0 : 1;
@@ -42,10 +46,10 @@ public class SFXManager : Singleton<SFXManager>
 		return source;
 	}
 
-	public static AudioSource Play(AudioClip[] clip_variations, MixerGroup mixerGroup = MixerGroup.Master, Vector3? position=null, float pitchOffset=0.0f, float pitchVariance=0.0f, float volume=1.0f, float delay=0.0f, bool loop=false)
+	public static AudioSource Play(AudioClip[] clip_variations, MixerGroup mixerGroup = MixerGroup.Master, Vector3? position=null, Transform parent=null, float pitchOffset=0.0f, float pitchVariance=0.0f, float volume=1.0f, float delay=0.0f, bool loop=false)
 	{
 		AudioClip clip = clip_variations[Random.Range(0, clip_variations.Length)];
-		return Play(clip, mixerGroup, position, pitchOffset, pitchVariance, volume, delay, loop);
+		return Play(clip, mixerGroup, position, parent, pitchOffset, pitchVariance, volume, delay, loop);
 	}
 
 	private void Awake()

@@ -37,13 +37,13 @@ public class BookCard : Card
 	public void Open()
 	{
 		open = true;
-		SFXManager.Play(openSFX, MixerGroup.Master);
+		SFXManager.Play(openSFX, MixerGroup.Master, parent: transform);
 	}
 
 	public void Shut()
 	{
 		open = false;
-		SFXManager.Play(shutSFX, MixerGroup.Master);
+		SFXManager.Play(shutSFX, MixerGroup.Master, parent: transform);
 	}
 
 	protected override void Awake()

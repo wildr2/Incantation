@@ -102,11 +102,11 @@ public class Spell
 		Prop prop = target as Prop;
 		if (prop)
 		{
-			spellCast.audioSource = SFXManager.Play(sfx, MixerGroup.Magic, prop.transform.position);
+			spellCast.audioSource = SFXManager.Play(sfx, MixerGroup.Magic, prop.transform.position, parent: target.transform);
 		}
 		else
 		{
-			spellCast.audioSource = SFXManager.Play(sfx, MixerGroup.Magic);
+			spellCast.audioSource = SFXManager.Play(sfx, MixerGroup.Magic, parent: target.transform);
 		}
 
 		return spellCast;

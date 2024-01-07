@@ -40,7 +40,7 @@ public class LampCard : Card
 		broken = true;
 		on = false;
 		levitating = false;
-		SFXManager.Play(breakSFX);
+		SFXManager.Play(breakSFX, parent: transform);
 	}
 
 	protected override void Awake()
@@ -160,7 +160,7 @@ public class LampCard : Card
 		{
 			base.Apply(spellCast);
 			Target.on = true;
-			SFXManager.Play(Target.turnOnSFX);
+			SFXManager.Play(Target.turnOnSFX, parent: Target.transform);
 		}
 	}
 	public ActivateSE activateSE;
@@ -180,7 +180,7 @@ public class LampCard : Card
 		{
 			base.Apply(spellCast);
 			Target.on = false;
-			SFXManager.Play(Target.turnOffSFX);
+			SFXManager.Play(Target.turnOffSFX, parent: Target.transform);
 		}
 	}
 	public DeactivateSE deactivateSE;

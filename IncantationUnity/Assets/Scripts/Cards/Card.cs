@@ -131,7 +131,7 @@ public class Card : SpellTarget
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			SFXManager.Play(CardData.genericSpellSFX, MixerGroup.Magic);
+			SFXManager.Play(CardData.genericSpellSFX, MixerGroup.Magic, parent: Target.transform);
 		}
 
 		protected override void Shake(float intensity)
@@ -194,7 +194,7 @@ public class Card : SpellTarget
 
 			if (CanLandLevitation())
 			{
-				SFXManager.Play(landSFX, MixerGroup.Master);
+				SFXManager.Play(landSFX, MixerGroup.Master, parent: Target.transform);
 			}
 		}
 
@@ -262,7 +262,7 @@ public class Card : SpellTarget
 				AudioSource source = sources.Find(s => s.clip == clip);
 				if (!source)
 				{
-					source = SFXManager.Play(clip, loop: true);
+					source = SFXManager.Play(clip, loop: true, parent: Target.transform);
 					sources.Add(source);
 				}
 				source.volume = volume;
