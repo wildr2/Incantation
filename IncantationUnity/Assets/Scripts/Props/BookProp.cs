@@ -2,21 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TargetType = BookProp;
 
 public class BookProp : Prop
 {
-	public Text bookText;
-	public AudioClip openSound;
-	public AudioClip closeSound;
+	public Statum open;
 
-	public bool IsOpen()
-	{
-		return gameObject.activeInHierarchy;
-	}
+	public SpriteRenderer sprite; 
+	public Text bookText;
+	public AudioClip openSFX;
+	public AudioClip closeSFX;
 
 	public void Toggle()
 	{
-		if (IsOpen())
+		if (open)
 		{
 			Close();
 		}
@@ -28,27 +27,32 @@ public class BookProp : Prop
 
 	public void Open()
 	{
-		if (IsOpen())
+		if (!open)
 		{
-			return;
+			open = true;
+			SFXManager.Play(openSFX, MixerGroup.Book, transform.position);
 		}
-		gameObject.SetActive(true);
-		SFXManager.Play(openSound, MixerGroup.Book, transform.position, parent: transform);
 	}
 
 	public void Close()
 	{
-		if (!IsOpen())
+		if (open)
 		{
-			return;
+			open = false;
+			SFXManager.Play(closeSFX, MixerGroup.Book, transform.position);
 		}
-		gameObject.SetActive(false);
-		SFXManager.Play(closeSound, MixerGroup.Book, transform.position, parent: transform);
+	}
+
+	protected override void Awake()
+	{
+		base.Awake();
+		open = true;
 	}
 
 	protected override void Update()
 	{
 		base.Update();
+		sprite.gameObject.SetActive(open);
 		UpdateText();
 	}
 
@@ -68,4 +72,43 @@ public class BookProp : Prop
 			bookText.text += string.Format("{0}\n", rule.GetDescription());
 		}
 	}
+
+	[System.Serializable]
+	public class ActivateSE : PropSE
+	{
+		public override SpellID SpellID => SpellID.Activate;
+		public new TargetType Target => (TargetType)base.Target;
+
+		public override bool AreConditionsMet()
+		{
+			return !Target.open;
+		}
+
+		public override void Apply(SpellCast spellCast)
+		{
+			base.Apply(spellCast);
+			Target.Open();
+		}
+	}
+	public ActivateSE activateSE;
+
+	[System.Serializable]
+	public class UnlockSE : PropSE
+	{
+		public override SpellID SpellID => SpellID.Unlock;
+		public UnlockSpell Spell => (UnlockSpell)spellCast.spell;
+		public new TargetType Target => (TargetType)base.Target;
+
+		public override bool AreConditionsMet()
+		{
+			return !Target.open;
+		}
+
+		public override void Apply(SpellCast spellCast)
+		{
+			base.Apply(spellCast);
+			DoDelayed(Spell.openDelay, Target.Open);
+		}
+	}
+	public UnlockSE unlockSE;
 }

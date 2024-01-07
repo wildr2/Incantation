@@ -10,11 +10,11 @@ public class DoorCard : Card
 	public Statum exploded;
 
 	public SpriteRenderer openSprite;
-	public SpriteRenderer shutSprite;
+	public SpriteRenderer closedSprite;
 	public SpriteRenderer explodedSprite;
 
 	public AudioClip openSFX;
-	public AudioClip shutSFX;
+	public AudioClip closeSFX;
 	public AudioClip lockSFX;
 	public AudioClip unlockSFX;
 	public AudioClip[] explodeSFX;
@@ -44,12 +44,12 @@ public class DoorCard : Card
 		}
 	}
 
-	public void Shut()
+	public void Close()
 	{
 		if (open)
 		{
 			open = false;
-			SFXManager.Play(shutSFX, MixerGroup.Master, parent: transform);
+			SFXManager.Play(closeSFX, MixerGroup.Master, parent: transform);
 		}
 	}
 
@@ -93,7 +93,7 @@ public class DoorCard : Card
 	{
 		base.Update();
 		openSprite.enabled = open && !exploded;
-		shutSprite.enabled = !open && !exploded;
+		closedSprite.enabled = !open && !exploded;
 		explodedSprite.enabled = exploded;
 	}
 
@@ -130,7 +130,7 @@ public class DoorCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.Shut();
+			Target.Close();
 		}
 	}
 	public DeactivateSE deactivateSE;
@@ -170,7 +170,7 @@ public class DoorCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.Shut();
+			Target.Close();
 			DoDelayed(0.2f, Target.Lock);
 		}
 	}
@@ -211,7 +211,7 @@ public class DoorCard : Card
 			base.Apply(spellCast);
 			Target.exploded = false;
 			Target.locked = false;
-			DoDelayed(spellCast.spell.EffectDuration, Target.Shut);
+			DoDelayed(spellCast.spell.EffectDuration, Target.Close);
 		}
 	}
 	public MendSE mendSE;

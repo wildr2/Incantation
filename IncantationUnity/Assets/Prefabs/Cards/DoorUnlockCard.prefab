@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4730026357444840941}
   - component: {fileID: 123781155882417727}
   m_Layer: 6
-  m_Name: DoorShut
+  m_Name: DoorClosed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -302,7 +302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4543248234763550247, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
       propertyPath: m_Text
-      value: Unlock Door
+      value: Lock Door
       objectReference: {fileID: 0}
     - target: {fileID: 9155492147455719415, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
       propertyPath: m_Name
@@ -346,31 +346,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goalSpellID: 13
   lastSpellID: 0
-  genericSE:
-    sfx: {fileID: 0}
   openSprite: {fileID: 3380758007119384580}
-  shutSprite: {fileID: 123781155882417727}
+  closedSprite: {fileID: 123781155882417727}
   explodedSprite: {fileID: 4016279024605151837}
   openSFX: {fileID: 8300000, guid: 23006b0723c8ba54cba729ace0113f1f, type: 3}
-  shutSFX: {fileID: 8300000, guid: 0e09d337fdd48424ca3108a02c5aa739, type: 3}
+  closeSFX: {fileID: 8300000, guid: 0e09d337fdd48424ca3108a02c5aa739, type: 3}
   lockSFX: {fileID: 8300000, guid: 976efb6f026f2f54da33afd675f63bad, type: 3}
   unlockSFX: {fileID: 8300000, guid: e353267badc816c44b658764ad4102cf, type: 3}
   explodeSFX:
   - {fileID: 8300000, guid: cbb774f475875a94cb7746e71f3708ce, type: 3}
   - {fileID: 8300000, guid: 4f3fb8747b9a8764a8225b4ec5a8be3a, type: 3}
   - {fileID: 8300000, guid: 9d8f13241ed1c0f4487cb6110c3cec7c, type: 3}
-  activateSE:
-    sfx: {fileID: 0}
-  deactivateSE:
-    sfx: {fileID: 0}
-  unlockSE:
-    sfx: {fileID: 0}
-  lockSE:
-    sfx: {fileID: 0}
-  explodeSE:
-    sfx: {fileID: 0}
-  mendSE:
-    sfx: {fileID: 0}
 --- !u!4 &7859667621598129370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4465464987148543869, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}

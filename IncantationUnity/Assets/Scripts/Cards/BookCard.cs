@@ -11,12 +11,12 @@ public class BookCard : Card
 	public Statum vanished;
 
 	public SpriteRenderer openSprite;
-	public SpriteRenderer shutSprite;
+	public SpriteRenderer closedSprite;
 	public SpriteRenderer burningOpenSprite;
-	public SpriteRenderer burningShutSprite;
+	public SpriteRenderer burningClosedSprite;
 
 	public AudioClip openSFX;
-	public AudioClip shutSFX;
+	public AudioClip closeSFX;
 
 	public override bool IsComplete()
 	{
@@ -40,10 +40,10 @@ public class BookCard : Card
 		SFXManager.Play(openSFX, MixerGroup.Master, parent: transform);
 	}
 
-	public void Shut()
+	public void Close()
 	{
 		open = false;
-		SFXManager.Play(shutSFX, MixerGroup.Master, parent: transform);
+		SFXManager.Play(closeSFX, MixerGroup.Master, parent: transform);
 	}
 
 	protected override void Awake()
@@ -60,9 +60,9 @@ public class BookCard : Card
 	{
 		base.Update();
 		openSprite.enabled = open && !burning;
-		shutSprite.enabled = !open && !burning;
+		closedSprite.enabled = !open && !burning;
 		burningOpenSprite.enabled = open && burning;
-		burningShutSprite.enabled = !open && burning;
+		burningClosedSprite.enabled = !open && burning;
 	}
 
 	[System.Serializable]
@@ -154,7 +154,7 @@ public class BookCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.Shut();
+			Target.Close();
 		}
 	}
 	public DeactivateSE deactivateSE;
@@ -198,7 +198,7 @@ public class BookCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.Shut();
+			Target.Close();
 		}
 	}
 	public LockSE lockSE;

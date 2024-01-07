@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 794150563974856768}
   - component: {fileID: 3532709354612464225}
   m_Layer: 6
-  m_Name: BookShutBurning
+  m_Name: BookClosedBurning
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 6378577674070079630}
   - component: {fileID: 4016279024605151837}
   m_Layer: 6
-  m_Name: BookShut
+  m_Name: BookClosed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -435,31 +435,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goalSpellID: 0
   lastSpellID: 0
-  genericSE:
-    sfx: {fileID: 0}
   openSprite: {fileID: 3380758007119384580}
-  shutSprite: {fileID: 4016279024605151837}
+  closedSprite: {fileID: 4016279024605151837}
   burningOpenSprite: {fileID: 7841657159937497967}
-  burningShutSprite: {fileID: 3532709354612464225}
+  burningClosedSprite: {fileID: 3532709354612464225}
   openSFX: {fileID: 8300000, guid: 1d7f789f36a9c91419782c903d9b38bc, type: 3}
-  shutSFX: {fileID: 8300000, guid: 2bab18d8ae12c0a44a46fa0621de71e3, type: 3}
-  igniteSE:
-    sfx: {fileID: 0}
-  extinguishSE:
-    sfx: {fileID: 0}
+  closeSFX: {fileID: 8300000, guid: 2bab18d8ae12c0a44a46fa0621de71e3, type: 3}
   levitateSE:
-    sfx: {fileID: 0}
     landSFX: {fileID: 8300000, guid: 94e45af32e1f82045a3fa73fd887686f, type: 3}
-  activateSE:
-    sfx: {fileID: 0}
-  deactivateSE:
-    sfx: {fileID: 0}
-  unlockSE:
-    sfx: {fileID: 0}
-  lockSE:
-    sfx: {fileID: 0}
-  vanishSE:
-    sfx: {fileID: 0}
 --- !u!4 &7859667621598129370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4465464987148543869, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}

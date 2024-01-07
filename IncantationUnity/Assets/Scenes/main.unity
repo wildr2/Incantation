@@ -699,7 +699,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
       propertyPath: enableCardDealing
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
       propertyPath: enableCardDebugText

@@ -65,7 +65,7 @@ public class Incantor : MonoBehaviour
 				book.Close();
 			}
 		}
-		if (Input.GetKeyDown(KeyCode.Escape) || book.IsOpen())
+		if (Input.GetKeyDown(KeyCode.Escape) || book.open)
 		{
 			inputText = "";
 		}
