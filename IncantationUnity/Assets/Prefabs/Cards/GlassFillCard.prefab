@@ -346,11 +346,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3727583489496289703, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.075489
+      value: -8.779499
       objectReference: {fileID: 0}
     - target: {fileID: 3727583489496289703, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.16723311
+      value: -0.7179179
       objectReference: {fileID: 0}
     - target: {fileID: 3727583489496289703, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -433,31 +433,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goalSpellID: 12
   lastSpellID: 0
-  genericSE:
-    sfx: {fileID: 0}
   glassSprite: {fileID: 3380758007119384580}
   brokenGlassSprite: {fileID: 4016279024605151837}
   waterSprite: {fileID: 7841657159937497967}
   plantSprite: {fileID: 1593059879443400158}
   breakSFX:
   - {fileID: 8300000, guid: 19958bdc377159148b9f697dc1bad2f9, type: 3}
-  explodeSE:
-    sfx: {fileID: 0}
+  growingSFX: {fileID: 8300000, guid: c4c9481bb260a0a4892fdfe80d2776b3, type: 3}
   levitateSE:
-    sfx: {fileID: 0}
     landSFX: {fileID: 8300000, guid: 94e45af32e1f82045a3fa73fd887686f, type: 3}
-  breakSE:
-    sfx: {fileID: 0}
-  mendSE:
-    sfx: {fileID: 0}
-  vanishSE:
-    sfx: {fileID: 0}
-  rainSE:
-    sfx: {fileID: 0}
-  fill:
-    sfx: {fileID: 0}
-  growSE:
-    sfx: {fileID: 0}
 --- !u!4 &7859667621598129370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4465464987148543869, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}

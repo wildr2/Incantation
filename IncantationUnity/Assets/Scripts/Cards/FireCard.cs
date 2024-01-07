@@ -9,7 +9,6 @@ public class FireCard : Card
 	public Statum levitating;
 	public Statum vanished;
 	public Statum raining;
-	public Statum sprouted;
 
 	public SpriteRenderer flamesBlackSprite;
 	public SpriteRenderer flamesColorSprite;
@@ -48,7 +47,6 @@ public class FireCard : Card
 		levitating = false;
 		vanished = false;
 		raining = false;
-		sprouted = false;
 	}
 
 	protected override void Update()
@@ -91,7 +89,6 @@ public class FireCard : Card
 		{
 			base.Apply(spellCast);
 			Target.lit = true;
-			Target.sprouted = false;
 			Target.flamesGlowDuration = Mathf.Lerp(3.0f, 9.0f, spellCast.intensity);
 		}
 	}
@@ -112,7 +109,6 @@ public class FireCard : Card
 		{
 			base.Apply(spellCast);
 			Target.lit = true;
-			Target.sprouted = false;
 			Target.flamesGlowDuration = Mathf.Lerp(3.0f, 9.0f, spellCast.intensity);
 		}
 	}
@@ -156,10 +152,11 @@ public class FireCard : Card
 	public LevitateSE levitateSE;
 
 	[System.Serializable]
-	public class RainSE : CardSE
+	public new class RainSE : Card.RainSE
 	{
-		public override SpellID SpellID => SpellID.Rain;
 		public new CardType Target => (CardType)base.Target;
+		protected override Statum Raining { get => Target.raining; set => Target.raining = value; }
+		public AudioClip fireHiss;
 
 		public override bool AreConditionsMet()
 		{
@@ -169,9 +166,22 @@ public class FireCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.raining = true;
-			Target.sprouted = true;
-			Target.lit = false; 
+			Raining = true;
+		}
+
+		public override void Update()
+		{
+			base.Update();
+			if (Raining && Target.lit && Time.time - Raining.time > 1.0f && Time.time - Target.lit.time > 0.5f)
+			{
+				ExtinguishFire();
+			}
+		}
+
+		private void ExtinguishFire()
+		{
+			Target.lit = false;
+			SFXManager.Play(fireHiss);
 		}
 	}
 	public RainSE rainSE;
@@ -196,23 +206,4 @@ public class FireCard : Card
 		}
 	}
 	public VanishSE vanishSE;
-
-	[System.Serializable]
-	public class GrowSE : CardSE
-	{
-		public override SpellID SpellID => SpellID.Grow;
-		public new CardType Target => (CardType)base.Target;
-
-		public override bool AreConditionsMet()
-		{
-			return !Target.vanished && !Target.lit && !Target.sprouted;
-		}
-
-		public override void Apply(SpellCast spellCast)
-		{
-			base.Apply(spellCast);
-			Target.sprouted = true;
-		}
-	}
-	public GrowSE growSE;
 }

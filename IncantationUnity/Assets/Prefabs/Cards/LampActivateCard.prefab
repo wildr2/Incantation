@@ -357,10 +357,13 @@ MonoBehaviour:
   turnOnSFX: {fileID: 8300000, guid: d2c832b78666e924c9f23a8d31f43dcc, type: 3}
   turnOffSFX: {fileID: 8300000, guid: ac50ff14a8b0dd94392d2297fb56a617, type: 3}
   buzzAudioSource: {fileID: -4566009067238300174}
+  breakSFX:
+  - {fileID: 8300000, guid: e024bd1829290b24da0437e12e86512b, type: 3}
+  - {fileID: 8300000, guid: c44ed4497d2f67448a981f131e5637ee, type: 3}
   igniteSE:
     sfx: {fileID: 0}
   explodeSE:
-    sfx: {fileID: 8300000, guid: c44ed4497d2f67448a981f131e5637ee, type: 3}
+    sfx: {fileID: 0}
   extinguishSE:
     sfx: {fileID: 0}
   levitateSE:
@@ -371,7 +374,7 @@ MonoBehaviour:
   deactivateSE:
     sfx: {fileID: 0}
   breakSE:
-    sfx: {fileID: 8300000, guid: e024bd1829290b24da0437e12e86512b, type: 3}
+    sfx: {fileID: 0}
   mendSE:
     sfx: {fileID: 0}
   vanishSE:

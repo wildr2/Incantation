@@ -18,6 +18,7 @@ public class GlassCard : Card
 	public SpriteRenderer plantSprite;
 
 	public AudioClip[] breakSFX;
+	public AudioClip growingSFX;
 
 	public override bool IsComplete()
 	{
@@ -40,6 +41,15 @@ public class GlassCard : Card
 		filledWithWater = false;
 		levitating = false;
 		SFXManager.Play(breakSFX);
+	}
+
+	public void Grow()
+	{
+		if (!filledWithPlant)
+		{
+			filledWithPlant = true;
+			SFXManager.Play(growingSFX);
+		}
 	}
 
 	protected override void Awake()
@@ -167,10 +177,13 @@ public class GlassCard : Card
 	public VanishSE vanishSE;
 
 	[System.Serializable]
-	public class RainSE : CardSE
+	public new class RainSE : Card.RainSE
 	{
-		public override SpellID SpellID => SpellID.Rain;
 		public new CardType Target => (CardType)base.Target;
+		protected override Statum Raining { get => Target.raining; set => Target.raining = value; }
+		protected override AudioClip[] AudioClips => !Target.vanished && !Target.broken ?
+			new AudioClip[] { CardData.rainingSFX, CardData.rainingOnGlassSFX } :
+			base.AudioClips;
 
 		public override bool AreConditionsMet()
 		{
@@ -180,7 +193,6 @@ public class GlassCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.raining = true;
 			if (!Target.vanished && !Target.broken)
 			{
 				Target.filledWithWater = true;
@@ -222,7 +234,7 @@ public class GlassCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.filledWithPlant = true;
+			Target.Grow();
 		}
 	}
 	public GrowSE growSE;

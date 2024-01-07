@@ -17,6 +17,7 @@ public class LampCard : Card
 	public AudioClip turnOnSFX;
 	public AudioClip turnOffSFX;
 	public AudioSource buzzAudioSource;
+	public AudioClip[] breakSFX;
 
 	public override bool IsComplete()
 	{
@@ -32,6 +33,14 @@ public class LampCard : Card
 			goalSpellID == SpellID.Activate ? vanished || broken :
 			goalSpellID == SpellID.Deactivate ? false :
 			false;
+	}
+
+	public void Break()
+	{
+		broken = true;
+		on = false;
+		levitating = false;
+		SFXManager.Play(breakSFX);
 	}
 
 	protected override void Awake()
@@ -94,8 +103,7 @@ public class LampCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.broken = true;
-			Target.on = false;
+			Target.Break();
 		}
 	}
 	public ExplodeSE explodeSE;
@@ -191,8 +199,7 @@ public class LampCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.broken = true;
-			Target.on = false;
+			Target.Break();
 		}
 	}
 	public BreakSE breakSE;

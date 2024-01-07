@@ -346,11 +346,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3727583489496289703, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.988516
+      value: -10.036388
       objectReference: {fileID: 0}
     - target: {fileID: 3727583489496289703, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.20643628
+      value: -1.1368814
       objectReference: {fileID: 0}
     - target: {fileID: 3727583489496289703, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -433,28 +433,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goalSpellID: 2
   lastSpellID: 0
-  genericSE:
-    sfx: {fileID: 0}
   flamesBlackSprite: {fileID: 3380758007119384580}
   flamesColorSprite: {fileID: 4016279024605151837}
   flamesGlowSprite: {fileID: 7841657159937497967}
   flamesGlowIntensity: 0
   flamesGlowDuration: 0
-  igniteSE:
-    sfx: {fileID: 0}
-  explodeSE:
-    sfx: {fileID: 0}
-  extinguishSE:
-    sfx: {fileID: 0}
   levitateSE:
-    sfx: {fileID: 0}
     landSFX: {fileID: 8300000, guid: 94e45af32e1f82045a3fa73fd887686f, type: 3}
   rainSE:
-    sfx: {fileID: 0}
-  vanishSE:
-    sfx: {fileID: 0}
-  growSE:
-    sfx: {fileID: 0}
+    fireHiss: {fileID: 8300000, guid: 6cdc3c52813eefe43b3f312952d24aff, type: 3}
 --- !u!4 &7859667621598129370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4465464987148543869, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}

@@ -86,10 +86,10 @@ public class PotholeCard : Card
 	public Fill fill;
 
 	[System.Serializable]
-	public class RainSE : CardSE
+	public new class RainSE : Card.RainSE
 	{
-		public override SpellID SpellID => SpellID.Rain;
 		public new CardType Target => (CardType)base.Target;
+		protected override Statum Raining { get => Target.raining; set => Target.raining = value; }
 
 		public override bool AreConditionsMet()
 		{

@@ -151,7 +151,7 @@ public class DoorCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Unlock();
-			DoDelayed(Spell.openDelay, () => Target.Open());
+			DoDelayed(Spell.openDelay, Target.Open);
 		}
 	}
 	public UnlockSE unlockSE;
@@ -171,7 +171,7 @@ public class DoorCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Shut();
-			DoDelayed(0.2f, () => Target.Lock());
+			DoDelayed(0.2f, Target.Lock);
 		}
 	}
 	public LockSE lockSE;
@@ -211,7 +211,7 @@ public class DoorCard : Card
 			base.Apply(spellCast);
 			Target.exploded = false;
 			Target.locked = false;
-			DoDelayed(spellCast.spell.EffectDuration, () => Target.Shut());
+			DoDelayed(spellCast.spell.EffectDuration, Target.Shut);
 		}
 	}
 	public MendSE mendSE;

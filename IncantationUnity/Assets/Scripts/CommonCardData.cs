@@ -9,4 +9,6 @@ public class CommonCardData : MonoBehaviour
 	public Vector2 levitatePos;
 	public GameObject contentParent;
 	public AudioClip genericSpellSFX;
+	public AudioClip rainingSFX;
+	public AudioClip rainingOnGlassSFX;
 }

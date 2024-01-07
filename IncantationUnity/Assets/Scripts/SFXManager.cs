@@ -19,7 +19,7 @@ public class SFXManager : Singleton<SFXManager>
 	public MixerGroup[] mixerGroupEnumValues;
 	public Dictionary<MixerGroup, AudioMixerGroup> mixerGroupMap;
 
-	public static AudioSource Play(AudioClip clip, MixerGroup mixerGroup = MixerGroup.Master, Vector3? position=null, float pitchOffset=0.0f, float pitchVariance=0.0f, float volume=1.0f, float delay=0.0f)
+	public static AudioSource Play(AudioClip clip, MixerGroup mixerGroup = MixerGroup.Master, Vector3? position=null, float pitchOffset=0.0f, float pitchVariance=0.0f, float volume=1.0f, float delay=0.0f, bool loop=false)
 	{
 		if (!clip)
 		{
@@ -33,15 +33,19 @@ public class SFXManager : Singleton<SFXManager>
 		source.pitch += pitchOffset + Random.Range(-pitchVariance, pitchVariance);
 		source.volume = volume;
 		source.outputAudioMixerGroup = instance.mixerGroupMap[mixerGroup];
+		source.loop = loop;
 		source.PlayDelayed(delay);
-		instance.StartCoroutine(instance.DestroyOnDone(source));
+		if (!loop)
+		{
+			instance.StartCoroutine(instance.DestroyOnDone(source));
+		}
 		return source;
 	}
 
-	public static AudioSource Play(AudioClip[] clip_variations, MixerGroup mixerGroup = MixerGroup.Master, Vector3? position=null, float pitchOffset=0.0f, float pitchVariance=0.0f, float volume=1.0f, float delay=0.0f)
+	public static AudioSource Play(AudioClip[] clip_variations, MixerGroup mixerGroup = MixerGroup.Master, Vector3? position=null, float pitchOffset=0.0f, float pitchVariance=0.0f, float volume=1.0f, float delay=0.0f, bool loop=false)
 	{
 		AudioClip clip = clip_variations[Random.Range(0, clip_variations.Length)];
-		return Play(clip, mixerGroup, position, pitchOffset, pitchVariance, volume, delay);
+		return Play(clip, mixerGroup, position, pitchOffset, pitchVariance, volume, delay, loop);
 	}
 
 	private void Awake()
@@ -55,8 +59,11 @@ public class SFXManager : Singleton<SFXManager>
 
 	private IEnumerator DestroyOnDone(AudioSource source)
 	{
-		while (source && source.isPlaying)
+		// isPlaying becomes false when window loses focus, so check for 2 frames of !isPlaying to determine that the sound has stopped for another reason.
+		int framesNotPlaying = 0;
+		while (source && framesNotPlaying < 2)
 		{
+			framesNotPlaying = source.isPlaying ? 0 : ++framesNotPlaying;
 			yield return null;
 		}
 		if (source)

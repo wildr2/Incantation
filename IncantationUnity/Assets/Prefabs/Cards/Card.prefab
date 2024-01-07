@@ -428,3 +428,5 @@ MonoBehaviour:
   levitatePos: {x: 0, y: 0.75}
   contentParent: {fileID: 1562005155994230154}
   genericSpellSFX: {fileID: 8300000, guid: f483444cceca8cc41943186d262661ef, type: 3}
+  rainingSFX: {fileID: 8300000, guid: e46c6127897107741b86b0f1af0f8c38, type: 3}
+  rainingOnGlassSFX: {fileID: 8300000, guid: 665a4d5b10bdf194bafd9f2b5e869c56, type: 3}

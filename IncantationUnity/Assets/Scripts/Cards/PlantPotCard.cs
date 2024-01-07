@@ -46,8 +46,11 @@ public class PlantpotCard : Card
 
 	public void Grow()
 	{
-		sprouted = true;
-		SFXManager.Play(growingSFX);
+		if (!sprouted)
+		{
+			sprouted = true;
+			SFXManager.Play(growingSFX);
+		}
 	}
 
 	protected override void Awake()
@@ -217,10 +220,13 @@ public class PlantpotCard : Card
 	public VanishSE vanishSE;
 
 	[System.Serializable]
-	public class RainSE : CardSE
+	public new class RainSE : Card.RainSE
 	{
-		public override SpellID SpellID => SpellID.Rain;
 		public new CardType Target => (CardType)base.Target;
+		protected override Statum Raining { get => Target.raining; set => Target.raining = value; }
+		protected override AudioClip[] AudioClips => !Target.vanished && !Target.broken ?
+			new AudioClip[] { CardData.rainingSFX, CardData.rainingOnGlassSFX } :
+			base.AudioClips;
 
 		public override bool AreConditionsMet()
 		{
