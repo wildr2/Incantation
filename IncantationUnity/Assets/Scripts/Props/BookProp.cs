@@ -13,6 +13,10 @@ public class BookProp : Prop
 	public AudioClip openSFX;
 	public AudioClip closeSFX;
 
+	private List<Spell> pages = new List<Spell>();
+	private int pageIndex;
+
+
 	public void Toggle()
 	{
 		if (open)
@@ -27,10 +31,17 @@ public class BookProp : Prop
 
 	public void Open()
 	{
-		if (!open)
+		if (!open && pages.Count > 0)
 		{
 			open = true;
 			SFXManager.Play(openSFX, MixerGroup.Book, transform.position);
+
+			// Open to the spell the current card teaches.
+			Card card = GameManager.Instance.CurrentCard;
+			if (card)
+			{
+				pageIndex = pages.FindIndex(p => p.SpellID == card.goalSpellID);
+			}
 		}
 	}
 
@@ -43,33 +54,70 @@ public class BookProp : Prop
 		}
 	}
 
+	public void TurnPage(int dir)
+	{
+		if (open)
+		{
+			pageIndex = Mathf.Clamp(pageIndex + dir, 0, pages.Count - 1);
+		}
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();
-		open = true;
+		open = false;
 	}
 
 	protected override void Update()
 	{
 		base.Update();
 		sprite.gameObject.SetActive(open);
+		UpdateAddPages();
 		UpdateText();
 	}
 
-	private void UpdateText()
+	private void UpdateAddPages()
 	{
-		GameManager gm = GameManager.Instance;
-		Card card = gm.CurrentCard;
+		Card card = GameManager.Instance.CurrentCard;
 		if (!card)
 		{
 			return;
 		}
-		Spell spell = Player.Instance.spells[card.goalSpellID];
 
-		bookText.text = string.Format("{0}\n\n", spell.SpellID.ToString());
-		foreach (IncantationRule rule in spell.incantationDef.rules)
+		Spell spell = Player.Instance.spells[card.goalSpellID];
+		if (!spell.seen)
 		{
-			bookText.text += string.Format("{0}\n", rule.GetDescription());
+			//Spell currentPageSpell = pages.Count > 0 ? pages[pageIndex] : null;
+			pages.Add(spell);
+			pages.Sort(new Spell.NameComparer());
+			//if (currentPageSpell != null)
+			//{
+			//	// Correct page index.
+			//	pageIndex = pages.FindIndex(p => p.SpellID == currentPageSpell.SpellID);
+			//}
+
+			pageIndex = pages.FindIndex(p => p.SpellID == spell.SpellID);
+
+			Open();
+			spell.seen = true;
+		}
+	}
+
+	private void UpdateText()
+	{
+		if (pages.Count == 0)
+		{
+			bookText.text = "";
+		}
+		else
+		{
+			Spell pageSpell = pages[pageIndex];
+
+			bookText.text = string.Format("{0}\n\n", pageSpell.SpellID.ToString());
+			foreach (IncantationRule rule in pageSpell.incantationDef.rules)
+			{
+				bookText.text += string.Format("{0}\n", rule.GetDescription());
+			}
 		}
 	}
 

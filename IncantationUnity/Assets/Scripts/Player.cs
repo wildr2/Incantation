@@ -51,10 +51,20 @@ public class Player : Singleton<Player>
 
 	private void Update()
 	{
-		bool book_input = Input.GetKeyDown(KeyCode.Tab);
-		if (book_input)
+		bool input_book = Input.GetKeyDown(KeyCode.Tab);
+		bool input_book_page_left = Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Alpha1);
+		bool input_book_page_right = Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.Alpha2);
+		if (input_book)
 		{
 			book.Toggle();
+		}
+		if (input_book_page_left)
+		{
+			book.TurnPage(-1);
+		}
+		if (input_book_page_right)
+		{
+			book.TurnPage(1);
 		}
 	}
 }

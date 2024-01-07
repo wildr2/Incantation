@@ -47,6 +47,11 @@ public class GameManager : Singleton<GameManager>
 		UpdateDeskHighlights();
 		UpdateCardDealing();
 		UpdateText();
+
+		if (!DebugSettings.Instance.enableCardDealing)
+		{
+			CurrentCard = FindAnyObjectByType<Card>();
+		}
 	}
 
 	private void UpdateDeskHighlights()
@@ -139,8 +144,11 @@ public class GameManager : Singleton<GameManager>
 		{
 			Destroy(CurrentCard.gameObject);
 
-			deck.AddRandomCard();
-			deck.AddRandomCard();
+			int newCardCount = deck.Count >= 5 ? 2 : 1;
+			for (int i = 0; i < newCardCount; ++i)
+			{
+				deck.AddRandomCard();
+			}
 			deck.ReShuffle();
 		}
 

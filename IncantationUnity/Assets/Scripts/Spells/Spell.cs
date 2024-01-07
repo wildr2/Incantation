@@ -33,6 +33,7 @@ public class Spell
 	// Seconds after the cast start time after which the spell effect should end, or -1 if not applicable.
 	public float effectEndTime = -1;
 	public IncantationDef incantationDef;
+	public bool seen;
 
 	public float EffectDuration => effectEndTime >= 0 ? effectEndTime - effectStartTime : 0.0f;
 
@@ -112,6 +113,15 @@ public class Spell
 
 		return spellCast;
 	}
+
+	// Alphabetical descending.
+	public class NameComparer : IComparer<Spell>
+	{
+		public int Compare(Spell a, Spell b)
+		{
+			return b.SpellID.ToString().CompareTo(a.SpellID.ToString());
+		}
+	}
 }
 
 public class SpellCast
@@ -169,7 +179,7 @@ public class IncantationDef
 	public static IncantationDef CreateUnique(List<IncantationDef> defs)
 	{
 		IncantationDef newDef = null;
-		for (int i = 0; i < 20 && newDef == null; ++i)
+		for (int i = 0; i < 40 && newDef == null; ++i)
 		{
 			newDef = new IncantationDef();
 			foreach (IncantationDef def in defs)
@@ -231,7 +241,15 @@ public class IncantationRule
 			case IncantationRuleType.NLettersLong:
 				return incantation.Length == n;
 			case IncantationRuleType.LongWord:
-				return incantation.Length >= 6;
+				string[] words = incantation.Split(' ');
+				foreach (string word in words)
+				{
+					if (word.Length >= 7)
+					{
+						return true;
+					}
+				}
+				return false;
 			case IncantationRuleType.TwoWords:
 				Regex regex = new Regex(@"^\w+\s+\w+$");
 				return regex.Matches(incantation).Count > 0;
@@ -254,7 +272,7 @@ public class IncantationRule
 			case IncantationRuleType.NLettersLong:
 				return string.Format("Incantation contains {0} letters", n);
 			case IncantationRuleType.LongWord:
-				return string.Format("Incantation is a long word", n);
+				return string.Format("Incantation contains a long word", n);
 			case IncantationRuleType.TwoWords:
 				return string.Format("Incantation is two words", n);
 			default:

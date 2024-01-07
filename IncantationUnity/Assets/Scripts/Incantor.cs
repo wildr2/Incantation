@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 public class Incantor : MonoBehaviour
 {
@@ -10,7 +11,8 @@ public class Incantor : MonoBehaviour
 	private string inputText;
 	private string incantation;
 	private float startFadeTime = -1;
-	ScoreIncantationResponse scoreResponse;
+	private ScoreIncantationResponse scoreResponse;
+	private Dictionary<string, int> wordUseCount = new Dictionary<string, int>();
 
 	private void Awake()
 	{
@@ -103,6 +105,8 @@ public class Incantor : MonoBehaviour
 		int count = Util.GetEnumCount<SpellID>();
 		response.spellScores = new float[count];
 
+		bool incantationCastable = GetMaxWordUseCount(incantation) == 0;
+
 		for (int i = 0; i < count; ++i)
 		{
 			if (Player.Instance.spells.TryGetValue((SpellID)i, out Spell spell))
@@ -113,10 +117,10 @@ public class Incantor : MonoBehaviour
 				}
 				else
 				{
-					response.spellScores[i] =
-						(spell.CheckIncantation(incantation) ? Random.Range(0.9f, 1.2f) : 0.0f) *
-						(spell.SpellID != goalSpellID ? 2.0f : 1.0f) *
-						(spell.IsTargettable(targets) ? 1 : 0);
+					bool castable = incantationCastable && spell.CheckIncantation(incantation) && spell.IsTargettable(targets);
+					response.spellScores[i] = !castable ? 0 : 1 +
+						(spell.SpellID != goalSpellID ? 1 : 0) +
+						(spell.seen ? 2 : 0);
 				}
 			}
 			else
@@ -215,6 +219,8 @@ public class Incantor : MonoBehaviour
 			{
 				Debug.Log(string.Format("Cast '{0}' => {1} ({2}) at {3}", incantation, spell.SpellID, intensity, spellCast.target));
 			}
+
+			IncrementWordUseCounts(incantation);
 		}
 		else
 		{
@@ -237,6 +243,28 @@ public class Incantor : MonoBehaviour
 		if (spellCast != null)
 		{
 			StartCoroutine(UpdateSpellCast(spellCast));
+		}
+	}
+
+	private int GetMaxWordUseCount(string incantation)
+	{
+		int max = 0;
+		string[] words = incantation.Split(' ');
+		foreach (string word in words)
+		{
+			wordUseCount.TryGetValue(word, out int count);
+			max = Mathf.Max(max, count);
+		}
+		return max;
+	}
+
+	private void IncrementWordUseCounts(string incantation)
+	{
+		string[] words = incantation.Split(' ');
+		foreach (string word in words)
+		{
+			wordUseCount.TryGetValue(word, out int count);
+			wordUseCount[word] = count + 1;
 		}
 	}
 
