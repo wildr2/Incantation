@@ -19,11 +19,11 @@ public class SFXManager : Singleton<SFXManager>
 	public MixerGroup[] mixerGroupEnumValues;
 	public Dictionary<MixerGroup, AudioMixerGroup> mixerGroupMap;
 
-	public static void Play(AudioClip clip, MixerGroup mixerGroup = MixerGroup.Master, Vector3? position=null, float pitchOffset=0.0f, float pitchVariance=0.0f, float volume=1.0f, float delay=0.0f)
+	public static AudioSource Play(AudioClip clip, MixerGroup mixerGroup = MixerGroup.Master, Vector3? position=null, float pitchOffset=0.0f, float pitchVariance=0.0f, float volume=1.0f, float delay=0.0f)
 	{
 		if (!clip)
 		{
-			return;
+			return null;
 		}
 		SFXManager instance = Instance;
 		AudioSource source = Instantiate(instance.worldSFXSource, instance.transform);
@@ -35,6 +35,13 @@ public class SFXManager : Singleton<SFXManager>
 		source.outputAudioMixerGroup = instance.mixerGroupMap[mixerGroup];
 		source.PlayDelayed(delay);
 		instance.StartCoroutine(instance.DestroyOnDone(source));
+		return source;
+	}
+
+	public static AudioSource Play(AudioClip[] clip_variations, MixerGroup mixerGroup = MixerGroup.Master, Vector3? position=null, float pitchOffset=0.0f, float pitchVariance=0.0f, float volume=1.0f, float delay=0.0f)
+	{
+		AudioClip clip = clip_variations[Random.Range(0, clip_variations.Length)];
+		return Play(clip, mixerGroup, position, pitchOffset, pitchVariance, volume, delay);
 	}
 
 	private void Awake()
@@ -48,10 +55,13 @@ public class SFXManager : Singleton<SFXManager>
 
 	private IEnumerator DestroyOnDone(AudioSource source)
 	{
-		while (source.isPlaying)
+		while (source && source.isPlaying)
 		{
 			yield return null;
 		}
-		Destroy(source.gameObject);
+		if (source)
+		{
+			Destroy(source.gameObject);
+		}
 	}
 }

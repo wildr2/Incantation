@@ -14,10 +14,14 @@ public class KettleCard : Card
 	public SpriteRenderer offSprite;
 	public SpriteRenderer brokenSprite;
 
+	public AudioClip turnOnSFX;
+	public AudioClip turnOffSFX;
+	public AudioSource boilingAudioSource;
+
 	public override bool IsComplete()
 	{
 		return
-			goalSpellID == SpellID.Activate ? on && !vanished :
+			goalSpellID == SpellID.Activate ? !vanished && GetTemp() > 0.3f :
 			goalSpellID == SpellID.Deactivate ? !on || vanished || broken :
 			false;
 	}
@@ -28,6 +32,27 @@ public class KettleCard : Card
 			goalSpellID == SpellID.Activate ? vanished || broken :
 			goalSpellID == SpellID.Deactivate ? false :
 			false;
+	}
+
+	public void SetTemp(float temp)
+	{
+		if (temp <= 0)
+		{
+			boilingAudioSource.Stop();
+		}
+		else
+		{
+			if (!boilingAudioSource.isPlaying)
+			{
+				boilingAudioSource.Play();
+			}
+			boilingAudioSource.time = Mathf.Lerp(0, boilingAudioSource.clip.length, temp);
+		}
+	}
+
+	public float GetTemp()
+	{
+		return boilingAudioSource.isPlaying ? boilingAudioSource.time / boilingAudioSource.clip.length : 0;
 	}
 
 	protected override void Awake()
@@ -46,45 +71,74 @@ public class KettleCard : Card
 		onSprite.enabled = on;
 		offSprite.enabled = !on && !broken;
 		brokenSprite.enabled = broken;
+
+		if (on && !boilingAudioSource.isPlaying)
+		{
+			boilingAudioSource.Play();
+		}
+		boilingAudioSource.volume = vanished ? 0 : 1;
+		boilingAudioSource.pitch = on ? 1 : -1;
+
+		// TODO: turn off at end of boiling sound, keep temp.
 	}
 
 	[System.Serializable]
-	public class CreateFireSE : CardSE
+	public class IgniteSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()
 		{
-			return !Target.vanished && !Target.broken;
+			return !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.on = true;
+			base.Apply(spellCast);
+			Target.SetTemp(0.8f);
 		}
 	}
-	public CreateFireSE createFireSE;
+	public IgniteSE igniteSE;
+
+	[System.Serializable]
+	public class ExplodeSE : CardSE
+	{
+		public override SpellID SpellID => SpellID.Explode;
+		public new CardType Target => (CardType)base.Target;
+
+		public override bool AreConditionsMet()
+		{
+			return !Target.vanished;
+		}
+
+		public override void Apply(SpellCast spellCast)
+		{
+			base.Apply(spellCast);
+			Target.SetTemp(0.8f);
+		}
+	}
+	public ExplodeSE explodeSE;
 	
 	[System.Serializable]
-	public class ExtinguishFireSE : CardSE
+	public class ExtinguishSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Extinguish;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()
 		{
-			return Target.on && !Target.vanished;
+			return Target.GetTemp() > 0.0f && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.on = false;
+			Target.SetTemp(Mathf.Min(Target.GetTemp() * 0.5f, 0.01f));
 		}
 	}
-	public ExtinguishFireSE extinguishFireSE;
+	public ExtinguishSE extinguishSE;
 	
 	[System.Serializable]
 	public new class LevitateSE : Card.LevitateSE
@@ -97,16 +151,15 @@ public class KettleCard : Card
 			return !Target.levitating && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-		}
-
-		protected override void EndLevitation()
-		{
-			base.EndLevitation();
-			// Turn off upon falling back down.
-			Target.on = false;
+			base.Apply(spellCast);
+			if (Target.on)
+			{
+				// Turn off on leave stand.
+				Target.on = false;
+				SFXManager.Play(Target.turnOffSFX);
+			}
 		}
 	}
 	public LevitateSE levitateSE;
@@ -122,10 +175,11 @@ public class KettleCard : Card
 			return !Target.on && !Target.broken && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.on = true;
+			SFXManager.Play(Target.turnOnSFX);
 		}
 	}
 	public ActivateSE activateSE;
@@ -141,10 +195,11 @@ public class KettleCard : Card
 			return Target.on && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.on = false;
+			SFXManager.Play(Target.turnOffSFX);
 		}
 	}
 	public DeactivateSE deactivateSE;
@@ -160,9 +215,9 @@ public class KettleCard : Card
 			return !Target.broken && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.broken = true;
 			Target.on = false;
 		}
@@ -180,9 +235,9 @@ public class KettleCard : Card
 			return Target.broken && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.broken = false;
 		}
 	}
@@ -199,9 +254,9 @@ public class KettleCard : Card
 			return !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.vanished = true;
 
 			CardData.contentParent.SetActive(false);

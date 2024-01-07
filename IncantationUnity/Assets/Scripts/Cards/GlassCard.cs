@@ -17,6 +17,8 @@ public class GlassCard : Card
 	public SpriteRenderer waterSprite;
 	public SpriteRenderer plantSprite;
 
+	public AudioClip[] breakSFX;
+
 	public override bool IsComplete()
 	{
 		return
@@ -29,6 +31,15 @@ public class GlassCard : Card
 		return
 			goalSpellID == SpellID.Fill ? vanished || broken :
 			false;
+	}
+
+	public void Break()
+	{
+		broken = true;
+		filledWithPlant = false;
+		filledWithWater = false;
+		levitating = false;
+		SFXManager.Play(breakSFX);
 	}
 
 	protected override void Awake()
@@ -63,13 +74,10 @@ public class GlassCard : Card
 			return !Target.vanished && !Target.broken;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.broken = true;
-			Target.filledWithPlant = false;
-			Target.filledWithWater = false;
-			Target.levitating = false;
+			base.Apply(spellCast);
+			Target.Break();
 		}
 	}
 	public ExplodeSE explodeSE;
@@ -85,18 +93,16 @@ public class GlassCard : Card
 			return !Target.levitating && !Target.vanished && !Target.broken;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 		}
 
 		protected override void EndLevitation()
 		{
 			base.EndLevitation();
 			// Break upon falling back down.
-			Target.broken = true;
-			Target.filledWithPlant = false;
-			Target.filledWithWater = false;
+			Target.Break();
 		}
 	}
 	public LevitateSE levitateSE;
@@ -112,13 +118,10 @@ public class GlassCard : Card
 			return !Target.broken && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.broken = true;
-			Target.filledWithWater = false;
-			Target.filledWithPlant = false;
-			Target.levitating = false;
+			base.Apply(spellCast);
+			Target.Break();
 		}
 	}
 	public BreakSE breakSE;
@@ -134,9 +137,9 @@ public class GlassCard : Card
 			return Target.broken && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.broken = false;
 		}
 	}
@@ -153,9 +156,9 @@ public class GlassCard : Card
 			return !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.vanished = true;
 
 			CardData.contentParent.SetActive(false);
@@ -174,9 +177,9 @@ public class GlassCard : Card
 			return !Target.raining;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.raining = true;
 			if (!Target.vanished && !Target.broken)
 			{
@@ -187,7 +190,7 @@ public class GlassCard : Card
 	public RainSE rainSE;
 
 	[System.Serializable]
-	public class RefillSE : CardSE
+	public class Fill : CardSE
 	{
 		public override SpellID SpellID => SpellID.Fill;
 		public new CardType Target => (CardType)base.Target;
@@ -197,13 +200,13 @@ public class GlassCard : Card
 			return !Target.vanished && !Target.broken && !Target.filledWithWater;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.filledWithWater = true;
 		}
 	}
-	public RefillSE refillSE;
+	public Fill fill;
 
 	[System.Serializable]
 	public class GrowSE : CardSE
@@ -216,9 +219,9 @@ public class GlassCard : Card
 			return !Target.vanished && !Target.filledWithPlant && !Target.broken;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.filledWithPlant = true;
 		}
 	}

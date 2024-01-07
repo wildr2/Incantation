@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29d628e4892526046a23548cc2d6f265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  priority: 0
+  bookText: {fileID: 6937084487590615631}
   openSound: {fileID: 8300000, guid: 1d7f789f36a9c91419782c903d9b38bc, type: 3}
   closeSound: {fileID: 8300000, guid: 2bab18d8ae12c0a44a46fa0621de71e3, type: 3}
 --- !u!1 &7915205341282658515
@@ -263,6 +263,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Practice lighting and extinguishing a fire using magic. \n\nFire incantations
-    relate to fire, heat, or strength.\n\nDispell incantations relate to water, smothering,
-    or reduction."
+  m_Text: 

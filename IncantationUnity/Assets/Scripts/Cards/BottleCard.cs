@@ -14,6 +14,8 @@ public class BottleCard : Card
 	public SpriteRenderer brokenGlassSprite;
 	public SpriteRenderer wineSprite;
 
+	public AudioClip[] breakSFX;
+
 	public override bool IsComplete()
 	{
 		return
@@ -26,6 +28,14 @@ public class BottleCard : Card
 		return
 			goalSpellID == SpellID.Fill ? vanished || broken :
 			false;
+	}
+
+	public void Break()
+	{
+		broken = true;
+		filledWithWine = false;
+		levitating = false;
+		SFXManager.Play(breakSFX);
 	}
 
 	protected override void Awake()
@@ -57,12 +67,10 @@ public class BottleCard : Card
 			return !Target.vanished && !Target.broken;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.broken = true;
-			Target.filledWithWine = false;
-			Target.levitating = false;
+			base.Apply(spellCast);
+			Target.Break();
 		}
 	}
 	public ExplodeSE explodeSE;
@@ -78,18 +86,16 @@ public class BottleCard : Card
 			return !Target.levitating && !Target.vanished && !Target.broken;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 		}
 
 		protected override void EndLevitation()
 		{
 			base.EndLevitation();
 			// Break upon falling back down.
-			Target.broken = true;
-			Target.filledWithWine = false;
-			Target.filledWithWine = false;
+			Target.Break();
 		}
 	}
 	public LevitateSE levitateSE;
@@ -105,12 +111,10 @@ public class BottleCard : Card
 			return !Target.broken && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.broken = true;
-			Target.filledWithWine = false;
-			Target.levitating = false;
+			base.Apply(spellCast);
+			Target.Break();
 		}
 	}
 	public BreakSE breakSE;
@@ -126,9 +130,9 @@ public class BottleCard : Card
 			return Target.broken && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.broken = false;
 		}
 	}
@@ -145,9 +149,9 @@ public class BottleCard : Card
 			return !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.vanished = true;
 
 			CardData.contentParent.SetActive(false);
@@ -156,7 +160,7 @@ public class BottleCard : Card
 	public VanishSE vanishSE;
 
 	[System.Serializable]
-	public class RefillSE : CardSE
+	public class Fill : CardSE
 	{
 		public override SpellID SpellID => SpellID.Fill;
 		public new CardType Target => (CardType)base.Target;
@@ -166,11 +170,11 @@ public class BottleCard : Card
 			return !Target.vanished && !Target.broken && !Target.filledWithWine;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.filledWithWine = true;
 		}
 	}
-	public RefillSE refillSE;
+	public Fill fill;
 }

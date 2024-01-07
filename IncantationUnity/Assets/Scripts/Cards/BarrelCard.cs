@@ -13,6 +13,8 @@ public class BarrelCard: Card
 	public SpriteRenderer unexplodedSprite;
 	public SpriteRenderer explodedSprite;
 
+	public AudioClip[] explodeSFX;
+
 	public override bool IsComplete()
 	{
 		return
@@ -27,6 +29,13 @@ public class BarrelCard: Card
 			goalSpellID == SpellID.Explode ? vanished :
 			goalSpellID == SpellID.Levitate ? vanished || exploded :
 			false;
+	}
+
+	public void Explode()
+	{
+		exploded = true;
+		levitating = false;
+		SFXManager.Play(explodeSFX);
 	}
 
 	protected override void Awake()
@@ -57,9 +66,24 @@ public class BarrelCard: Card
 			return !Target.levitating && !Target.vanished && !Target.exploded;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
+		}
+
+		protected override bool CanLandLevitation()
+		{
+			return !Target.exploded && !Target.vanished;
+		}
+
+		// TODO: not scalable...
+		public override void Update()
+		{
+			base.Update();
+			if (Target.vanished)
+			{
+				Mute();
+			}
 		}
 	}
 	public LevitateSE levitateSE;
@@ -75,9 +99,9 @@ public class BarrelCard: Card
 			return Target.exploded && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.exploded = false;
 		}
 	}
@@ -94,9 +118,9 @@ public class BarrelCard: Card
 			return !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.vanished = true;
 
 			CardData.contentParent.SetActive(false);
@@ -115,16 +139,16 @@ public class BarrelCard: Card
 			return !Target.vanished && !Target.exploded;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.exploded = true;
+			base.Apply(spellCast);
+			Target.Explode();
 		}
 	}
 	public ExplodeSE explodeSE;
 
 	[System.Serializable]
-	public class RefillSE : CardSE
+	public class Fill : CardSE
 	{
 		public override SpellID SpellID => SpellID.Fill;
 		public new CardType Target => (CardType)base.Target;
@@ -134,16 +158,16 @@ public class BarrelCard: Card
 			return !Target.vanished && !Target.exploded;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.exploded = true;
+			base.Apply(spellCast);
+			Target.Explode();
 		}
 	}
-	public RefillSE refillSE;
+	public Fill fill;
 
 	[System.Serializable]
-	public class CreateFireSE : CardSE
+	public class IgniteSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
@@ -153,13 +177,13 @@ public class BarrelCard: Card
 			return !Target.vanished && !Target.exploded;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.exploded = true;
+			base.Apply(spellCast);
+			Target.Explode();
 		}
 	}
-	public CreateFireSE createFireSE;
+	public IgniteSE igniteSE;
 
 	[System.Serializable]
 	public class RainSE : CardSE
@@ -172,9 +196,9 @@ public class BarrelCard: Card
 			return !Target.raining;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.raining = true;
 		}
 	}

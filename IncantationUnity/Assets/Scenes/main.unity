@@ -128,17 +128,6 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 1116924076642940875, guid: 06e031373a5acff4da8a398534e9f3ef, type: 3}
   m_PrefabInstance: {fileID: 5268444139842489898}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &803435544 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6937084487590615631, guid: 4ab60092f00d87844836ca4411cb18ac, type: 3}
-  m_PrefabInstance: {fileID: 1237968742}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1237968742
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -147,17 +136,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 506153870411773171, guid: 4ab60092f00d87844836ca4411cb18ac, type: 3}
-      propertyPath: bookText
-      value: 
-      objectReference: {fileID: 803435544}
     - target: {fileID: 2076209005144140109, guid: 4ab60092f00d87844836ca4411cb18ac, type: 3}
       propertyPath: m_Name
       value: BookProp
-      objectReference: {fileID: 0}
-    - target: {fileID: 6937084487590615631, guid: 4ab60092f00d87844836ca4411cb18ac, type: 3}
-      propertyPath: m_Text
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7587507212174719786, guid: 4ab60092f00d87844836ca4411cb18ac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -270,25 +251,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 483624126698273152, guid: 6473c338521dc04428edf136a6810fde, type: 3}
-      propertyPath: nextCardDelay
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 483624126698273152, guid: 6473c338521dc04428edf136a6810fde, type: 3}
-      propertyPath: cardSpawnDelay
-      value: 0.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 483624126698273152, guid: 6473c338521dc04428edf136a6810fde, type: 3}
       propertyPath: deskHighlights
       value: 
       objectReference: {fileID: 124476600}
-    - target: {fileID: 483624126698273152, guid: 6473c338521dc04428edf136a6810fde, type: 3}
-      propertyPath: spawnCardDelay
-      value: 0.45
-      objectReference: {fileID: 0}
-    - target: {fileID: 483624126698273152, guid: 6473c338521dc04428edf136a6810fde, type: 3}
-      propertyPath: removeCardDelay
-      value: 0.3
-      objectReference: {fileID: 0}
     - target: {fileID: 1967226156817053802, guid: 6473c338521dc04428edf136a6810fde, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -733,8 +698,24 @@ PrefabInstance:
       value: DebugSettings
       objectReference: {fileID: 0}
     - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
-      propertyPath: enableSpellDebugPrints
+      propertyPath: enableCardDealing
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
+      propertyPath: enableCardDebugText
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
+      propertyPath: enableIncantationRules
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
+      propertyPath: enableSpellDebugPrints
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
+      propertyPath: enableDebugIncantations
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

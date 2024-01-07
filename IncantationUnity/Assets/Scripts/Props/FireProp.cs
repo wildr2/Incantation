@@ -22,7 +22,7 @@ public class FireProp : Prop
 	}
 
 	[System.Serializable]
-	public class CreateFireSE : SpellEffect
+	public class IgniteSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new PropType Target => (PropType)base.Target;
@@ -32,16 +32,16 @@ public class FireProp : Prop
 			return !Target.lit;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.lit = true;
 		}
 	}
-	public CreateFireSE createFireSE;
+	public IgniteSE igniteSE;
 
 	[System.Serializable]
-	public class ExtinguishFireSE : SpellEffect
+	public class ExtinguishSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Extinguish;
 		public new PropType Target => (PropType)base.Target;
@@ -51,11 +51,11 @@ public class FireProp : Prop
 			return Target.lit;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.lit = false;
 		}
 	}
-	public ExtinguishFireSE extinguishFireSE;
+	public ExtinguishSE extinguishSE;
 }

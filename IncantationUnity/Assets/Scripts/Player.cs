@@ -7,18 +7,18 @@ public class Player : Singleton<Player>
 {
 	public Spell activateSpell = new Spell(SpellID.Activate);
 	public Spell breakSpell = new Spell(SpellID.Break);
-	public Spell createFireSpell = new Spell(SpellID.Ignite);
 	public Spell deactivateSpell = new Spell(SpellID.Deactivate);
 	public Spell explodeSpell = new Spell(SpellID.Explode);
-	public Spell extinguishFireSpell = new Spell(SpellID.Extinguish);
+	public Spell extinguishSpell = new Spell(SpellID.Extinguish);
+	public Spell fillSpell = new Spell(SpellID.Fill);
 	public Spell genericSpell = new Spell(SpellID.Generic);
 	public Spell growSpell = new Spell(SpellID.Grow);
-	public Spell levitateSpell = new Spell(SpellID.Levitate);
+	public Spell igniteSpell = new Spell(SpellID.Ignite);
+	public LevitateSpell levitateSpell = new LevitateSpell();
 	public Spell lockSpell = new Spell(SpellID.Lock);
 	public Spell mendSpell = new Spell(SpellID.Mend);
 	public Spell rainSpell = new Spell(SpellID.Rain);
-	public Spell refillSpell = new Spell(SpellID.Fill);
-	public Spell unlockSpell = new Spell(SpellID.Unlock);
+	public UnlockSpell unlockSpell = new UnlockSpell();
 	public Spell vanishSpell = new Spell(SpellID.Vanish);
 
 	public Dictionary<SpellID, Spell> spells;
@@ -33,9 +33,9 @@ public class Player : Singleton<Player>
 		System.Type playerType = typeof(Player);
 		foreach (FieldInfo field in playerType.GetFields(BindingFlags.Public | BindingFlags.Instance))
 		{
-			if (field.FieldType == typeof(Spell))
+			Spell spell = field.GetValue(this) as Spell;
+			if (spell != null)
 			{
-				Spell spell = (Spell)field.GetValue(this);
 				spell.Init();
 				spells[spell.SpellID] = spell;
 			}

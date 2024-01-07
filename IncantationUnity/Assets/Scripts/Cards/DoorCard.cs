@@ -13,6 +13,12 @@ public class DoorCard : Card
 	public SpriteRenderer shutSprite;
 	public SpriteRenderer explodedSprite;
 
+	public AudioClip openSFX;
+	public AudioClip shutSFX;
+	public AudioClip lockSFX;
+	public AudioClip unlockSFX;
+	public AudioClip[] explodeSFX;
+
 	public override bool IsComplete()
 	{
 		return
@@ -27,6 +33,51 @@ public class DoorCard : Card
 			goalSpellID == SpellID.Unlock ? false :
 			goalSpellID == SpellID.Lock ? exploded :
 			false;
+	}
+
+	public void Open()
+	{
+		if (!open)
+		{
+			open = true;
+			SFXManager.Play(openSFX, MixerGroup.Master);
+		}
+	}
+
+	public void Shut()
+	{
+		if (open)
+		{
+			open = false;
+			SFXManager.Play(shutSFX, MixerGroup.Master);
+		}
+	}
+
+	public void Unlock()
+	{
+		if (locked)
+		{
+			locked = false;
+			SFXManager.Play(unlockSFX, MixerGroup.Master);
+		}
+	}
+
+	public void Lock()
+	{
+		// TODO: do all the error checking? state race conditions...
+		if (!locked)
+		{
+			locked = true;
+			SFXManager.Play(lockSFX, MixerGroup.Master);
+		}
+	}
+
+	public void Explode()
+	{
+		exploded = true;
+		open = true;
+		locked = false;
+		SFXManager.Play(explodeSFX);
 	}
 
 	protected override void Awake()
@@ -57,10 +108,10 @@ public class DoorCard : Card
 			return !Target.open && !Target.exploded && !Target.locked;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.open = true;
+			base.Apply(spellCast);
+			Target.Open();
 		}
 	}
 	public ActivateSE activateSE;
@@ -76,10 +127,10 @@ public class DoorCard : Card
 			return Target.open && !Target.exploded;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.open = false;
+			base.Apply(spellCast);
+			Target.Shut();
 		}
 	}
 	public DeactivateSE deactivateSE;
@@ -88,6 +139,7 @@ public class DoorCard : Card
 	public class UnlockSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Unlock;
+		public UnlockSpell Spell => (UnlockSpell)spellCast.spell;
 		public new CardType Target => (CardType)base.Target;
 
 		public override bool AreConditionsMet()
@@ -95,11 +147,11 @@ public class DoorCard : Card
 			return Target.locked;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.locked = false;
-			Target.open = true;
+			base.Apply(spellCast);
+			Target.Unlock();
+			DoDelayed(Spell.openDelay, () => Target.Open());
 		}
 	}
 	public UnlockSE unlockSE;
@@ -115,11 +167,11 @@ public class DoorCard : Card
 			return !Target.locked && !Target.exploded;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.open = false;
-			Target.locked = true;
+			base.Apply(spellCast);
+			Target.Shut();
+			DoDelayed(0.2f, () => Target.Lock());
 		}
 	}
 	public LockSE lockSE;
@@ -135,12 +187,10 @@ public class DoorCard : Card
 			return !Target.exploded;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.exploded = true;
-			Target.open = true;
-			Target.locked = false;
+			base.Apply(spellCast);
+			Target.Explode();
 		}
 	}
 	public ExplodeSE explodeSE;
@@ -156,12 +206,12 @@ public class DoorCard : Card
 			return Target.exploded;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.exploded = false;
-			Target.open = false;
 			Target.locked = false;
+			DoDelayed(spellCast.spell.EffectDuration, () => Target.Shut());
 		}
 	}
 	public MendSE mendSE;

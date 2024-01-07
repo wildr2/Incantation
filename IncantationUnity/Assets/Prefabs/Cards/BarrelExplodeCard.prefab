@@ -263,17 +263,22 @@ MonoBehaviour:
     sfx: {fileID: 0}
   unexplodedSprite: {fileID: 3380758007119384580}
   explodedSprite: {fileID: 4016279024605151837}
+  explodeSFX:
+  - {fileID: 8300000, guid: cbb774f475875a94cb7746e71f3708ce, type: 3}
+  - {fileID: 8300000, guid: 4f3fb8747b9a8764a8225b4ec5a8be3a, type: 3}
+  - {fileID: 8300000, guid: 9d8f13241ed1c0f4487cb6110c3cec7c, type: 3}
   levitateSE:
     sfx: {fileID: 0}
+    landSFX: {fileID: 8300000, guid: 94e45af32e1f82045a3fa73fd887686f, type: 3}
   mendSE:
     sfx: {fileID: 0}
   vanishSE:
     sfx: {fileID: 0}
   explodeSE:
     sfx: {fileID: 0}
-  refillSE:
+  fill:
     sfx: {fileID: 0}
-  createFireSE:
+  igniteSE:
     sfx: {fileID: 0}
   rainSE:
     sfx: {fileID: 0}

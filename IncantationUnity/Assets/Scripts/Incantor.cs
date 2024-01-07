@@ -200,20 +200,20 @@ public class Incantor : MonoBehaviour
 		Util.Shuffle(targets);
 		System.Array.Sort(targets, new SpellTarget.PriorityComparer());
 
-		SpellTarget castTarget = null;
+		SpellCast spellCast = null;
 		foreach (SpellTarget target in targets)
 		{
-			if (spell.TryCastSpell(target, intensity))
+			spellCast = spell.TryCastSpell(target, intensity);
+			if (spellCast != null)
 			{
-				castTarget = target;
 				break;
 			}
 		}
-		if (castTarget)
+		if (spellCast != null)
 		{
 			if (DebugSettings.Instance.enableSpellDebugPrints)
 			{
-				Debug.Log(string.Format("Cast '{0}' => {1} ({2}) at {3}", incantation, spell.SpellID, intensity, castTarget));
+				Debug.Log(string.Format("Cast '{0}' => {1} ({2}) at {3}", incantation, spell.SpellID, intensity, spellCast.target));
 			}
 		}
 		else
@@ -222,16 +222,40 @@ public class Incantor : MonoBehaviour
 			Spell genericSpell = Player.Instance.spells[SpellID.Generic];
 			foreach (SpellTarget target in targets)
 			{
-				if (genericSpell.TryCastSpell(target, intensity))
+				spellCast = genericSpell.TryCastSpell(target, intensity);
+				if (spellCast != null)
 				{
-					castTarget = target;
 					break;
 				}
 			}
 			if (DebugSettings.Instance.enableSpellDebugPrints)
 			{
-				Debug.Log(string.Format("Cast '{0}' => {1} ({2}) no target => {3} ({4}) at {5}", incantation, spell.SpellID, intensity, genericSpell.SpellID, intensity, castTarget));
+				Debug.Log(string.Format("Cast '{0}' => {1} ({2}) no target => {3} ({4}) at {5}", incantation, spell.SpellID, intensity, genericSpell.SpellID, intensity, spellCast.target));
 			}
+		}
+
+		if (spellCast != null)
+		{
+			StartCoroutine(UpdateSpellCast(spellCast));
+		}
+	}
+
+	private IEnumerator UpdateSpellCast(SpellCast spellCast)
+	{
+		while (spellCast.EffectTime < 0)
+		{
+			yield return null;
+		}
+
+		if (spellCast.effect != null && spellCast.effect.AreConditionsMet())
+		{
+			spellCast.effect.Apply(spellCast);
+		}
+		else
+		{
+			// Lost target during cast delay.
+			spellCast.audioSource.Stop();
+			Debug.Log("Lost spell cast target during cast delay.");
 		}
 	}
 

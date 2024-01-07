@@ -26,9 +26,14 @@ public class Spell
 {
 	public SpellID SpellID { get; private set; }
 	public string debugIncantation;
-	public AudioClip castSFX;
+	public AudioClip[] castSFX;
+	// Seconds after the cast start time after which the spell effect is applied.
+	public float effectStartTime;
+	// Seconds after the cast start time after which the spell effect should end, or -1 if not applicable.
+	public float effectEndTime = -1;
+	public IncantationDef incantationDef;
 
-	public IncantationDef incantationDef; 
+	public float EffectDuration => effectEndTime >= 0 ? effectEndTime - effectStartTime : 0.0f;
 
 	public Spell(SpellID id)
 	{
@@ -76,29 +81,51 @@ public class Spell
 		return priority;
 	}
 
-	public bool TryCastSpell(SpellTarget target, float intensity)
+	public SpellCast TryCastSpell(SpellTarget target, float intensity)
 	{
 		SpellEffect effect = System.Array.Find(target.SpellEffects, e => e.SpellID == SpellID && e.AreConditionsMet());
 		if (effect == null)
 		{
-			return false;
+			return null;
 		}
 
-		// Magic!
-		effect.Apply(intensity);
+		SpellCast spellCast = new SpellCast()
+		{
+			spell = this,
+			target = target,
+			effect = effect,
+			castStartTime = Time.time,
+			intensity = intensity,
+		};
 
+		AudioClip[] sfx = effect.OverrideSpellCastSFX != null ? effect.OverrideSpellCastSFX  : castSFX;
 		Prop prop = target as Prop;
 		if (prop)
 		{
-			SFXManager.Play(castSFX, MixerGroup.Magic, prop.transform.position);
+			spellCast.audioSource = SFXManager.Play(sfx, MixerGroup.Magic, prop.transform.position);
 		}
 		else
 		{
-			SFXManager.Play(castSFX, MixerGroup.Magic);
+			spellCast.audioSource = SFXManager.Play(sfx, MixerGroup.Magic);
 		}
 
-		return true;
+		return spellCast;
 	}
+}
+
+public class SpellCast
+{
+	public Spell spell;
+	public SpellTarget target;
+	public SpellEffect effect;
+	public float castStartTime;
+	public float intensity;
+	// Destroyed on done by SFXManager.
+	public AudioSource audioSource;
+
+	public float EffectStartTime => castStartTime + spell.effectStartTime;
+	public float CastTime => Time.time - castStartTime;
+	public float EffectTime => Time.time - EffectStartTime;
 }
 
 public enum IncantationRuleType

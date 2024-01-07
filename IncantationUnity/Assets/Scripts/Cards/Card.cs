@@ -105,12 +105,16 @@ public class Card : SpellTarget
 	{
 		public new CardType Target => (CardType)base.Target;
 		public CommonCardData CardData => Target.commonCardData;
+		public virtual bool ShakeOnApply => true;
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.lastSpellID = SpellID;
-			Shake(intensity);
+			if (ShakeOnApply)
+			{
+				Shake(spellCast.intensity);
+			}
 		}
 
 		protected virtual void Shake(float intensity)
@@ -124,9 +128,9 @@ public class Card : SpellTarget
 	{
 		public override SpellID SpellID => SpellID.Generic;
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			SFXManager.Play(CardData.genericSpellSFX, MixerGroup.Magic);
 		}
 
@@ -141,42 +145,69 @@ public class Card : SpellTarget
 	[System.Serializable]
 	public abstract class LevitateSE : CardSE
 	{
+		public enum State
+		{
+			Inactive,
+			Delay,
+			VisuallyLevitating,
+		}
+
 		public override SpellID SpellID => SpellID.Levitate;
 		protected abstract Statum Levitating { get; set; }
-
-		private const float levitateDuration = 4.0f;
-		private bool active;
+		public AudioClip landSFX;
+		protected bool visuallyLevitating;
 
 		public override bool AreConditionsMet()
 		{
 			return !Levitating;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Levitating = true;
-			active = true;
-			SetContentPosition(true);
+			base.Apply(spellCast);
+			StartLevitating();
 		}
 
 		public override void Update()
 		{
 			base.Update();
-			if (active)
+			if (visuallyLevitating)
 			{
-				if (!Levitating || Time.time - Levitating.time > levitateDuration)
+				if (!Levitating || spellCast.CastTime >= spellCast.spell.effectEndTime)
 				{
+					// Interrupted or duration up.
 					EndLevitation();
 				}
 			}
 		}
 
+		protected virtual void StartLevitating()
+		{
+			Levitating = true;
+			visuallyLevitating = true;
+			SetContentPosition(true);
+		}
+
 		protected virtual void EndLevitation()
 		{
 			Levitating = false;
-			active = false;
+			visuallyLevitating = false;
 			SetContentPosition(false);
+
+			if (spellCast.audioSource)
+			{
+				spellCast.audioSource.Stop();
+			}
+
+			if (CanLandLevitation())
+			{
+				SFXManager.Play(landSFX, MixerGroup.Master);
+			}
+		}
+
+		protected virtual bool CanLandLevitation()
+		{
+			return true;
 		}
 
 		protected virtual void SetContentPosition(bool levitated)

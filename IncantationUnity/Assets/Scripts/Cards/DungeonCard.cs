@@ -53,16 +53,16 @@ public class DungeonCard : Card
 			return !Target.chrVanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.chrVanished = true;
 		}
 	}
 	public VanishSE vanishSE;
 
 	[System.Serializable]
-	public class CreateFireSE : CardSE
+	public class IgniteSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
@@ -72,16 +72,16 @@ public class DungeonCard : Card
 			return true;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.torchLit = true;
 		}
 	}
-	public CreateFireSE createFireSE;
+	public IgniteSE igniteSE;
 
 	[System.Serializable]
-	public class ExtinguishFireSE : CardSE
+	public class ExtinguishSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Extinguish;
 		public new CardType Target => (CardType)base.Target;
@@ -91,13 +91,13 @@ public class DungeonCard : Card
 			return Target.torchLit;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.torchLit = false;
 		}
 	}
-	public ExtinguishFireSE extinguishFireSE;
+	public ExtinguishSE extinguishSE;
 
 	[System.Serializable]
 	public class ActivateSE : CardSE
@@ -110,9 +110,9 @@ public class DungeonCard : Card
 			return !Target.torchLit;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.torchLit = true;
 		}
 	}
@@ -129,9 +129,9 @@ public class DungeonCard : Card
 			return Target.torchLit;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.torchLit = false;
 		}
 	}
@@ -148,9 +148,9 @@ public class DungeonCard : Card
 			return true;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.torchLit = true;
 		}
 	}

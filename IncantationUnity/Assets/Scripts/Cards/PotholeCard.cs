@@ -57,9 +57,9 @@ public class PotholeCard : Card
 			return !Target.mended && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.mended = true;
 			Target.filledWithWater = false;
 		}
@@ -67,7 +67,7 @@ public class PotholeCard : Card
 	public MendSE mendSE;
 
 	[System.Serializable]
-	public class RefillSE : CardSE
+	public class Fill : CardSE
 	{
 		public override SpellID SpellID => SpellID.Fill;
 		public new CardType Target => (CardType)base.Target;
@@ -77,13 +77,13 @@ public class PotholeCard : Card
 			return !Target.vanished && !Target.mended && !Target.filledWithWater;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.mended = true;
 		}
 	}
-	public RefillSE refillSE;
+	public Fill fill;
 
 	[System.Serializable]
 	public class RainSE : CardSE
@@ -96,9 +96,9 @@ public class PotholeCard : Card
 			return !Target.raining;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.raining = true;
 			if (!Target.vanished && !Target.filledWithWater)
 			{
@@ -119,9 +119,9 @@ public class PotholeCard : Card
 			return !Target.vanished && !Target.mended;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.vanished = true;
 
 			CardData.contentParent.SetActive(false);

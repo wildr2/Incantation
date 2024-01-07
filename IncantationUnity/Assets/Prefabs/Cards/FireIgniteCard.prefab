@@ -390,7 +390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9155492147455719415, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
       propertyPath: m_Name
-      value: FireCreateFireCard
+      value: FireIgniteCard
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 357522706209119316, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
@@ -440,14 +440,15 @@ MonoBehaviour:
   flamesGlowSprite: {fileID: 7841657159937497967}
   flamesGlowIntensity: 0
   flamesGlowDuration: 0
-  createFireSE:
+  igniteSE:
     sfx: {fileID: 0}
   explodeSE:
     sfx: {fileID: 0}
-  extinguishFireSE:
+  extinguishSE:
     sfx: {fileID: 0}
   levitateSE:
     sfx: {fileID: 0}
+    landSFX: {fileID: 8300000, guid: 94e45af32e1f82045a3fa73fd887686f, type: 3}
   rainSE:
     sfx: {fileID: 0}
   vanishSE:

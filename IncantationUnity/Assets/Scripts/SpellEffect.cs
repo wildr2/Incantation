@@ -7,7 +7,13 @@ public abstract class SpellEffect
 {
 	public abstract SpellID SpellID { get; }
 	public SpellTarget Target { private set; get; }
+	public virtual AudioClip[] OverrideSpellCastSFX => null;
+
 	public AudioClip sfx;
+	// Most recent spellCast applying this effect.
+	protected SpellCast spellCast;
+	// Most recently played sfx audioSource. Destroyed on done by SFXManager.
+	protected AudioSource audioSource;
 
 	public virtual void Init(SpellTarget target)
 	{
@@ -20,20 +26,39 @@ public abstract class SpellEffect
 		return true;
 	}
 
-	public virtual void Apply(float intensity)
+	public virtual void Apply(SpellCast spellCast)
 	{
+		this.spellCast = spellCast;
+
 		Prop prop = Target as Prop;
 		if (prop)
 		{
-			SFXManager.Play(sfx, MixerGroup.Magic, prop.transform.position);
+			audioSource = SFXManager.Play(sfx, MixerGroup.Magic, prop.transform.position);
 		}
 		else
 		{
-			SFXManager.Play(sfx, MixerGroup.Magic);
+			audioSource = SFXManager.Play(sfx, MixerGroup.Magic);
 		}
 	}
 
 	public virtual void Update()
 	{
+	}
+
+	protected virtual void Mute(bool mustSpellCastSFX = true)
+	{
+		if (audioSource)
+		{
+			audioSource.volume = 0.0f;
+		}
+		if (mustSpellCastSFX && spellCast != null && spellCast.audioSource)
+		{
+			spellCast.audioSource.volume = 0.0f;
+		}
+	}
+
+	protected void DoDelayed(float delay, System.Action action)
+	{
+		Target.StartCoroutine(CoroutineUtil.DoAfterDelay(action, delay));
 	}
 }

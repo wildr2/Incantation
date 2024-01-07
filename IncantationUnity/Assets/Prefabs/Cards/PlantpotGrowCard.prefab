@@ -390,7 +390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9155492147455719415, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
       propertyPath: m_Name
-      value: GrowPlant
+      value: PlantpotGrowCard
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 357522706209119316, guid: 459ced43833c138469469c5bcb6ada8a, type: 3}
@@ -439,10 +439,11 @@ MonoBehaviour:
   sproutedSprite: {fileID: 4016279024605151837}
   brokenUnsproutedSprite: {fileID: 7841657159937497967}
   brokenSproutedSprite: {fileID: 7560954892380140804}
-  createFireSE:
+  igniteSE:
     sfx: {fileID: 0}
   levitateSE:
-    sfx: {fileID: 0}
+    sfx: {fileID: 8300000, guid: 13f589b9931bc9847bada7e43d2ac2c1, type: 3}
+    landSFX: {fileID: 0}
   breakSE:
     sfx: {fileID: 0}
   mendSE:
@@ -453,7 +454,9 @@ MonoBehaviour:
     sfx: {fileID: 0}
   rainSE:
     sfx: {fileID: 0}
-  refillSE:
+  fill:
+    sfx: {fileID: 0}
+  growSE:
     sfx: {fileID: 0}
 --- !u!4 &7859667621598129370 stripped
 Transform:

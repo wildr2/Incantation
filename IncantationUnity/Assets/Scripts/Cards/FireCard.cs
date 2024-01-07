@@ -77,7 +77,7 @@ public class FireCard : Card
 	}
 
 	[System.Serializable]
-	public class CreateFireSE : CardSE
+	public class IgniteSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
@@ -87,15 +87,15 @@ public class FireCard : Card
 			return !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.lit = true;
 			Target.sprouted = false;
-			Target.flamesGlowDuration = Mathf.Lerp(3.0f, 9.0f, intensity);
+			Target.flamesGlowDuration = Mathf.Lerp(3.0f, 9.0f, spellCast.intensity);
 		}
 	}
-	public CreateFireSE createFireSE;
+	public IgniteSE igniteSE;
 
 	[System.Serializable]
 	public class ExplodeSE : CardSE
@@ -108,18 +108,18 @@ public class FireCard : Card
 			return !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.lit = true;
 			Target.sprouted = false;
-			Target.flamesGlowDuration = Mathf.Lerp(3.0f, 9.0f, intensity);
+			Target.flamesGlowDuration = Mathf.Lerp(3.0f, 9.0f, spellCast.intensity);
 		}
 	}
 	public ExplodeSE explodeSE;
 	
 	[System.Serializable]
-	public class ExtinguishFireSE : CardSE
+	public class ExtinguishSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Extinguish;
 		public new CardType Target => (CardType)base.Target;
@@ -129,13 +129,13 @@ public class FireCard : Card
 			return Target.lit && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.lit = false;
 		}
 	}
-	public ExtinguishFireSE extinguishFireSE;
+	public ExtinguishSE extinguishSE;
 	
 	[System.Serializable]
 	public new class LevitateSE : Card.LevitateSE
@@ -148,9 +148,9 @@ public class FireCard : Card
 			return !Target.levitating && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 		}
 	}
 	public LevitateSE levitateSE;
@@ -166,9 +166,9 @@ public class FireCard : Card
 			return !Target.raining;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.raining = true;
 			Target.sprouted = true;
 			Target.lit = false; 
@@ -187,9 +187,9 @@ public class FireCard : Card
 			return !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.vanished = true;
 
 			CardData.contentParent.SetActive(false);
@@ -208,9 +208,9 @@ public class FireCard : Card
 			return !Target.vanished && !Target.lit && !Target.sprouted;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.sprouted = true;
 		}
 	}

@@ -351,6 +351,10 @@ MonoBehaviour:
   openSprite: {fileID: 3380758007119384580}
   shutSprite: {fileID: 123781155882417727}
   explodedSprite: {fileID: 4016279024605151837}
+  openSFX: {fileID: 8300000, guid: 23006b0723c8ba54cba729ace0113f1f, type: 3}
+  shutSFX: {fileID: 8300000, guid: 0e09d337fdd48424ca3108a02c5aa739, type: 3}
+  lockSFX: {fileID: 8300000, guid: 976efb6f026f2f54da33afd675f63bad, type: 3}
+  unlockSFX: {fileID: 8300000, guid: e353267badc816c44b658764ad4102cf, type: 3}
   activateSE:
     sfx: {fileID: 0}
   deactivateSE:
@@ -360,6 +364,8 @@ MonoBehaviour:
   lockSE:
     sfx: {fileID: 0}
   explodeSE:
+    sfx: {fileID: 0}
+  mendSE:
     sfx: {fileID: 0}
 --- !u!4 &7859667621598129370 stripped
 Transform:

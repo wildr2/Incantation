@@ -210,49 +210,99 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activateSpell:
     debugIncantation: on
-    castSFX: {fileID: 0}
+    castSFX:
+    - {fileID: 8300000, guid: cdb44eb28409a7f43928be81c17dd43f, type: 3}
+    effectStartTime: 0.1
+    effectEndTime: -1
   breakSpell:
     debugIncantation: break
-    castSFX: {fileID: 0}
-  createFireSpell:
-    debugIncantation: fire
-    castSFX: {fileID: 8300000, guid: 2d0edff026af26a4e859161154b074f5, type: 3}
+    castSFX:
+    - {fileID: 8300000, guid: 16fc539b89ae79a4ea25daf02e456fff, type: 3}
+    effectStartTime: 0.05
+    effectEndTime: -1
   deactivateSpell:
     debugIncantation: off
-    castSFX: {fileID: 0}
+    castSFX:
+    - {fileID: 8300000, guid: eac85dcc2cf2a2d44a7c30f13b7fb520, type: 3}
+    effectStartTime: 0.1
+    effectEndTime: -1
   explodeSpell:
     debugIncantation: explode
-    castSFX: {fileID: 0}
-  extinguishFireSpell:
+    castSFX:
+    - {fileID: 8300000, guid: bc3d6b8cb32c22846808eb4ca36a5766, type: 3}
+    effectStartTime: 0
+    effectEndTime: -1
+  extinguishSpell:
     debugIncantation: out
-    castSFX: {fileID: 8300000, guid: dea0deb11a683674e9612ac328ea879f, type: 3}
+    castSFX:
+    - {fileID: 8300000, guid: dea0deb11a683674e9612ac328ea879f, type: 3}
+    effectStartTime: 0
+    effectEndTime: -1
+  fillSpell:
+    debugIncantation: fill
+    castSFX:
+    - {fileID: 8300000, guid: c3715f8e62f53b149a71aa2942148517, type: 3}
+    effectStartTime: 0
+    effectEndTime: -1
   genericSpell:
     debugIncantation: generic
-    castSFX: {fileID: 0}
+    castSFX:
+    - {fileID: 8300000, guid: 743da39a002f50049844dc80d2d5d516, type: 3}
+    - {fileID: 8300000, guid: bf1808df373ba054aa85d988f6b5671f, type: 3}
+    - {fileID: 8300000, guid: 540d5d83dc14b894b9e7547824af7de4, type: 3}
+    effectStartTime: 0
+    effectEndTime: -1
   growSpell:
     debugIncantation: grow
-    castSFX: {fileID: 0}
+    castSFX:
+    - {fileID: 8300000, guid: 1ca1b4a60fd3d6a4a98c22d609328212, type: 3}
+    effectStartTime: 0
+    effectEndTime: -1
+  igniteSpell:
+    debugIncantation: ignite
+    castSFX:
+    - {fileID: 8300000, guid: 2d0edff026af26a4e859161154b074f5, type: 3}
+    effectStartTime: 0
+    effectEndTime: -1
   levitateSpell:
     debugIncantation: levitate
-    castSFX: {fileID: 0}
+    castSFX:
+    - {fileID: 8300000, guid: b6f737402b23019489e5c067dd7e1aee, type: 3}
+    effectStartTime: 0.25
+    effectEndTime: 2.7
+    castSFXIntro:
+    - {fileID: 8300000, guid: f29fc11ff076caf418c8f2fa7f1c3931, type: 3}
   lockSpell:
     debugIncantation: lock
-    castSFX: {fileID: 0}
+    castSFX:
+    - {fileID: 8300000, guid: 7fe1a051409596e4b9adf3eb00daadd6, type: 3}
+    effectStartTime: 0
+    effectEndTime: -1
   mendSpell:
     debugIncantation: mend
-    castSFX: {fileID: 0}
+    castSFX:
+    - {fileID: 8300000, guid: 4a9a36fee4168c342aa67ca694f10f05, type: 3}
+    effectStartTime: 0
+    effectEndTime: 1.9
   rainSpell:
     debugIncantation: rain
-    castSFX: {fileID: 0}
-  refillSpell:
-    debugIncantation: fill
-    castSFX: {fileID: 0}
+    castSFX:
+    - {fileID: 8300000, guid: 519a6801a168ce3489594abd9fc30f10, type: 3}
+    effectStartTime: 0
+    effectEndTime: -1
   unlockSpell:
     debugIncantation: unlock
-    castSFX: {fileID: 0}
+    castSFX:
+    - {fileID: 8300000, guid: 0366e70b6a7408d42b1371726f48c109, type: 3}
+    effectStartTime: 0.2
+    effectEndTime: -1
+    openDelay: 0.5
   vanishSpell:
     debugIncantation: vanish
-    castSFX: {fileID: 8300000, guid: bd74508c93d4ae54c82f1adfc3de1e68, type: 3}
+    castSFX:
+    - {fileID: 8300000, guid: bd74508c93d4ae54c82f1adfc3de1e68, type: 3}
+    effectStartTime: 0
+    effectEndTime: -1
 --- !u!1 &8601665277575618821
 GameObject:
   m_ObjectHideFlags: 0

@@ -46,8 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73f593099e429940b6d4de41f8d348a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardRemovalDelay: 1.5
-  cardSpawnDelay: 0.6
+  nextCardDelay: 1.5
+  removeCardDelay: 0.3
+  spawnCardDelay: 0.45
   preRoundDuration: 2
   deskHighlights: {fileID: 0}
   deck: {fileID: 0}

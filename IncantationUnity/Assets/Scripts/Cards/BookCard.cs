@@ -15,6 +15,9 @@ public class BookCard : Card
 	public SpriteRenderer burningOpenSprite;
 	public SpriteRenderer burningShutSprite;
 
+	public AudioClip openSFX;
+	public AudioClip shutSFX;
+
 	public override bool IsComplete()
 	{
 		return
@@ -29,6 +32,18 @@ public class BookCard : Card
 			goalSpellID == SpellID.Activate ? vanished :
 			goalSpellID == SpellID.Deactivate ? vanished :
 			false;
+	}
+
+	public void Open()
+	{
+		open = true;
+		SFXManager.Play(openSFX, MixerGroup.Master);
+	}
+
+	public void Shut()
+	{
+		open = false;
+		SFXManager.Play(shutSFX, MixerGroup.Master);
 	}
 
 	protected override void Awake()
@@ -51,7 +66,7 @@ public class BookCard : Card
 	}
 
 	[System.Serializable]
-	public class CreateFireSE : CardSE
+	public class IgniteSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
@@ -61,16 +76,16 @@ public class BookCard : Card
 			return !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.burning = true;
 		}
 	}
-	public CreateFireSE createFireSE;
+	public IgniteSE igniteSE;
 	
 	[System.Serializable]
-	public class ExtinguishFireSE : CardSE
+	public class ExtinguishSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Extinguish;
 		public new CardType Target => (CardType)base.Target;
@@ -80,13 +95,13 @@ public class BookCard : Card
 			return Target.burning && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.burning = false;
 		}
 	}
-	public ExtinguishFireSE extinguishFireSE;
+	public ExtinguishSE extinguishSE;
 	
 	[System.Serializable]
 	public new class LevitateSE : Card.LevitateSE
@@ -99,9 +114,9 @@ public class BookCard : Card
 			return !Target.levitating && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 		}
 	}
 	public LevitateSE levitateSE;
@@ -117,10 +132,10 @@ public class BookCard : Card
 			return !Target.open && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.open = true;
+			base.Apply(spellCast);
+			Target.Open();
 		}
 	}
 	public ActivateSE activateSE;
@@ -136,10 +151,10 @@ public class BookCard : Card
 			return Target.open && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.open = false;
+			base.Apply(spellCast);
+			Target.Shut();
 		}
 	}
 	public DeactivateSE deactivateSE;
@@ -148,17 +163,23 @@ public class BookCard : Card
 	public class UnlockSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Unlock;
+		public UnlockSpell Spell => (UnlockSpell)spellCast.spell;
 		public new CardType Target => (CardType)base.Target;
+		public override bool ShakeOnApply => false;
 
 		public override bool AreConditionsMet()
 		{
 			return !Target.open && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.open = true;
+			base.Apply(spellCast);
+			DoDelayed(Spell.openDelay, () =>
+			{
+				Target.Open();
+				Shake(spellCast.intensity);
+			});
 		}
 	}
 	public UnlockSE unlockSE;
@@ -174,10 +195,10 @@ public class BookCard : Card
 			return Target.open && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.open = false;
+			base.Apply(spellCast);
+			Target.Shut();
 		}
 	}
 	public LockSE lockSE;
@@ -193,9 +214,9 @@ public class BookCard : Card
 			return !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.vanished = true;
 
 			CardData.contentParent.SetActive(false);

@@ -14,6 +14,10 @@ public class LampCard : Card
 	public SpriteRenderer offSprite;
 	public SpriteRenderer brokenSprite;
 
+	public AudioClip turnOnSFX;
+	public AudioClip turnOffSFX;
+	public AudioSource buzzAudioSource;
+
 	public override bool IsComplete()
 	{
 		return
@@ -46,10 +50,19 @@ public class LampCard : Card
 		onSprite.enabled = on;
 		offSprite.enabled = !on && !broken;
 		brokenSprite.enabled = broken;
+
+		if ((on && !vanished) && !buzzAudioSource.isPlaying)
+		{
+			buzzAudioSource.Play();
+		}
+		else if ((!on || vanished) && buzzAudioSource.isPlaying)
+		{
+			buzzAudioSource.Stop();
+		}
 	}
 
 	[System.Serializable]
-	public class CreateFireSE : CardSE
+	public class IgniteSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
@@ -59,13 +72,13 @@ public class LampCard : Card
 			return !Target.vanished && !Target.broken;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.on = true;
 		}
 	}
-	public CreateFireSE createFireSE;
+	public IgniteSE igniteSE;
 
 	[System.Serializable]
 	public class ExplodeSE : CardSE
@@ -78,9 +91,9 @@ public class LampCard : Card
 			return !Target.vanished && !Target.broken;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.broken = true;
 			Target.on = false;
 		}
@@ -88,7 +101,7 @@ public class LampCard : Card
 	public ExplodeSE explodeSE;
 	
 	[System.Serializable]
-	public class ExtinguishFireSE : CardSE
+	public class ExtinguishSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Extinguish;
 		public new CardType Target => (CardType)base.Target;
@@ -98,13 +111,13 @@ public class LampCard : Card
 			return Target.on && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.on = false;
 		}
 	}
-	public ExtinguishFireSE extinguishFireSE;
+	public ExtinguishSE extinguishSE;
 	
 	[System.Serializable]
 	public new class LevitateSE : Card.LevitateSE
@@ -117,9 +130,9 @@ public class LampCard : Card
 			return !Target.levitating && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 		}
 	}
 	public LevitateSE levitateSE;
@@ -135,10 +148,11 @@ public class LampCard : Card
 			return !Target.on && !Target.broken && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.on = true;
+			SFXManager.Play(Target.turnOnSFX);
 		}
 	}
 	public ActivateSE activateSE;
@@ -154,10 +168,11 @@ public class LampCard : Card
 			return Target.on && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.on = false;
+			SFXManager.Play(Target.turnOffSFX);
 		}
 	}
 	public DeactivateSE deactivateSE;
@@ -173,9 +188,9 @@ public class LampCard : Card
 			return !Target.broken && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.broken = true;
 			Target.on = false;
 		}
@@ -193,9 +208,9 @@ public class LampCard : Card
 			return Target.broken && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.broken = false;
 		}
 	}
@@ -212,9 +227,9 @@ public class LampCard : Card
 			return !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.vanished = true;
 
 			CardData.contentParent.SetActive(false);

@@ -16,6 +16,9 @@ public class PlantpotCard : Card
 	public SpriteRenderer brokenUnsproutedSprite;
 	public SpriteRenderer brokenSproutedSprite;
 
+	public AudioClip[] breakSFX;
+	public AudioClip growingSFX;
+
 	public override bool IsComplete()
 	{
 		return
@@ -34,11 +37,24 @@ public class PlantpotCard : Card
 			false;
 	}
 
+	public void Break()
+	{
+		broken = true;
+		levitating = false;
+		SFXManager.Play(breakSFX);
+	}
+
+	public void Grow()
+	{
+		sprouted = true;
+		SFXManager.Play(growingSFX);
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();
 
-		sprouted = false;
+		sprouted = goalSpellID == SpellID.Grow ? false : Random.value < 0.5f;
 		broken = goalSpellID == SpellID.Mend;
 		levitating = false;
 		vanished = false;
@@ -55,7 +71,7 @@ public class PlantpotCard : Card
 	}
 
 	[System.Serializable]
-	public class CreateFireSE : CardSE
+	public class IgniteSE : CardSE
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
@@ -65,13 +81,13 @@ public class PlantpotCard : Card
 			return !Target.vanished && Target.sprouted;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.sprouted = false;
 		}
 	}
-	public CreateFireSE createFireSE;
+	public IgniteSE igniteSE;
 	
 	[System.Serializable]
 	public new class LevitateSE : Card.LevitateSE
@@ -79,28 +95,38 @@ public class PlantpotCard : Card
 		public new CardType Target => (CardType)base.Target;
 		protected override Statum Levitating { get => Target.levitating; set => Target.levitating = value; }
 
+		public override AudioClip[] OverrideSpellCastSFX => !Target.sprouted ? Player.Instance.levitateSpell.castSFXIntro : null;
+
 		public override bool AreConditionsMet()
 		{
 			return !Target.vanished && (!Target.sprouted || (!Target.levitating && !Target.broken));
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
 			if (!Target.sprouted)
 			{
-				Target.sprouted = true;
+				Target.Grow();
 			}
 			else
 			{
-				base.Apply(intensity);
+				base.Apply(spellCast);
 			}
 		}
 
 		protected override void EndLevitation()
 		{
+			// Sometimes break upon falling back down.
+			if (Random.value < 0.5f)
+			{
+				Target.Break();
+			}
 			base.EndLevitation();
-			// Break upon falling back down.
-			Target.broken = true;
+		}
+
+		protected override bool CanLandLevitation()
+		{
+			return !Target.broken;
 		}
 	}
 	public LevitateSE levitateSE;
@@ -116,11 +142,10 @@ public class PlantpotCard : Card
 			return !Target.broken && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.broken = true;
-			Target.levitating = false;
+			base.Apply(spellCast);
+			Target.Break();
 		}
 	}
 	public BreakSE breakSE;
@@ -136,9 +161,9 @@ public class PlantpotCard : Card
 			return Target.broken && !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.broken = false;
 		}
 	}
@@ -155,12 +180,11 @@ public class PlantpotCard : Card
 			return !Target.vanished && (!Target.broken || Target.sprouted);
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.broken = true;
+			base.Apply(spellCast);
+			Target.Break();
 			Target.sprouted = false;
-			Target.levitating = false;
 		}
 	}
 	public ExplodeSE explodeSE;
@@ -176,12 +200,18 @@ public class PlantpotCard : Card
 			return !Target.vanished;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.vanished = true;
-
-			CardData.contentParent.SetActive(false);
+			base.Apply(spellCast);
+			if (Target.sprouted)
+			{
+				Target.sprouted = false;
+			}
+			else
+			{
+				Target.vanished = true;
+				CardData.contentParent.SetActive(false);
+			}
 		}
 	}
 	public VanishSE vanishSE;
@@ -197,17 +227,17 @@ public class PlantpotCard : Card
 			return !Target.raining;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
+			base.Apply(spellCast);
 			Target.raining = true;
-			Target.sprouted = true;
+			Target.Grow();
 		}
 	}
 	public RainSE rainSE;
 
 	[System.Serializable]
-	public class RefillSE : CardSE
+	public class Fill : CardSE
 	{
 		public override SpellID SpellID => SpellID.Fill;
 		public new CardType Target => (CardType)base.Target;
@@ -217,13 +247,13 @@ public class PlantpotCard : Card
 			return !Target.vanished && !Target.broken && !Target.sprouted;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.sprouted = true;
+			base.Apply(spellCast);
+			Target.Grow();
 		}
 	}
-	public RefillSE refillSE;
+	public Fill fill;
 
 	[System.Serializable]
 	public class GrowSE : CardSE
@@ -236,10 +266,10 @@ public class PlantpotCard : Card
 			return !Target.vanished && !Target.sprouted;
 		}
 
-		public override void Apply(float intensity)
+		public override void Apply(SpellCast spellCast)
 		{
-			base.Apply(intensity);
-			Target.sprouted = true;
+			base.Apply(spellCast);
+			Target.Grow();
 		}
 	}
 	public GrowSE growSE;

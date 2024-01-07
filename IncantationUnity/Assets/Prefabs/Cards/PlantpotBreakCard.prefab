@@ -9,20 +9,44 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1550457362737944425, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
+      propertyPath: growingSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: c4c9481bb260a0a4892fdfe80d2776b3, type: 3}
+    - target: {fileID: 1550457362737944425, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
       propertyPath: goalSpellID
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1550457362737944425, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
+      propertyPath: levitateSE.sfx
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1550457362737944425, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
+      propertyPath: levitateSE.landSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 13f589b9931bc9847bada7e43d2ac2c1, type: 3}
+    - target: {fileID: 1550457362737944425, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
+      propertyPath: breakSFX.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1550457362737944425, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
+      propertyPath: breakSFX.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 4acdaaaa45330da4492bc459c7bd35d4, type: 3}
+    - target: {fileID: 1550457362737944425, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
+      propertyPath: levitateSE.spellCastSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: f29fc11ff076caf418c8f2fa7f1c3931, type: 3}
     - target: {fileID: 3451293511606467664, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
       propertyPath: m_Name
-      value: BreakPot
+      value: PlantpotBreakCard
       objectReference: {fileID: 0}
     - target: {fileID: 7156408783031867904, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -8.703429
       objectReference: {fileID: 0}
     - target: {fileID: 7156408783031867904, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.10409045
       objectReference: {fileID: 0}
     - target: {fileID: 7156408783031867904, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
       propertyPath: m_LocalPosition.z
