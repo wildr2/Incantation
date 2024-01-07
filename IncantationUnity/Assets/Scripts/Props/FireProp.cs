@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PropType = FireProp;
+using TargetType = FireProp;
 
 public class FireProp : Prop
 {
 	public Statum lit;
 	private AudioSource fireSFXSource;
+
+	// When dark, higher priority than cards but lower than lamp.
+	public override float Priority => !RoomLighting.Instance.lampProp.on ? 1.5f : base.Priority;
 
 	protected override void Awake()
 	{
@@ -25,7 +28,7 @@ public class FireProp : Prop
 	public class IgniteSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Ignite;
-		public new PropType Target => (PropType)base.Target;
+		public new TargetType Target => (TargetType)base.Target;
 
 		public override bool AreConditionsMet()
 		{
@@ -44,7 +47,7 @@ public class FireProp : Prop
 	public class ExtinguishSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Extinguish;
-		public new PropType Target => (PropType)base.Target;
+		public new TargetType Target => (TargetType)base.Target;
 
 		public override bool AreConditionsMet()
 		{

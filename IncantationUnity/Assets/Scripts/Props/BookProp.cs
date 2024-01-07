@@ -8,14 +8,15 @@ public class BookProp : Prop
 {
 	public Statum open;
 
-	public SpriteRenderer sprite; 
 	public Text bookText;
 	public AudioClip openSFX;
 	public AudioClip closeSFX;
+	public SpriteRenderer spriteRenderer;
+	public Sprite litSprite;
+	public Sprite unlitSprite;
 
 	private List<Spell> pages = new List<Spell>();
 	private int pageIndex;
-
 
 	public void Toggle()
 	{
@@ -71,9 +72,19 @@ public class BookProp : Prop
 	protected override void Update()
 	{
 		base.Update();
-		sprite.gameObject.SetActive(open);
 		UpdateAddPages();
 		UpdateText();
+		UpdateSprite();
+	}
+
+	private void UpdateSprite()
+	{
+		spriteRenderer.gameObject.SetActive(open);
+		if (open)
+		{
+			RoomLighting rl = RoomLighting.Instance;
+			spriteRenderer.sprite = rl.lampProp.on ? litSprite : unlitSprite;
+		}
 	}
 
 	private void UpdateAddPages()

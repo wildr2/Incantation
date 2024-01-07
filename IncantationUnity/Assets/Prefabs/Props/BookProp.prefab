@@ -45,10 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29d628e4892526046a23548cc2d6f265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 6931198372959997535}
   bookText: {fileID: 6937084487590615631}
   openSFX: {fileID: 8300000, guid: 1d7f789f36a9c91419782c903d9b38bc, type: 3}
   closeSFX: {fileID: 8300000, guid: 2bab18d8ae12c0a44a46fa0621de71e3, type: 3}
+  spriteRenderer: {fileID: 6931198372959997535}
+  litSprite: {fileID: 21300000, guid: 5b0fbd9c544fff54599898428ee431ea, type: 3}
+  unlitSprite: {fileID: 21300000, guid: a26ad3830947c1e4c95c486417fd0137, type: 3}
 --- !u!1 &5648597823104463242
 GameObject:
   m_ObjectHideFlags: 0
@@ -59,6 +61,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9086535822723625592}
   - component: {fileID: 6931198372959997535}
+  - component: {fileID: 5847266019071144130}
   m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
@@ -134,6 +137,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5847266019071144130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5648597823104463242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dafff7f83d4346f47b84fa1f62c06db0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7915205341282658515
 GameObject:
   m_ObjectHideFlags: 0

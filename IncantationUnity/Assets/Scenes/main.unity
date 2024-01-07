@@ -165,6 +165,7 @@ Transform:
   - {fileID: 1305466560}
   - {fileID: 838347587}
   - {fileID: 2039224288}
+  - {fileID: 1890920394}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1237968742
@@ -228,6 +229,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7587507212174719786, guid: 4ab60092f00d87844836ca4411cb18ac, type: 3}
   m_PrefabInstance: {fileID: 1237968742}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1890920393
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1080293347}
+    m_Modifications:
+    - target: {fileID: 2076209005144140109, guid: 712a7465bfa2c6d4f96aa738f77a0559, type: 3}
+      propertyPath: m_Name
+      value: LampProp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587507212174719786, guid: 712a7465bfa2c6d4f96aa738f77a0559, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587507212174719786, guid: 712a7465bfa2c6d4f96aa738f77a0559, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587507212174719786, guid: 712a7465bfa2c6d4f96aa738f77a0559, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587507212174719786, guid: 712a7465bfa2c6d4f96aa738f77a0559, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587507212174719786, guid: 712a7465bfa2c6d4f96aa738f77a0559, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587507212174719786, guid: 712a7465bfa2c6d4f96aa738f77a0559, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587507212174719786, guid: 712a7465bfa2c6d4f96aa738f77a0559, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587507212174719786, guid: 712a7465bfa2c6d4f96aa738f77a0559, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587507212174719786, guid: 712a7465bfa2c6d4f96aa738f77a0559, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587507212174719786, guid: 712a7465bfa2c6d4f96aa738f77a0559, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 712a7465bfa2c6d4f96aa738f77a0559, type: 3}
+--- !u!4 &1890920394 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7587507212174719786, guid: 712a7465bfa2c6d4f96aa738f77a0559, type: 3}
+  m_PrefabInstance: {fileID: 1890920393}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2039224287
 PrefabInstance:
@@ -802,26 +865,6 @@ PrefabInstance:
     - target: {fileID: 7260646581786950255, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
       propertyPath: m_Name
       value: DebugSettings
-      objectReference: {fileID: 0}
-    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
-      propertyPath: enableCardDealing
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
-      propertyPath: enableCardDebugText
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
-      propertyPath: enableIncantationRules
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
-      propertyPath: enableSpellDebugPrints
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
-      propertyPath: enableDebugIncantations
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

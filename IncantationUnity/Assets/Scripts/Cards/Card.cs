@@ -7,7 +7,7 @@ using System.Reflection;
 [RequireComponent(typeof(CommonCardData))]
 public class Card : SpellTarget
 {
-	public override int Priority => 1;
+	public override float Priority => 1;
 	public SpellID goalSpellID;
 	private Vector3 initialPos;
 	[HideInInspector]

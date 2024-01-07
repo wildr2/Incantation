@@ -5,7 +5,7 @@ using System.Reflection;
 
 public class SpellTarget : MonoBehaviour
 {
-	public virtual int Priority => 0;
+	public virtual float Priority => 0;
 	public SpellEffect[] SpellEffects { get; private set; }
 
 	protected virtual void Awake()

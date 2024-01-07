@@ -70,9 +70,9 @@ public class Spell
 		return false;
 	}
 
-	public int GetHighestSpellTargetPriority(SpellTarget[] targets)
+	public float GetHighestSpellTargetPriority(SpellTarget[] targets)
 	{
-		int priority = -1;
+		float priority = -1;
 		foreach (SpellTarget target in targets)
 		{
 			if (IsTargettable(target))
