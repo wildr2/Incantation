@@ -439,11 +439,14 @@ MonoBehaviour:
   sproutedSprite: {fileID: 4016279024605151837}
   brokenUnsproutedSprite: {fileID: 7841657159937497967}
   brokenSproutedSprite: {fileID: 7560954892380140804}
+  breakSFX:
+  - {fileID: 8300000, guid: 4acdaaaa45330da4492bc459c7bd35d4, type: 3}
+  growingSFX: {fileID: 8300000, guid: c4c9481bb260a0a4892fdfe80d2776b3, type: 3}
   igniteSE:
     sfx: {fileID: 0}
   levitateSE:
-    sfx: {fileID: 8300000, guid: 13f589b9931bc9847bada7e43d2ac2c1, type: 3}
-    landSFX: {fileID: 0}
+    sfx: {fileID: 0}
+    landSFX: {fileID: 8300000, guid: 13f589b9931bc9847bada7e43d2ac2c1, type: 3}
   breakSE:
     sfx: {fileID: 0}
   mendSE:

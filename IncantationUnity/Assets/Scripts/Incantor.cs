@@ -59,7 +59,7 @@ public class Incantor : MonoBehaviour
 				// Backspace.
 				inputText = inputText.Substring(0, Mathf.Max(0, inputText.Length - 1));
 			}
-			else if (char.IsLetter(c) || c == ' ')
+			else if (char.IsLetter(c) || (c == ' ' && inputText.Length > 0))
 			{
 				inputText += c;
 				book.Close();

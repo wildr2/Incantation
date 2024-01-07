@@ -355,6 +355,10 @@ MonoBehaviour:
   shutSFX: {fileID: 8300000, guid: 0e09d337fdd48424ca3108a02c5aa739, type: 3}
   lockSFX: {fileID: 8300000, guid: 976efb6f026f2f54da33afd675f63bad, type: 3}
   unlockSFX: {fileID: 8300000, guid: e353267badc816c44b658764ad4102cf, type: 3}
+  explodeSFX:
+  - {fileID: 8300000, guid: cbb774f475875a94cb7746e71f3708ce, type: 3}
+  - {fileID: 8300000, guid: 4f3fb8747b9a8764a8225b4ec5a8be3a, type: 3}
+  - {fileID: 8300000, guid: 9d8f13241ed1c0f4487cb6110c3cec7c, type: 3}
   activateSE:
     sfx: {fileID: 0}
   deactivateSE:
