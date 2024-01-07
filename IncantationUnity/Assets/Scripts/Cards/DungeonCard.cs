@@ -43,7 +43,7 @@ public class DungeonCard : Card
 	}
 
 	[System.Serializable]
-	public class VanishSE : CardSE
+	public class VanishSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Vanish;
 		public new CardType Target => (CardType)base.Target;
@@ -62,7 +62,7 @@ public class DungeonCard : Card
 	public VanishSE vanishSE;
 
 	[System.Serializable]
-	public class IgniteSE : CardSE
+	public class IgniteSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
@@ -81,7 +81,7 @@ public class DungeonCard : Card
 	public IgniteSE igniteSE;
 
 	[System.Serializable]
-	public class ExtinguishSE : CardSE
+	public class ExtinguishSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Extinguish;
 		public new CardType Target => (CardType)base.Target;
@@ -100,7 +100,7 @@ public class DungeonCard : Card
 	public ExtinguishSE extinguishSE;
 
 	[System.Serializable]
-	public class ActivateSE : CardSE
+	public class ActivateSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Activate;
 		public new CardType Target => (CardType)base.Target;
@@ -119,7 +119,7 @@ public class DungeonCard : Card
 	public ActivateSE activateSE;
 
 	[System.Serializable]
-	public class DeactivateSE : CardSE
+	public class DeactivateSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Deactivate;
 		public new CardType Target => (CardType)base.Target;
@@ -138,7 +138,7 @@ public class DungeonCard : Card
 	public DeactivateSE deactivateSE;
 
 	[System.Serializable]
-	public class ExplodeSE : CardSE
+	public class ExplodeSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Explode;
 		public new CardType Target => (CardType)base.Target;

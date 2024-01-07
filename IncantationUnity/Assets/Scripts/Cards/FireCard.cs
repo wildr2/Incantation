@@ -17,6 +17,7 @@ public class FireCard : Card
 	public float flamesGlowIntensity;
 	[HideInInspector]
 	public float flamesGlowDuration;
+	public AudioSource fireSFXSource;
 
 	public override bool IsComplete()
 	{
@@ -53,6 +54,7 @@ public class FireCard : Card
 	{
 		base.Update();
 		UpdateFlames();
+		fireSFXSource.volume = lit ? 1.0f : 0.0f;
 	}
 
 	private void UpdateFlames()
@@ -75,7 +77,7 @@ public class FireCard : Card
 	}
 
 	[System.Serializable]
-	public class IgniteSE : CardSE
+	public class IgniteSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
@@ -95,7 +97,7 @@ public class FireCard : Card
 	public IgniteSE igniteSE;
 
 	[System.Serializable]
-	public class ExplodeSE : CardSE
+	public class ExplodeSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Explode;
 		public new CardType Target => (CardType)base.Target;
@@ -115,7 +117,7 @@ public class FireCard : Card
 	public ExplodeSE explodeSE;
 	
 	[System.Serializable]
-	public class ExtinguishSE : CardSE
+	public class ExtinguishSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Extinguish;
 		public new CardType Target => (CardType)base.Target;
@@ -134,7 +136,7 @@ public class FireCard : Card
 	public ExtinguishSE extinguishSE;
 	
 	[System.Serializable]
-	public new class LevitateSE : Card.LevitateSE
+	public class LevitateSE : CardLevitateSE
 	{
 		public new CardType Target => (CardType)base.Target;
 		protected override Statum Levitating { get => Target.levitating; set => Target.levitating = value; }
@@ -152,7 +154,7 @@ public class FireCard : Card
 	public LevitateSE levitateSE;
 
 	[System.Serializable]
-	public new class RainSE : Card.RainSE
+	public class RainSE : CardRainSE
 	{
 		public new CardType Target => (CardType)base.Target;
 		protected override Statum Raining { get => Target.raining; set => Target.raining = value; }
@@ -166,7 +168,6 @@ public class FireCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Raining = true;
 		}
 
 		public override void Update()
@@ -187,7 +188,7 @@ public class FireCard : Card
 	public RainSE rainSE;
 
 	[System.Serializable]
-	public class VanishSE : CardSE
+	public class VanishSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Vanish;
 		public new CardType Target => (CardType)base.Target;
@@ -202,7 +203,7 @@ public class FireCard : Card
 			base.Apply(spellCast);
 			Target.vanished = true;
 
-			CardData.contentParent.SetActive(false);
+			CommonCardData.contentParent.SetActive(false);
 		}
 	}
 	public VanishSE vanishSE;

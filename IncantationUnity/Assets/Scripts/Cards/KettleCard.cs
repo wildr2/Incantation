@@ -83,7 +83,7 @@ public class KettleCard : Card
 	}
 
 	[System.Serializable]
-	public class IgniteSE : CardSE
+	public class IgniteSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
@@ -102,7 +102,7 @@ public class KettleCard : Card
 	public IgniteSE igniteSE;
 
 	[System.Serializable]
-	public class ExplodeSE : CardSE
+	public class ExplodeSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Explode;
 		public new CardType Target => (CardType)base.Target;
@@ -121,7 +121,7 @@ public class KettleCard : Card
 	public ExplodeSE explodeSE;
 	
 	[System.Serializable]
-	public class ExtinguishSE : CardSE
+	public class ExtinguishSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Extinguish;
 		public new CardType Target => (CardType)base.Target;
@@ -141,7 +141,7 @@ public class KettleCard : Card
 	public ExtinguishSE extinguishSE;
 	
 	[System.Serializable]
-	public new class LevitateSE : Card.LevitateSE
+	public class LevitateSE : CardLevitateSE
 	{
 		public new CardType Target => (CardType)base.Target;
 		protected override Statum Levitating { get => Target.levitating; set => Target.levitating = value; }
@@ -165,7 +165,7 @@ public class KettleCard : Card
 	public LevitateSE levitateSE;
 
 	[System.Serializable]
-	public class ActivateSE : CardSE
+	public class ActivateSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Activate;
 		public new CardType Target => (CardType)base.Target;
@@ -185,7 +185,7 @@ public class KettleCard : Card
 	public ActivateSE activateSE;
 
 	[System.Serializable]
-	public class DeactivateSE : CardSE
+	public class DeactivateSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Deactivate;
 		public new CardType Target => (CardType)base.Target;
@@ -205,7 +205,7 @@ public class KettleCard : Card
 	public DeactivateSE deactivateSE;
 
 	[System.Serializable]
-	public class BreakSE : CardSE
+	public class BreakSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Break;
 		public new CardType Target => (CardType)base.Target;
@@ -225,7 +225,7 @@ public class KettleCard : Card
 	public BreakSE breakSE;
 
 	[System.Serializable]
-	public class MendSE : CardSE
+	public class MendSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Mend;
 		public new CardType Target => (CardType)base.Target;
@@ -244,7 +244,7 @@ public class KettleCard : Card
 	public MendSE mendSE;
 
 	[System.Serializable]
-	public class VanishSE : CardSE
+	public class VanishSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Vanish;
 		public new CardType Target => (CardType)base.Target;
@@ -259,7 +259,7 @@ public class KettleCard : Card
 			base.Apply(spellCast);
 			Target.vanished = true;
 
-			CardData.contentParent.SetActive(false);
+			CommonCardData.contentParent.SetActive(false);
 		}
 	}
 	public VanishSE vanishSE;

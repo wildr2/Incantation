@@ -8,6 +8,8 @@ public abstract class SpellEffect
 	public abstract SpellID SpellID { get; }
 	public SpellTarget Target { private set; get; }
 	public virtual AudioClip[] OverrideSpellCastSFX => null;
+	public virtual bool ShakeOnApply => true;
+	public CommonCardData CommonCardData => Target as Card ? ((Card)Target).commonCardData : null;
 
 	// Most recent spellCast applying this effect.
 	protected SpellCast spellCast;
@@ -26,6 +28,14 @@ public abstract class SpellEffect
 	public virtual void Apply(SpellCast spellCast)
 	{
 		this.spellCast = spellCast;
+		if (ShakeOnApply)
+		{
+			Card card = Target as Card;
+			if (card)
+			{
+				ShakeCard(card, spellCast.intensity);
+			}
+		}
 	}
 
 	public virtual void Update()
@@ -43,5 +53,10 @@ public abstract class SpellEffect
 	protected void DoDelayed(float delay, System.Action action)
 	{
 		Target.StartCoroutine(CoroutineUtil.DoAfterDelay(action, delay));
+	}
+
+	protected virtual void ShakeCard(Card card, float intensity)
+	{
+		card.Shake(Util.Map(0, 1, 0.5f, 1.0f, intensity));
 	}
 }

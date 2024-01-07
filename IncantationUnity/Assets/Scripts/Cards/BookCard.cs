@@ -66,7 +66,7 @@ public class BookCard : Card
 	}
 
 	[System.Serializable]
-	public class IgniteSE : CardSE
+	public class IgniteSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
@@ -85,7 +85,7 @@ public class BookCard : Card
 	public IgniteSE igniteSE;
 	
 	[System.Serializable]
-	public class ExtinguishSE : CardSE
+	public class ExtinguishSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Extinguish;
 		public new CardType Target => (CardType)base.Target;
@@ -104,7 +104,7 @@ public class BookCard : Card
 	public ExtinguishSE extinguishSE;
 	
 	[System.Serializable]
-	public new class LevitateSE : Card.LevitateSE
+	public class LevitateSE : CardLevitateSE
 	{
 		public new CardType Target => (CardType)base.Target;
 		protected override Statum Levitating { get => Target.levitating; set => Target.levitating = value; }
@@ -122,7 +122,7 @@ public class BookCard : Card
 	public LevitateSE levitateSE;
 
 	[System.Serializable]
-	public class ActivateSE : CardSE
+	public class ActivateSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Activate;
 		public new CardType Target => (CardType)base.Target;
@@ -141,7 +141,7 @@ public class BookCard : Card
 	public ActivateSE activateSE;
 
 	[System.Serializable]
-	public class DeactivateSE : CardSE
+	public class DeactivateSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Deactivate;
 		public new CardType Target => (CardType)base.Target;
@@ -160,7 +160,7 @@ public class BookCard : Card
 	public DeactivateSE deactivateSE;
 
 	[System.Serializable]
-	public class UnlockSE : CardSE
+	public class UnlockSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Unlock;
 		public UnlockSpell Spell => (UnlockSpell)spellCast.spell;
@@ -178,14 +178,14 @@ public class BookCard : Card
 			DoDelayed(Spell.openDelay, () =>
 			{
 				Target.Open();
-				Shake(spellCast.intensity);
+				ShakeCard(Target, spellCast.intensity);
 			});
 		}
 	}
 	public UnlockSE unlockSE;
 
 	[System.Serializable]
-	public class LockSE : CardSE
+	public class LockSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Lock;
 		public new CardType Target => (CardType)base.Target;
@@ -204,7 +204,7 @@ public class BookCard : Card
 	public LockSE lockSE;
 
 	[System.Serializable]
-	public class VanishSE : CardSE
+	public class VanishSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Vanish;
 		public new CardType Target => (CardType)base.Target;
@@ -219,7 +219,7 @@ public class BookCard : Card
 			base.Apply(spellCast);
 			Target.vanished = true;
 
-			CardData.contentParent.SetActive(false);
+			CommonCardData.contentParent.SetActive(false);
 		}
 	}
 	public VanishSE vanishSE;

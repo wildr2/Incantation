@@ -47,7 +47,7 @@ public class PotholeCard : Card
 	}
 
 	[System.Serializable]
-	public class MendSE : CardSE
+	public class MendSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Mend;
 		public new CardType Target => (CardType)base.Target;
@@ -67,7 +67,7 @@ public class PotholeCard : Card
 	public MendSE mendSE;
 
 	[System.Serializable]
-	public class Fill : CardSE
+	public class Fill : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Fill;
 		public new CardType Target => (CardType)base.Target;
@@ -86,7 +86,7 @@ public class PotholeCard : Card
 	public Fill fill;
 
 	[System.Serializable]
-	public new class RainSE : Card.RainSE
+	public class RainSE : CardRainSE
 	{
 		public new CardType Target => (CardType)base.Target;
 		protected override Statum Raining { get => Target.raining; set => Target.raining = value; }
@@ -99,7 +99,6 @@ public class PotholeCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.raining = true;
 			if (!Target.vanished && !Target.filledWithWater)
 			{
 				Target.filledWithWater = true;
@@ -109,7 +108,7 @@ public class PotholeCard : Card
 	public RainSE rainSE;
 
 	[System.Serializable]
-	public class VanishSE : CardSE
+	public class VanishSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Vanish;
 		public new CardType Target => (CardType)base.Target;
@@ -124,7 +123,7 @@ public class PotholeCard : Card
 			base.Apply(spellCast);
 			Target.vanished = true;
 
-			CardData.contentParent.SetActive(false);
+			CommonCardData.contentParent.SetActive(false);
 		}
 	}
 	public VanishSE vanishSE;

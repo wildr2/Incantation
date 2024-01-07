@@ -74,7 +74,7 @@ public class GlassCard : Card
 	}
 
 	[System.Serializable]
-	public class ExplodeSE : CardSE
+	public class ExplodeSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Explode;
 		public new CardType Target => (CardType)base.Target;
@@ -93,7 +93,7 @@ public class GlassCard : Card
 	public ExplodeSE explodeSE;
 	
 	[System.Serializable]
-	public new class LevitateSE : Card.LevitateSE
+	public class LevitateSE : CardLevitateSE
 	{
 		public new CardType Target => (CardType)base.Target;
 		protected override Statum Levitating { get => Target.levitating; set => Target.levitating = value; }
@@ -118,7 +118,7 @@ public class GlassCard : Card
 	public LevitateSE levitateSE;
 
 	[System.Serializable]
-	public class BreakSE : CardSE
+	public class BreakSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Break;
 		public new CardType Target => (CardType)base.Target;
@@ -137,7 +137,7 @@ public class GlassCard : Card
 	public BreakSE breakSE;
 
 	[System.Serializable]
-	public class MendSE : CardSE
+	public class MendSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Mend;
 		public new CardType Target => (CardType)base.Target;
@@ -156,7 +156,7 @@ public class GlassCard : Card
 	public MendSE mendSE;
 
 	[System.Serializable]
-	public class VanishSE : CardSE
+	public class VanishSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Vanish;
 		public new CardType Target => (CardType)base.Target;
@@ -171,18 +171,18 @@ public class GlassCard : Card
 			base.Apply(spellCast);
 			Target.vanished = true;
 
-			CardData.contentParent.SetActive(false);
+			CommonCardData.contentParent.SetActive(false);
 		}
 	}
 	public VanishSE vanishSE;
 
 	[System.Serializable]
-	public new class RainSE : Card.RainSE
+	public class RainSE : CardRainSE
 	{
 		public new CardType Target => (CardType)base.Target;
 		protected override Statum Raining { get => Target.raining; set => Target.raining = value; }
 		protected override AudioClip[] AudioClips => !Target.vanished && !Target.broken ?
-			new AudioClip[] { CardData.rainingSFX, CardData.rainingOnGlassSFX } :
+			new AudioClip[] { CommonCardData.rainingSFX, CommonCardData.rainingOnGlassSFX } :
 			base.AudioClips;
 
 		public override bool AreConditionsMet()
@@ -202,7 +202,7 @@ public class GlassCard : Card
 	public RainSE rainSE;
 
 	[System.Serializable]
-	public class Fill : CardSE
+	public class Fill : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Fill;
 		public new CardType Target => (CardType)base.Target;
@@ -221,7 +221,7 @@ public class GlassCard : Card
 	public Fill fill;
 
 	[System.Serializable]
-	public class GrowSE : CardSE
+	public class GrowSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Grow;
 		public new CardType Target => (CardType)base.Target;

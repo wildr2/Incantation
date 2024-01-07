@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3959463857287956381}
   - component: {fileID: 963079707904590623}
-  - component: {fileID: 36763104700750442}
-  - component: {fileID: 1974572864523733469}
   - component: {fileID: 6686810050980086520}
   m_Layer: 0
   m_Name: FireProp
@@ -131,32 +129,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &36763104700750442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1001900416951133437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb026e895e853c94198b02690b4b2802, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sfx: {fileID: 0}
---- !u!114 &1974572864523733469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1001900416951133437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9f6be73826f99f4a92915ce485698ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sfx: {fileID: 0}
 --- !u!114 &6686810050980086520
 MonoBehaviour:
   m_ObjectHideFlags: 0

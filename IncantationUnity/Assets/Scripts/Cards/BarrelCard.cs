@@ -56,7 +56,7 @@ public class BarrelCard: Card
 	}
 
 	[System.Serializable]
-	public new class LevitateSE : Card.LevitateSE
+	public class LevitateSE : CardLevitateSE
 	{
 		public new CardType Target => (CardType)base.Target;
 		protected override Statum Levitating { get => Target.levitating; set => Target.levitating = value; }
@@ -89,7 +89,7 @@ public class BarrelCard: Card
 	public LevitateSE levitateSE;
 
 	[System.Serializable]
-	public class MendSE : CardSE
+	public class MendSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Mend;
 		public new CardType Target => (CardType)base.Target;
@@ -108,7 +108,7 @@ public class BarrelCard: Card
 	public MendSE mendSE;
 
 	[System.Serializable]
-	public class VanishSE : CardSE
+	public class VanishSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Vanish;
 		public new CardType Target => (CardType)base.Target;
@@ -123,13 +123,13 @@ public class BarrelCard: Card
 			base.Apply(spellCast);
 			Target.vanished = true;
 
-			CardData.contentParent.SetActive(false);
+			CommonCardData.contentParent.SetActive(false);
 		}
 	}
 	public VanishSE vanishSE;
 
 	[System.Serializable]
-	public class ExplodeSE : CardSE
+	public class ExplodeSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Explode;
 		public new CardType Target => (CardType)base.Target;
@@ -148,7 +148,7 @@ public class BarrelCard: Card
 	public ExplodeSE explodeSE;
 
 	[System.Serializable]
-	public class Fill : CardSE
+	public class Fill : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Fill;
 		public new CardType Target => (CardType)base.Target;
@@ -167,7 +167,7 @@ public class BarrelCard: Card
 	public Fill fill;
 
 	[System.Serializable]
-	public class IgniteSE : CardSE
+	public class IgniteSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new CardType Target => (CardType)base.Target;
@@ -186,7 +186,7 @@ public class BarrelCard: Card
 	public IgniteSE igniteSE;
 
 	[System.Serializable]
-	public new class RainSE : Card.RainSE
+	public class RainSE : CardRainSE
 	{
 		public new CardType Target => (CardType)base.Target;
 		protected override Statum Raining { get => Target.raining; set => Target.raining = value; }
@@ -199,7 +199,6 @@ public class BarrelCard: Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.raining = true;
 		}
 	}
 	public RainSE rainSE;

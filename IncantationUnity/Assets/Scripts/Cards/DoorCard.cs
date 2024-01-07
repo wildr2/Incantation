@@ -98,7 +98,7 @@ public class DoorCard : Card
 	}
 
 	[System.Serializable]
-	public class ActivateSE : CardSE
+	public class ActivateSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Activate;
 		public new CardType Target => (CardType)base.Target;
@@ -117,7 +117,7 @@ public class DoorCard : Card
 	public ActivateSE activateSE;
 
 	[System.Serializable]
-	public class DeactivateSE : CardSE
+	public class DeactivateSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Deactivate;
 		public new CardType Target => (CardType)base.Target;
@@ -136,7 +136,7 @@ public class DoorCard : Card
 	public DeactivateSE deactivateSE;
 
 	[System.Serializable]
-	public class UnlockSE : CardSE
+	public class UnlockSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Unlock;
 		public UnlockSpell Spell => (UnlockSpell)spellCast.spell;
@@ -157,7 +157,7 @@ public class DoorCard : Card
 	public UnlockSE unlockSE;
 
 	[System.Serializable]
-	public class LockSE : CardSE
+	public class LockSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Lock;
 		public new CardType Target => (CardType)base.Target;
@@ -177,7 +177,7 @@ public class DoorCard : Card
 	public LockSE lockSE;
 
 	[System.Serializable]
-	public class ExplodeSE : CardSE
+	public class ExplodeSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Explode;
 		public new CardType Target => (CardType)base.Target;
@@ -196,7 +196,7 @@ public class DoorCard : Card
 	public ExplodeSE explodeSE;
 
 	[System.Serializable]
-	public class MendSE : CardSE
+	public class MendSE : SpellEffect
 	{
 		public override SpellID SpellID => SpellID.Mend;
 		public new CardType Target => (CardType)base.Target;
