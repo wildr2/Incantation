@@ -7,6 +7,7 @@ public abstract class SpellEffect
 {
 	public abstract SpellID SpellID { get; }
 	public SpellTarget Target { private set; get; }
+	public virtual float TargetPriorityOffset => 0;
 	public virtual AudioClip[] OverrideSpellCastSFX => null;
 	public virtual bool ShakeOnApply => true;
 	public CommonCardData CommonCardData => Target as Card ? ((Card)Target).commonCardData : null;

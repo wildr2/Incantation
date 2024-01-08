@@ -114,12 +114,12 @@ public class Spell
 		return spellCast;
 	}
 
-	// Alphabetical descending.
+	// Alphabetical ascending.
 	public class NameComparer : IComparer<Spell>
 	{
 		public int Compare(Spell a, Spell b)
 		{
-			return b.SpellID.ToString().CompareTo(a.SpellID.ToString());
+			return a.SpellID.ToString().CompareTo(b.SpellID.ToString());
 		}
 	}
 }

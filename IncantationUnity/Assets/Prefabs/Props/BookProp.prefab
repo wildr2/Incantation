@@ -46,11 +46,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bookText: {fileID: 6937084487590615631}
-  openSFX: {fileID: 8300000, guid: 1d7f789f36a9c91419782c903d9b38bc, type: 3}
+  openSFX: {fileID: 8300000, guid: 41660f3f0eb6f0443b06e681f5adbfac, type: 3}
+  quickOpenSFX: {fileID: 8300000, guid: 1d7f789f36a9c91419782c903d9b38bc, type: 3}
   closeSFX: {fileID: 8300000, guid: 2bab18d8ae12c0a44a46fa0621de71e3, type: 3}
+  turnPageSFX:
+  - {fileID: 8300000, guid: 361740fed99cb7d42976d3e96ba4021d, type: 3}
   spriteRenderer: {fileID: 6931198372959997535}
   litSprite: {fileID: 21300000, guid: 5b0fbd9c544fff54599898428ee431ea, type: 3}
   unlitSprite: {fileID: 21300000, guid: a26ad3830947c1e4c95c486417fd0137, type: 3}
+  newSpellOpenDelay: 0.1
+  newSpellOpenDisplayDelay: 0
+  openDisplayDelay: 0.97
+  turnDisplayDelay: 0.1
 --- !u!1 &5648597823104463242
 GameObject:
   m_ObjectHideFlags: 0

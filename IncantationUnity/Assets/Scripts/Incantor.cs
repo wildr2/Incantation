@@ -119,7 +119,7 @@ public class Incantor : MonoBehaviour
 				{
 					bool castable = incantationCastable && spell.CheckIncantation(incantation) && spell.IsTargettable(targets);
 					response.spellScores[i] = !castable ? 0 : 1 +
-						(spell.SpellID != goalSpellID ? 1 : 0) +
+						(spell.SpellID != goalSpellID ? 1 : 0) + // Overlapping incantations consistently result in the wrong spell!
 						(spell.seen ? 2 : 0);
 				}
 			}
@@ -202,7 +202,7 @@ public class Incantor : MonoBehaviour
 		// Cast the spell on a single target that can be affected by it.
 		SpellTarget[] targets = FindObjectsOfType<SpellTarget>();
 		Util.Shuffle(targets);
-		System.Array.Sort(targets, new SpellTarget.PriorityComparer());
+		System.Array.Sort(targets, new SpellTarget.SpellDependentPriorityComparer(spell.SpellID));
 
 		SpellCast spellCast = null;
 		foreach (SpellTarget target in targets)

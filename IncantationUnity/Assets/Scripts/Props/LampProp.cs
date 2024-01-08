@@ -12,8 +12,6 @@ public class LampProp : Prop
 	public AudioClip turnOffSFX;
 	public AudioClip[] breakSFX;
 
-	public override float Priority => !on ? 2 : base.Priority;
-
 	protected override void Awake()
 	{
 		base.Awake();
@@ -33,6 +31,7 @@ public class LampProp : Prop
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new TargetType Target => (TargetType)base.Target;
+		public override float TargetPriorityOffset => !Target.on ? 2 : base.TargetPriorityOffset;
 
 		public override bool AreConditionsMet()
 		{
@@ -90,6 +89,7 @@ public class LampProp : Prop
 	{
 		public override SpellID SpellID => SpellID.Activate;
 		public new TargetType Target => (TargetType)base.Target;
+		public override float TargetPriorityOffset => !Target.on ? 2 : base.TargetPriorityOffset;
 
 		public override bool AreConditionsMet()
 		{
@@ -149,6 +149,7 @@ public class LampProp : Prop
 	{
 		public override SpellID SpellID => SpellID.Mend;
 		public new TargetType Target => (TargetType)base.Target;
+		public override float TargetPriorityOffset => !Target.on ? 2 : base.TargetPriorityOffset;
 
 		public override bool AreConditionsMet()
 		{

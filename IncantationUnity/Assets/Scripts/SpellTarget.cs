@@ -8,6 +8,12 @@ public class SpellTarget : MonoBehaviour
 	public virtual float Priority => 0;
 	public SpellEffect[] SpellEffects { get; private set; }
 
+	public float GetSpellDependentPriority(SpellID spellID)
+	{
+		SpellEffect effect = System.Array.Find(SpellEffects, e => e.SpellID == spellID);
+		return Priority + (effect != null ? effect.TargetPriorityOffset : 0);
+	}
+
 	protected virtual void Awake()
 	{
 		// Populate SpellEffects using reflection.
@@ -39,6 +45,21 @@ public class SpellTarget : MonoBehaviour
 		public int Compare(SpellTarget a, SpellTarget b)
 		{
 			return b.Priority.CompareTo(a.Priority);
+		}
+	}
+
+	public class SpellDependentPriorityComparer : IComparer<SpellTarget>
+	{
+		private SpellID spellID;
+
+		public SpellDependentPriorityComparer(SpellID spellID)
+		{
+			this.spellID = spellID;
+		}
+
+		public int Compare(SpellTarget a, SpellTarget b)
+		{
+			return b.GetSpellDependentPriority(spellID).CompareTo(a.GetSpellDependentPriority(spellID));
 		}
 	}
 }

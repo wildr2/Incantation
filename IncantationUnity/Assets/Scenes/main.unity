@@ -176,6 +176,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1080293347}
     m_Modifications:
+    - target: {fileID: 506153870411773171, guid: 4ab60092f00d87844836ca4411cb18ac, type: 3}
+      propertyPath: newSpellOpenDelay
+      value: 0.08
+      objectReference: {fileID: 0}
     - target: {fileID: 2076209005144140109, guid: 4ab60092f00d87844836ca4411cb18ac, type: 3}
       propertyPath: m_Name
       value: BookProp

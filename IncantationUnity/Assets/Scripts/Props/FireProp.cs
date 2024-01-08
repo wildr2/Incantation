@@ -8,9 +8,6 @@ public class FireProp : Prop
 	public Statum lit;
 	private AudioSource fireSFXSource;
 
-	// When dark, higher priority than cards but lower than lamp.
-	public override float Priority => !RoomLighting.Instance.lampProp.on ? 1.5f : base.Priority;
-
 	protected override void Awake()
 	{
 		base.Awake();
@@ -29,6 +26,9 @@ public class FireProp : Prop
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new TargetType Target => (TargetType)base.Target;
+
+		// When dark, higher priority than card but lower than lamp.
+		public override float TargetPriorityOffset => RoomLighting.Instance.Brightness < 0.5f ? 1.5f : base.TargetPriorityOffset;
 
 		public override bool AreConditionsMet()
 		{

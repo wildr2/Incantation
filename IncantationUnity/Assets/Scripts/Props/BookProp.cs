@@ -10,13 +10,21 @@ public class BookProp : Prop
 
 	public Text bookText;
 	public AudioClip openSFX;
+	public AudioClip quickOpenSFX;
 	public AudioClip closeSFX;
+	public AudioClip[] turnPageSFX;
 	public SpriteRenderer spriteRenderer;
 	public Sprite litSprite;
 	public Sprite unlitSprite;
+	public float newSpellOpenDelay = 0.2f;
+	public float newSpellOpenDisplayDelay = 0.1f;
+	public float openDisplayDelay = 1.0f;
+	public float turnDisplayDelay = 0.2f;
 
 	private List<Spell> pages = new List<Spell>();
 	private int pageIndex;
+	private float pageTurnTime;
+	private bool doingQuickOpen;
 
 	public void Toggle()
 	{
@@ -30,12 +38,13 @@ public class BookProp : Prop
 		}
 	}
 
-	public void Open()
+	public void Open(bool quick=false)
 	{
 		if (!open && pages.Count > 0)
 		{
 			open = true;
-			SFXManager.Play(openSFX, MixerGroup.Book, transform.position);
+			doingQuickOpen = quick;
+			SFXManager.Play(quick ? quickOpenSFX : openSFX, MixerGroup.Book, transform.position);
 
 			// Open to the spell the current card teaches.
 			Card card = GameManager.Instance.CurrentCard;
@@ -59,7 +68,13 @@ public class BookProp : Prop
 	{
 		if (open)
 		{
+			int oldPageIndex = pageIndex;
 			pageIndex = Mathf.Clamp(pageIndex + dir, 0, pages.Count - 1);
+			if (pageIndex != oldPageIndex)
+			{
+				pageTurnTime = Time.time;
+				SFXManager.Play(turnPageSFX, MixerGroup.Book);
+			}
 		}
 	}
 
@@ -98,25 +113,28 @@ public class BookProp : Prop
 		Spell spell = Player.Instance.spells[card.goalSpellID];
 		if (!spell.seen)
 		{
-			//Spell currentPageSpell = pages.Count > 0 ? pages[pageIndex] : null;
+			spell.seen = true;
+
 			pages.Add(spell);
 			pages.Sort(new Spell.NameComparer());
-			//if (currentPageSpell != null)
-			//{
-			//	// Correct page index.
-			//	pageIndex = pages.FindIndex(p => p.SpellID == currentPageSpell.SpellID);
-			//}
 
 			pageIndex = pages.FindIndex(p => p.SpellID == spell.SpellID);
 
-			Open();
-			spell.seen = true;
+			StartCoroutine(CoroutineUtil.DoAfterDelay(() =>
+			{
+				Open(quick: true);
+			}, newSpellOpenDelay));
 		}
 	}
 
 	private void UpdateText()
 	{
-		if (pages.Count == 0)
+		float openDisplayDelay = doingQuickOpen ? newSpellOpenDisplayDelay : this.openDisplayDelay;
+		bool delaying = 
+			Time.time - open.time < openDisplayDelay ||
+			Time.time - pageTurnTime < turnDisplayDelay;
+
+		if (pages.Count == 0 || delaying)
 		{
 			bookText.text = "";
 		}
@@ -166,7 +184,7 @@ public class BookProp : Prop
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			DoDelayed(Spell.openDelay, Target.Open);
+			DoDelayed(Spell.openDelay, () => Target.Open());
 		}
 	}
 	public UnlockSE unlockSE;
