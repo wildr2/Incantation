@@ -13,6 +13,7 @@ public class Incantor : MonoBehaviour
 	private float startFadeTime = -1;
 	private ScoreIncantationResponse scoreResponse;
 	private Dictionary<string, int> wordUseCount = new Dictionary<string, int>();
+	public System.Action onCastSpell;
 
 	private void Awake()
 	{
@@ -243,6 +244,10 @@ public class Incantor : MonoBehaviour
 		if (spellCast != null)
 		{
 			StartCoroutine(UpdateSpellCast(spellCast));
+			if (onCastSpell != null)
+			{
+				onCastSpell();
+			}
 		}
 	}
 

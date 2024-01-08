@@ -23,11 +23,12 @@ public class GameManager : Singleton<GameManager>
 	public float maxCardDealRotationDeg; 
 	public AudioClip dealCardSFX;
 	public AudioClip shuffleDeckSFX;
-	public GameObject skipCardText;
+	public Text helpText;
 	public Text scoreText;
 
 	private GameState state = GameState.Init;
 	private Deck deck;
+	private BookProp book;
 	private float enterStateTime;
 	private bool dealingNextCard;
 	public Card CurrentCard { get; private set; }
@@ -40,6 +41,7 @@ public class GameManager : Singleton<GameManager>
 	private void Awake()
 	{
 		deck = GetComponent<Deck>();
+		book = FindObjectOfType<BookProp>();
 	}
 
 	private void Update()
@@ -127,12 +129,26 @@ public class GameManager : Singleton<GameManager>
 
 	private void UpdateText()
 	{
-		bool show =
+		const string skipCardText = "press space to skip card";
+
+		helpText.text = "";
+
+		TutorialText tutorialText = GetComponent<TutorialText>();
+
+		bool showSkipText =
 			state == GameState.Round &&
 			currentCardDoneTime < 0 &&
 			currentCardBecameSkippableTime >= 0 &&
 			Time.time - currentCardBecameSkippableTime > skippableDelay;
-		skipCardText.SetActive(show);
+
+		if (tutorialText.Text != "")
+		{
+			helpText.text = tutorialText.Text;
+		}
+		else if (showSkipText)
+		{
+			helpText.text = skipCardText;
+		}
 
 		scoreText.text = string.Format("{0}\t\t{1}", Util.FormatTimeAsMinSec(Time.timeSinceLevelLoad), cardsCompleted);
 	}

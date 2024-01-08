@@ -25,6 +25,10 @@ public class BookProp : Prop
 	private int pageIndex;
 	private float pageTurnTime;
 	private bool doingQuickOpen;
+	private AudioSource openAudioSource;
+
+	public bool DisplayingPage => bookText.text.Length > 0;
+	public int PageCount => pages.Count;
 
 	public void Toggle()
 	{
@@ -44,7 +48,7 @@ public class BookProp : Prop
 		{
 			open = true;
 			doingQuickOpen = quick;
-			SFXManager.Play(quick ? quickOpenSFX : openSFX, MixerGroup.Book, transform.position);
+			openAudioSource = SFXManager.Play(quick ? quickOpenSFX : openSFX, MixerGroup.Book, transform.position);
 
 			// Open to the spell the current card teaches.
 			Card card = GameManager.Instance.CurrentCard;
@@ -61,10 +65,14 @@ public class BookProp : Prop
 		{
 			open = false;
 			SFXManager.Play(closeSFX, MixerGroup.Book, transform.position);
+			if (openAudioSource)
+			{
+				openAudioSource.Stop();
+			}
 		}
 	}
 
-	public void TurnPage(int dir)
+	public bool TurnPage(int dir)
 	{
 		if (open)
 		{
@@ -74,8 +82,10 @@ public class BookProp : Prop
 			{
 				pageTurnTime = Time.time;
 				SFXManager.Play(turnPageSFX, MixerGroup.Book);
+				return true;
 			}
 		}
+		return false;
 	}
 
 	protected override void Awake()
@@ -120,10 +130,13 @@ public class BookProp : Prop
 
 			pageIndex = pages.FindIndex(p => p.SpellID == spell.SpellID);
 
-			StartCoroutine(CoroutineUtil.DoAfterDelay(() =>
+			if (pages.Count > 1)
 			{
-				Open(quick: true);
-			}, newSpellOpenDelay));
+				StartCoroutine(CoroutineUtil.DoAfterDelay(() =>
+				{
+					Open(quick: true);
+				}, newSpellOpenDelay));
+			}
 		}
 	}
 
@@ -134,7 +147,7 @@ public class BookProp : Prop
 			Time.time - open.time < openDisplayDelay ||
 			Time.time - pageTurnTime < turnDisplayDelay;
 
-		if (pages.Count == 0 || delaying)
+		if (!open || delaying || pages.Count == 0)
 		{
 			bookText.text = "";
 		}

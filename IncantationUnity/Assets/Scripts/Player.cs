@@ -23,6 +23,8 @@ public class Player : Singleton<Player>
 
 	public Dictionary<SpellID, Spell> spells;
 	private BookProp book;
+	public System.Action OnOpenedBook;
+	public System.Action OnTurnedPage;
 
 	private void Awake()
 	{
@@ -54,17 +56,22 @@ public class Player : Singleton<Player>
 		bool input_book = Input.GetKeyDown(KeyCode.Tab);
 		bool input_book_page_left = Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Alpha1);
 		bool input_book_page_right = Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.Alpha2);
+		int input_book_page_dir = input_book_page_left ? -1 : input_book_page_right ? 1 : 0;
+
 		if (input_book)
 		{
 			book.Toggle();
+			if (book.open && OnOpenedBook != null)
+			{
+				OnOpenedBook();
+			}
 		}
-		if (input_book_page_left)
+		if (input_book_page_dir != 0)
 		{
-			book.TurnPage(-1);
-		}
-		if (input_book_page_right)
-		{
-			book.TurnPage(1);
+			if (book.TurnPage(input_book_page_dir) && OnTurnedPage != null)
+			{
+				OnTurnedPage();
+			}
 		}
 	}
 }

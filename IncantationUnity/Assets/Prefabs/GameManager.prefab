@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 483624126698273152}
   - component: {fileID: 8851642431030399940}
   - component: {fileID: 1690791868237372342}
+  - component: {fileID: 907886494030276123}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -138,7 +139,7 @@ MonoBehaviour:
   maxCardDealRotationDeg: 3
   dealCardSFX: {fileID: 8300000, guid: 7029a0d62b2874642a72553d4ec02164, type: 3}
   shuffleDeckSFX: {fileID: 8300000, guid: f483444cceca8cc41943186d262661ef, type: 3}
-  skipCardText: {fileID: 4702052039443444374}
+  helpText: {fileID: 8832295672545834588}
   scoreText: {fileID: 3432934754605361509}
 --- !u!114 &8851642431030399940
 MonoBehaviour:
@@ -189,6 +190,18 @@ MonoBehaviour:
   darkTint: {r: 0, g: 0, b: 0, a: 1}
   fireProp: {fileID: 0}
   lampProp: {fileID: 0}
+--- !u!114 &907886494030276123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967226156817053802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec91881959fcba247a4a2d7a05857e7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4702052039443444374
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +214,7 @@ GameObject:
   - component: {fileID: 3530541431976046065}
   - component: {fileID: 8832295672545834588}
   m_Layer: 6
-  m_Name: SkipText
+  m_Name: HelpText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
