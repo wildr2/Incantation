@@ -7,6 +7,7 @@ public class Statum
 {
 	public bool value;
 	public float time;
+	public float TimeSince => Time.time - time;
 
 	public Statum() : this(false) { }
 

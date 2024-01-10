@@ -12,6 +12,7 @@ public class Card : SpellTarget
 	private Vector3 initialPos;
 	[HideInInspector]
 	public CommonCardData commonCardData;
+	private List<CardGlow> glows = new List<CardGlow>();
 
 	public virtual bool IsComplete()
 	{
@@ -26,6 +27,11 @@ public class Card : SpellTarget
 	public virtual float GetGlowIntensity()
 	{
 		return 0.0f;
+	}
+
+	public void Glow(SpriteRenderer spriteRenderer)
+	{
+		glows.Add(new CardGlow(spriteRenderer, 2.0f));
 	}
 
 	public void Shake(float intensity)
@@ -60,7 +66,20 @@ public class Card : SpellTarget
 	protected override void Update()
 	{
 		base.Update();
+		UpdateGlows();
 		UpdateDebugText();
+	}
+
+	private void UpdateGlows()
+	{
+		for (int i = glows.Count - 1; i >= 0; --i)
+		{
+			if (glows[i].Update())
+			{
+				glows[i].End();
+				glows.RemoveAt(i);
+			}
+		}
 	}
 
 	private void UpdateDebugText()
@@ -116,4 +135,35 @@ public class Card : SpellTarget
 		}
 	}
 	public GenericSE genericSE;
+}
+
+public class CardGlow
+{
+	private SpriteRenderer spriteRenderer;
+	private float startTime;
+	private float duration;
+
+	public CardGlow(SpriteRenderer spriteRenderer, float duration)
+	{
+		this.spriteRenderer = spriteRenderer;
+		startTime = Time.time;
+		this.duration = duration;
+
+		spriteRenderer.enabled = true;
+	}
+
+	public bool Update()
+	{
+		float flicker = Mathf.Lerp(1.0f, Mathf.PerlinNoise(Time.time * 8.0f, 0), 0.1f);
+		float fade = Mathf.Lerp(1.0f, 0.0f, (Time.time - startTime) / duration);
+		fade = 1.0f - Mathf.Pow(1.0f - fade, 4.0f);
+		float glow = fade * flicker;
+		spriteRenderer.color = Util.SetAlpha(spriteRenderer.color, glow);
+		return glow <= 0.0f;
+	}
+
+	public void End()
+	{
+		spriteRenderer.enabled = false;
+	}
 }

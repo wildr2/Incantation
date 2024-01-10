@@ -10,9 +10,10 @@ public class KettleCard : Card
 	public Statum levitating;
 	public Statum vanished;
 
-	public SpriteRenderer onSprite;
-	public SpriteRenderer offSprite;
-	public SpriteRenderer brokenSprite;
+	public SpriteRenderer baseSprite;
+	public SpriteRenderer kettleSprite;
+	public SpriteRenderer kettleGlowSprite;
+	public SpriteRenderer kettleSwitchOffSprite;
 
 	public AudioClip turnOnSFX;
 	public AudioClip turnOffSFX;
@@ -58,23 +59,24 @@ public class KettleCard : Card
 	protected override void Awake()
 	{
 		base.Awake();
-
 		on = goalSpellID == SpellID.Deactivate;
 		broken = false;
 		levitating = false;
 		vanished = false;
+
+		kettleGlowSprite.enabled = false;
 	}
 
 	protected override void Update()
 	{
 		base.Update();
-		onSprite.enabled = on;
-		offSprite.enabled = !on && !broken;
-		brokenSprite.enabled = broken;
+
+		kettleSwitchOffSprite.enabled = !on;
 
 		if (on && !boilingAudioSource.isPlaying)
 		{
-			boilingAudioSource.Play();
+			// Prevent visual hitch playing large sfx.
+			StartCoroutine(CoroutineUtil.DoNextFrame(boilingAudioSource.Play));
 		}
 		boilingAudioSource.volume = vanished ? 0 : 1;
 		boilingAudioSource.pitch = on ? 1 : -1;
@@ -97,6 +99,7 @@ public class KettleCard : Card
 		{
 			base.Apply(spellCast);
 			Target.SetTemp(0.8f);
+			Target.Glow(Target.kettleGlowSprite);
 		}
 	}
 	public IgniteSE igniteSE;
@@ -116,6 +119,7 @@ public class KettleCard : Card
 		{
 			base.Apply(spellCast);
 			Target.SetTemp(0.8f);
+			Target.Glow(Target.kettleGlowSprite);
 		}
 	}
 	public ExplodeSE explodeSE;
@@ -136,6 +140,7 @@ public class KettleCard : Card
 			base.Apply(spellCast);
 			Target.on = false;
 			Target.SetTemp(Mathf.Min(Target.GetTemp() * 0.5f, 0.01f));
+			Target.Glow(Target.kettleGlowSprite);
 		}
 	}
 	public ExtinguishSE extinguishSE;
@@ -145,6 +150,9 @@ public class KettleCard : Card
 	{
 		public new CardType Target => (CardType)base.Target;
 		protected override Statum Levitating { get => Target.levitating; set => Target.levitating = value; }
+		protected override Transform TransformToMove => kettleRoot;
+
+		public Transform kettleRoot;
 
 		public override bool AreConditionsMet()
 		{
@@ -160,6 +168,7 @@ public class KettleCard : Card
 				Target.on = false;
 				SFXManager.Play(Target.turnOffSFX, parent: Target.transform);
 			}
+			Target.Glow(Target.kettleGlowSprite);
 		}
 	}
 	public LevitateSE levitateSE;
@@ -180,6 +189,7 @@ public class KettleCard : Card
 			base.Apply(spellCast);
 			Target.on = true;
 			SFXManager.Play(Target.turnOnSFX, parent: Target.transform);
+			Target.Glow(Target.kettleGlowSprite);
 		}
 	}
 	public ActivateSE activateSE;
@@ -200,6 +210,7 @@ public class KettleCard : Card
 			base.Apply(spellCast);
 			Target.on = false;
 			SFXManager.Play(Target.turnOffSFX, parent: Target.transform);
+			Target.Glow(Target.kettleGlowSprite);
 		}
 	}
 	public DeactivateSE deactivateSE;
@@ -220,6 +231,7 @@ public class KettleCard : Card
 			base.Apply(spellCast);
 			Target.broken = true;
 			Target.on = false;
+			Target.Glow(Target.kettleGlowSprite);
 		}
 	}
 	public BreakSE breakSE;
@@ -239,6 +251,7 @@ public class KettleCard : Card
 		{
 			base.Apply(spellCast);
 			Target.broken = false;
+			Target.Glow(Target.kettleGlowSprite);
 		}
 	}
 	public MendSE mendSE;

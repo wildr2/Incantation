@@ -7,6 +7,7 @@ public abstract class CardLevitateSE : SpellEffect
 {
 	public override SpellID SpellID => SpellID.Levitate;
 	protected abstract Statum Levitating { get; set; }
+	protected virtual Transform TransformToMove => CommonCardData.contentParent.transform;
 	public AudioClip landSFX;
 	protected bool visuallyLevitating;
 
@@ -65,6 +66,6 @@ public abstract class CardLevitateSE : SpellEffect
 
 	protected virtual void SetContentPosition(bool levitated)
 	{
-		CommonCardData.contentParent.transform.localPosition = levitated ? CommonCardData.levitatePos : Vector2.zero;
+		TransformToMove.localPosition = levitated ? CommonCardData.levitatePos : Vector2.zero;
 	}
 }

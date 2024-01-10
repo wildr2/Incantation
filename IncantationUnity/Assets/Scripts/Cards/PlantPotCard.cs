@@ -11,10 +11,12 @@ public class PlantpotCard : Card
 	public Statum vanished;
 	public Statum raining;
 
-	public SpriteRenderer unsproutedSprite;
-	public SpriteRenderer sproutedSprite;
-	public SpriteRenderer brokenUnsproutedSprite;
-	public SpriteRenderer brokenSproutedSprite;
+	public SpriteRenderer potSprite;
+	public SpriteRenderer potGlowSprite;
+	public SpriteRenderer potBrokenSprite;
+	public SpriteRenderer potBrokenGlowSprite;
+	public SpriteRenderer plantSprite;
+	public SpriteRenderer plantGlowSprite;
 
 	public AudioClip[] breakSFX;
 	public AudioClip growingSFX;
@@ -56,21 +58,24 @@ public class PlantpotCard : Card
 	protected override void Awake()
 	{
 		base.Awake();
-
 		sprouted = goalSpellID == SpellID.Grow ? false : Random.value < 0.5f;
 		broken = goalSpellID == SpellID.Mend;
 		levitating = false;
 		vanished = false;
 		raining = false;
+
+		potGlowSprite.enabled = false;
+		potBrokenGlowSprite.enabled = false;
+		plantGlowSprite.enabled = false;
 	}
 
 	protected override void Update()
 	{
 		base.Update();
-		unsproutedSprite.enabled = !sprouted && !broken;
-		sproutedSprite.enabled = sprouted && !broken;
-		brokenUnsproutedSprite.enabled = !sprouted && broken;
-		brokenSproutedSprite.enabled = sprouted && broken;
+
+		potSprite.enabled = !broken;
+		potBrokenSprite.enabled = broken;
+		plantSprite.enabled = sprouted;
 	}
 
 	[System.Serializable]
@@ -110,10 +115,12 @@ public class PlantpotCard : Card
 			if (!Target.sprouted)
 			{
 				Target.Grow();
+				Target.Glow(Target.plantGlowSprite);
 			}
 			else
 			{
 				base.Apply(spellCast);
+				Target.Glow(Target.potGlowSprite);
 			}
 		}
 
@@ -149,6 +156,7 @@ public class PlantpotCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Break();
+			Target.Glow(Target.potBrokenGlowSprite);
 		}
 	}
 	public BreakSE breakSE;
@@ -168,6 +176,7 @@ public class PlantpotCard : Card
 		{
 			base.Apply(spellCast);
 			Target.broken = false;
+			Target.Glow(Target.potGlowSprite);
 		}
 	}
 	public MendSE mendSE;
@@ -188,6 +197,7 @@ public class PlantpotCard : Card
 			base.Apply(spellCast);
 			Target.Break();
 			Target.sprouted = false;
+			Target.Glow(Target.potBrokenGlowSprite);
 		}
 	}
 	public ExplodeSE explodeSE;
@@ -237,6 +247,7 @@ public class PlantpotCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Grow();
+			Target.Glow(Target.plantGlowSprite);
 		}
 	}
 	public RainSE rainSE;
@@ -256,6 +267,7 @@ public class PlantpotCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Grow();
+			Target.Glow(Target.plantGlowSprite);
 		}
 	}
 	public Fill fill;
@@ -275,6 +287,7 @@ public class PlantpotCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Grow();
+			Target.Glow(Target.plantGlowSprite);
 		}
 	}
 	public GrowSE growSE;
