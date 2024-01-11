@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +9,8 @@ public enum TutorialState
 	OpenBookDone,
 	CastSpell,
 	TurnPages,
+	TurnPagesDone,
+	Score,
 	Done,
 }
 
@@ -20,6 +22,7 @@ public class TutorialText : MonoBehaviour
 	private Player player;
 	private BookProp book;
 	private TutorialState state = TutorialState.Init;
+	private bool scoreCompletedCard;
 	private const float textLag = 0.5f;
 	private string pendingText;
 	private float pendingTextChangedTime;
@@ -60,7 +63,14 @@ public class TutorialText : MonoBehaviour
 		{
 			if (state == TutorialState.TurnPages)
 			{
-				SetState(TutorialState.Done);
+				SetState(TutorialState.TurnPagesDone);
+			}
+		};
+		GameManager.Instance.onCardCompleted += () =>
+		{
+			if (state == TutorialState.Score)
+			{
+				scoreCompletedCard = true;
 			}
 		};
 	}
@@ -70,6 +80,7 @@ public class TutorialText : MonoBehaviour
 		const string tutorialCastSpellText = "type and press enter to cast spells";
 		const string tutorialOpenBookText = "press tab to open the spell book";
 		const string tutorialTurnPagesText = "press left and right arrow keys to turn pages";
+		const string tutorialScore = "← see how many cards you can complete in say 10 minutes!";
 
 		if (state == TutorialState.Init)
 		{
@@ -98,6 +109,22 @@ public class TutorialText : MonoBehaviour
 		{
 			bool show = book.PageCount > 1 && book.DisplayingPage;
 			PendingText = show ? tutorialTurnPagesText : "";
+		}
+		else if (state == TutorialState.TurnPagesDone)
+		{
+			PendingText = "";
+			if (!book.open)
+			{
+				SetState(TutorialState.Score);
+			}
+		}
+		else if (state == TutorialState.Score)
+		{
+			PendingText = tutorialScore;
+			if (scoreCompletedCard && Time.time - pendingTextChangedTime > 3.0f)
+			{
+				SetState(TutorialState.Done);
+			}
 		}
 		else if (state == TutorialState.Done)
 		{

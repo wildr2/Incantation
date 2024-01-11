@@ -22,6 +22,7 @@ public class BottleCard : Card
 	{
 		return
 			goalSpellID == SpellID.Fill ? filledWithWine && !vanished :
+			goalSpellID == SpellID.Break ? broken :
 			false;
 	}
 
@@ -29,6 +30,7 @@ public class BottleCard : Card
 	{
 		return
 			goalSpellID == SpellID.Fill ? vanished || broken :
+			goalSpellID == SpellID.Break ? false :
 			false;
 	}
 

@@ -33,6 +33,7 @@ public class GameManager : Singleton<GameManager>
 	private float currentCardDoneTime = -1;
 	private float currentCardBecameSkippableTime = -1;
 	private int cardsCompleted;
+	public System.Action onCardCompleted;
 
 	private float StateTime => Time.time - enterStateTime;
 
@@ -182,6 +183,10 @@ public class GameManager : Singleton<GameManager>
 				if (currentCardBecameSkippableTime < 0)
 				{
 					++cardsCompleted;
+					if (onCardCompleted != null)
+					{
+						onCardCompleted();
+					}
 				}
 				Destroy(CurrentCard.gameObject);
 			}

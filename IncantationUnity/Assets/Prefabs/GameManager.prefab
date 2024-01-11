@@ -133,7 +133,6 @@ MonoBehaviour:
   skippableDelay: 0
   spawnCardDelay: 0.45
   preRoundDuration: 2
-  deskHighlights: {fileID: 0}
   cardDealPos: {fileID: 5101672855853455402}
   maxCardDealPosOffset: 1
   maxCardDealRotationDeg: 3
@@ -153,19 +152,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 052a628afea6912408b8cffe1d570ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allCardPrefabs:
+  cardPrefabs:
   - {fileID: 1288011390071347710, guid: d1afafbb90533c04c87313d8d8b88deb, type: 3}
   - {fileID: 4742222613651250520, guid: dfa7b25f589661e458a34e7216d10aab, type: 3}
   - {fileID: 3093990366090459389, guid: 704e40ba6eeb12a4ba0e7f775e1aafc9, type: 3}
   - {fileID: 8719890875172263155, guid: b24f72308ee06b84e8f7892443847f2a, type: 3}
+  - {fileID: 8569961978088615680, guid: cf33518ca175e764881c2afb614ccab2, type: 3}
   - {fileID: 6076076021196382284, guid: 8e7554f85a7eb5e459ffc64997840084, type: 3}
   - {fileID: 2951324994682454089, guid: e65de08548964d946a55aa8eee585e5e, type: 3}
   - {fileID: 7758060485691980144, guid: dc6043ae9cd023c43aab0a5221be22b8, type: 3}
   - {fileID: 326788750561136713, guid: a2c9cfc395e863b4d84bf78998212398, type: 3}
-  - {fileID: 8833591034212286749, guid: c5a3d138a50c0da4a84df7deeeb1a477, type: 3}
   - {fileID: 1695684986783389919, guid: 58392fa0ce877004a985b5280ffe01dd, type: 3}
+  - {fileID: 8833591034212286749, guid: c5a3d138a50c0da4a84df7deeeb1a477, type: 3}
   - {fileID: 1341687892939151207, guid: 866e05469b8adcf4a94b8465a6f0880c, type: 3}
+  - {fileID: 8768933699300093456, guid: b4fe3dd2911200a4093ec1089f6f15f1, type: 3}
   - {fileID: 8072043101104475694, guid: 943792f474dd7724389d86beb65ac99a, type: 3}
+  - {fileID: 1206817217481857683, guid: 7472ec191883e6440a497c1ee583e345, type: 3}
   - {fileID: 2789195474058787463, guid: 82675bc670e73e345be9f91cba317f47, type: 3}
   - {fileID: 7368869428219607857, guid: 536f2fc8896a9814dbee5100a2af6644, type: 3}
   - {fileID: 8857228018778180477, guid: d185ce8ba9ce5d44d8b71cbcba2690a3, type: 3}
@@ -173,8 +175,30 @@ MonoBehaviour:
   - {fileID: 3835014676102842431, guid: f4cbc9a3373d71b48adedc0ba358e3c8, type: 3}
   - {fileID: 4460819132652245601, guid: 842cea3501e89ef4d82ba9efcfcb0e36, type: 3}
   - {fileID: 4406478772086124254, guid: 4e64b1bdc596a0741a095dd094f6ca31, type: 3}
+  weights:
+  - 2
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 2
+  - 2
+  - 1.5
+  - 2
+  - 2
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 2
   initialCount: 3
-  cardPrefabs: []
 --- !u!114 &1690791868237372342
 MonoBehaviour:
   m_ObjectHideFlags: 0

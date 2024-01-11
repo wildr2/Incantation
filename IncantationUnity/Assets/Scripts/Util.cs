@@ -328,6 +328,33 @@ public class Util : MonoBehaviour
 		return Util.Modulo(x, 1.0f);
 	}
 
+	public static int WeightedRandom(float[] weights)
+	{
+		float total_weight = 0.0f;
+		foreach (float weight in weights)
+		{
+			total_weight += weight;
+		}
+
+		float target_weight_index = Random.value * total_weight;
+		float weight_index = 0;
+
+		for (int i = 0; i < weights.Length; ++i)
+		{
+			if (weights[i] == 0.0f)
+			{
+				continue;
+			}
+			weight_index += weights[i];
+
+			if (weight_index >= target_weight_index)
+			{
+				return i;
+			}
+		}
+
+		return -1;
+	}
 }
 
 public static class Extensions
