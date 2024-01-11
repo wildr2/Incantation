@@ -76,7 +76,7 @@ public class KettleCard : Card
 		if (on && !boilingAudioSource.isPlaying)
 		{
 			// Prevent visual hitch playing large sfx.
-			StartCoroutine(CoroutineUtil.DoNextFrame(boilingAudioSource.Play));
+			StartCoroutine(CoroutineUtil.DoAtEndOfFrame(boilingAudioSource.Play));
 		}
 		boilingAudioSource.volume = vanished ? 0 : 1;
 		boilingAudioSource.pitch = on ? 1 : -1;

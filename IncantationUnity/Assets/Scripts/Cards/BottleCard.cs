@@ -10,9 +10,11 @@ public class BottleCard : Card
 	public Statum levitating;
 	public Statum vanished;
 
-	public SpriteRenderer glassSprite;
-	public SpriteRenderer brokenGlassSprite;
-	public SpriteRenderer wineSprite;
+	public SpriteRenderer bottleSprite;
+	public SpriteRenderer bottleGlowSprite;
+	public SpriteRenderer bottleBrokenSprite;
+	public SpriteRenderer bottleBrokenGlowSprite;
+	public SpriteRenderer liquidGlowSprite;
 
 	public AudioClip[] breakSFX;
 
@@ -46,14 +48,17 @@ public class BottleCard : Card
 		broken = false;
 		levitating = false;
 		vanished = false;
+
+		bottleGlowSprite.enabled = false;
+		bottleBrokenGlowSprite.enabled = false;
+		liquidGlowSprite.enabled = false;
 	}
 
 	protected override void Update()
 	{
 		base.Update();
-		glassSprite.enabled = !broken;
-		brokenGlassSprite.enabled = broken;
-		wineSprite.enabled = filledWithWine;
+		bottleSprite.enabled = !broken;
+		bottleBrokenSprite.enabled = broken;
 	}
 
 	[System.Serializable]
@@ -71,6 +76,7 @@ public class BottleCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Break();
+			Target.Glow(Target.bottleBrokenGlowSprite);
 		}
 	}
 	public ExplodeSE explodeSE;
@@ -89,6 +95,7 @@ public class BottleCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
+			Target.Glow(Target.bottleGlowSprite);
 		}
 
 		protected override void EndLevitation()
@@ -115,6 +122,7 @@ public class BottleCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Break();
+			Target.Glow(Target.bottleBrokenGlowSprite);
 		}
 	}
 	public BreakSE breakSE;
@@ -134,6 +142,7 @@ public class BottleCard : Card
 		{
 			base.Apply(spellCast);
 			Target.broken = false;
+			Target.Glow(Target.bottleGlowSprite);
 		}
 	}
 	public MendSE mendSE;
@@ -174,6 +183,7 @@ public class BottleCard : Card
 		{
 			base.Apply(spellCast);
 			Target.filledWithWine = true;
+			Target.Glow(Target.liquidGlowSprite);
 		}
 	}
 	public Fill fill;

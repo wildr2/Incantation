@@ -10,9 +10,12 @@ public class LampCard : Card
 	public Statum levitating;
 	public Statum vanished;
 
-	public SpriteRenderer onSprite;
-	public SpriteRenderer offSprite;
-	public SpriteRenderer brokenSprite;
+	public SpriteRenderer lampSprite;
+	public SpriteRenderer lampGlowSprite;
+	public SpriteRenderer bulbGlowSprite;
+	public SpriteRenderer bulbOffSprite;
+	public SpriteRenderer bulbBrokenSprite;
+	public SpriteRenderer bulbBrokenGlowSprite;
 
 	public AudioClip turnOnSFX;
 	public AudioClip turnOffSFX;
@@ -51,14 +54,18 @@ public class LampCard : Card
 		broken = false;
 		levitating = false;
 		vanished = false;
+
+		lampGlowSprite.enabled = false;
+		bulbGlowSprite.enabled = false;
+		bulbBrokenGlowSprite.enabled = false;
 	}
 
 	protected override void Update()
 	{
 		base.Update();
-		onSprite.enabled = on;
-		offSprite.enabled = !on && !broken;
-		brokenSprite.enabled = broken;
+
+		bulbOffSprite.enabled = !on && !broken;
+		bulbBrokenSprite.enabled = broken;
 
 		if ((on && !vanished) && !buzzAudioSource.isPlaying)
 		{
@@ -85,6 +92,7 @@ public class LampCard : Card
 		{
 			base.Apply(spellCast);
 			Target.on = true;
+			Target.Glow(Target.bulbGlowSprite);
 		}
 	}
 	public IgniteSE igniteSE;
@@ -104,6 +112,7 @@ public class LampCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Break();
+			Target.Glow(Target.bulbBrokenGlowSprite);
 		}
 	}
 	public ExplodeSE explodeSE;
@@ -141,6 +150,7 @@ public class LampCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
+			Target.Glow(Target.lampGlowSprite);
 		}
 	}
 	public LevitateSE levitateSE;
@@ -161,6 +171,7 @@ public class LampCard : Card
 			base.Apply(spellCast);
 			Target.on = true;
 			SFXManager.Play(Target.turnOnSFX, parent: Target.transform);
+			Target.Glow(Target.bulbGlowSprite);
 		}
 	}
 	public ActivateSE activateSE;
@@ -200,6 +211,7 @@ public class LampCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Break();
+			Target.Glow(Target.bulbBrokenGlowSprite);
 		}
 	}
 	public BreakSE breakSE;
@@ -219,6 +231,7 @@ public class LampCard : Card
 		{
 			base.Apply(spellCast);
 			Target.broken = false;
+			Target.Glow(Target.bulbGlowSprite);
 		}
 	}
 	public MendSE mendSE;

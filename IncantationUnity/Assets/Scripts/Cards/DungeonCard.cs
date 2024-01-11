@@ -8,9 +8,10 @@ public class DungeonCard : Card
 	public Statum torchLit;
 	public Statum chrVanished;
 
-	public SpriteRenderer chrSprite;
-	public SpriteRenderer litTorchSprite;
-	public SpriteRenderer unlitTorchSprite;
+	public SpriteRenderer personSprite;
+	public SpriteRenderer torchSprite;
+	public SpriteRenderer torchFlameSprite;
+	public SpriteRenderer torchFlameGlowSprite;
 
 	public override bool IsComplete()
 	{
@@ -32,14 +33,15 @@ public class DungeonCard : Card
 
 		torchLit = true;
 		chrVanished = false;
+
+		torchFlameGlowSprite.enabled = false;
 	}
 
 	protected override void Update()
 	{
 		base.Update();
-		chrSprite.enabled = !chrVanished && torchLit;
-		litTorchSprite.enabled = torchLit;
-		unlitTorchSprite.enabled = !torchLit;
+		personSprite.enabled = !chrVanished && torchLit;
+		torchFlameSprite.enabled = torchLit;
 	}
 
 	[System.Serializable]
@@ -76,6 +78,7 @@ public class DungeonCard : Card
 		{
 			base.Apply(spellCast);
 			Target.torchLit = true;
+			Target.Glow(Target.torchFlameGlowSprite);
 		}
 	}
 	public IgniteSE igniteSE;
@@ -114,6 +117,7 @@ public class DungeonCard : Card
 		{
 			base.Apply(spellCast);
 			Target.torchLit = true;
+			Target.Glow(Target.torchFlameGlowSprite);
 		}
 	}
 	public ActivateSE activateSE;
@@ -152,6 +156,7 @@ public class DungeonCard : Card
 		{
 			base.Apply(spellCast);
 			Target.torchLit = true;
+			Target.Glow(Target.torchFlameGlowSprite);
 		}
 	}
 	public ExplodeSE explodeSE;

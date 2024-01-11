@@ -10,8 +10,9 @@ public class PotholeCard : Card
 	public Statum raining;
 	public Statum vanished;
 
-	public SpriteRenderer emptySprite;
-	public SpriteRenderer filledWithWaterSprite;
+	public SpriteRenderer potholeSprite;
+	public SpriteRenderer potholeWithWaterSprite;
+	public SpriteRenderer waterGlowSprite;
 
 	public override bool IsComplete()
 	{
@@ -42,8 +43,8 @@ public class PotholeCard : Card
 	protected override void Update()
 	{
 		base.Update();
-		emptySprite.enabled = !mended;
-		filledWithWaterSprite.enabled = filledWithWater;
+		potholeSprite.enabled = !mended && !filledWithWater;
+		potholeWithWaterSprite.enabled = filledWithWater;
 	}
 
 	[System.Serializable]
@@ -102,6 +103,7 @@ public class PotholeCard : Card
 			if (!Target.vanished && !Target.filledWithWater)
 			{
 				Target.filledWithWater = true;
+				Target.Glow(Target.waterGlowSprite);
 			}
 		}
 	}

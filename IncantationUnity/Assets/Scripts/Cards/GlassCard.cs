@@ -13,9 +13,15 @@ public class GlassCard : Card
 	public Statum raining;
 
 	public SpriteRenderer glassSprite;
-	public SpriteRenderer brokenGlassSprite;
-	public SpriteRenderer waterSprite;
+	public SpriteRenderer glassGlowSprite;
+	public SpriteRenderer glassBrokenSprite;
+	public SpriteRenderer glassBrokenGlowSprite;
 	public SpriteRenderer plantSprite;
+	public SpriteRenderer plantGlowSprite;
+	public SpriteRenderer liquidSprite;
+	public SpriteRenderer liquidGlowSprite;
+	public SpriteRenderer liquidPlantSprite;
+	public SpriteRenderer liquidPlantGlowSprite;
 
 	public AudioClip[] breakSFX;
 	public AudioClip growingSFX;
@@ -62,15 +68,22 @@ public class GlassCard : Card
 		levitating = false;
 		vanished = false;
 		raining = false;
+
+		glassGlowSprite.enabled = false;
+		glassBrokenGlowSprite.enabled = false;
+		plantGlowSprite.enabled = false;
+		liquidGlowSprite.enabled = false;
+		liquidPlantGlowSprite.enabled = false;
 	}
 
 	protected override void Update()
 	{
 		base.Update();
 		glassSprite.enabled = !broken;
-		brokenGlassSprite.enabled = broken;
-		waterSprite.enabled = filledWithWater;
+		glassBrokenSprite.enabled = broken;
 		plantSprite.enabled = filledWithPlant;
+		liquidSprite.enabled = filledWithWater && !filledWithPlant;
+		liquidPlantSprite.enabled = filledWithWater && filledWithPlant;
 	}
 
 	[System.Serializable]
@@ -88,6 +101,7 @@ public class GlassCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Break();
+			Target.Glow(Target.glassBrokenGlowSprite);
 		}
 	}
 	public ExplodeSE explodeSE;
@@ -106,6 +120,7 @@ public class GlassCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
+			Target.Glow(Target.glassGlowSprite);
 		}
 
 		protected override void EndLevitation()
@@ -132,6 +147,7 @@ public class GlassCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Break();
+			Target.Glow(Target.glassBrokenGlowSprite);
 		}
 	}
 	public BreakSE breakSE;
@@ -151,6 +167,7 @@ public class GlassCard : Card
 		{
 			base.Apply(spellCast);
 			Target.broken = false;
+			Target.Glow(Target.glassGlowSprite);
 		}
 	}
 	public MendSE mendSE;
@@ -196,6 +213,8 @@ public class GlassCard : Card
 			if (!Target.vanished && !Target.broken)
 			{
 				Target.filledWithWater = true;
+				//Target.Glow(Target.filledWithPlant ? Target.liquidPlantGlowSprite : Target.liquidGlowSprite);
+				Target.Glow(Target.liquidGlowSprite);
 			}
 		}
 	}
@@ -216,6 +235,8 @@ public class GlassCard : Card
 		{
 			base.Apply(spellCast);
 			Target.filledWithWater = true;
+			//Target.Glow(Target.filledWithPlant ? Target.liquidPlantGlowSprite : Target.liquidGlowSprite);
+			Target.Glow(Target.liquidGlowSprite);
 		}
 	}
 	public Fill fill;
@@ -235,6 +256,7 @@ public class GlassCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Grow();
+			Target.Glow(Target.plantGlowSprite);
 		}
 	}
 	public GrowSE growSE;

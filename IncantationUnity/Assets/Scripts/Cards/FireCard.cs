@@ -6,17 +6,13 @@ using CardType = FireCard;
 public class FireCard : Card
 {
 	public Statum lit;
-	public Statum levitating;
 	public Statum vanished;
 	public Statum raining;
 
-	public SpriteRenderer flamesBlackSprite;
-	public SpriteRenderer flamesColorSprite;
-	public SpriteRenderer flamesGlowSprite;
-	[HideInInspector]
-	public float flamesGlowIntensity;
-	[HideInInspector]
-	public float flamesGlowDuration;
+	public SpriteRenderer unlitFireSprite;
+	public SpriteRenderer litFireSprite;
+	public SpriteRenderer fireGlowSprite;
+
 	public AudioSource fireSFXSource;
 
 	public override bool IsComplete()
@@ -35,19 +31,15 @@ public class FireCard : Card
 			false;
 	}
 
-	public override float GetGlowIntensity()
-	{
-		return flamesGlowIntensity;
-	}
-
 	protected override void Awake()
 	{
 		base.Awake();
 
 		lit = goalSpellID == SpellID.Extinguish;
-		levitating = false;
 		vanished = false;
 		raining = false;
+
+		fireGlowSprite.enabled = false;
 	}
 
 	protected override void Update()
@@ -59,21 +51,8 @@ public class FireCard : Card
 
 	private void UpdateFlames()
 	{
-		if (lit)
-		{
-			float flicker = Mathf.Lerp(1.0f, Mathf.PerlinNoise(Time.time * 8.0f, 0), 0.2f);
-			float fade = Mathf.Lerp(1.0f, 0.0f, (Time.time - lit.time) / flamesGlowDuration);
-			fade = 1.0f - Mathf.Pow(1.0f - fade, 4.0f);
-			flamesGlowIntensity = fade * flicker;
-		}
-		else
-		{
-			flamesGlowIntensity = 0;
-		}
-
-		flamesBlackSprite.color = Util.SetAlpha(flamesBlackSprite.color, lit ? 1 : 0);
-		flamesColorSprite.color = Util.SetAlpha(flamesColorSprite.color, flamesGlowIntensity);
-		flamesGlowSprite.color = Util.SetAlpha(flamesGlowSprite.color, flamesGlowIntensity);
+		unlitFireSprite.enabled = !lit;
+		litFireSprite.enabled = lit;
 	}
 
 	[System.Serializable]
@@ -91,7 +70,7 @@ public class FireCard : Card
 		{
 			base.Apply(spellCast);
 			Target.lit = true;
-			Target.flamesGlowDuration = Mathf.Lerp(3.0f, 9.0f, spellCast.intensity);
+			Target.Glow(Target.fireGlowSprite);
 		}
 	}
 	public IgniteSE igniteSE;
@@ -111,7 +90,7 @@ public class FireCard : Card
 		{
 			base.Apply(spellCast);
 			Target.lit = true;
-			Target.flamesGlowDuration = Mathf.Lerp(3.0f, 9.0f, spellCast.intensity);
+			Target.Glow(Target.fireGlowSprite);
 		}
 	}
 	public ExplodeSE explodeSE;
@@ -134,24 +113,6 @@ public class FireCard : Card
 		}
 	}
 	public ExtinguishSE extinguishSE;
-	
-	[System.Serializable]
-	public class LevitateSE : CardLevitateSE
-	{
-		public new CardType Target => (CardType)base.Target;
-		protected override Statum Levitating { get => Target.levitating; set => Target.levitating = value; }
-
-		public override bool AreConditionsMet()
-		{
-			return !Target.levitating && !Target.vanished;
-		}
-
-		public override void Apply(SpellCast spellCast)
-		{
-			base.Apply(spellCast);
-		}
-	}
-	public LevitateSE levitateSE;
 
 	[System.Serializable]
 	public class RainSE : CardRainSE

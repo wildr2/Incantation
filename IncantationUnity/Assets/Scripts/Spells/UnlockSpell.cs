@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class UnlockSpell : Spell
 {
+	public float unlockDelay;
 	public float openDelay;
 
 	public UnlockSpell() : base(SpellID.Unlock)

@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!212 &124476600 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 1116924076642940875, guid: 06e031373a5acff4da8a398534e9f3ef, type: 3}
-  m_PrefabInstance: {fileID: 5268444139842489898}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &838347587 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3959463857287956381, guid: b36dba3cc5aadcc48a4fa2a5309cf934, type: 3}
@@ -423,10 +418,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 483624126698273152, guid: 6473c338521dc04428edf136a6810fde, type: 3}
-      propertyPath: deskHighlights
-      value: 
-      objectReference: {fileID: 124476600}
     - target: {fileID: 1967226156817053802, guid: 6473c338521dc04428edf136a6810fde, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -545,10 +536,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Music
       objectReference: {fileID: 0}
-    - target: {fileID: 3665759003230714285, guid: 428866d28ea409c44ad7b010ca935c53, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 3915519a3a8a11e4faef5fd4f0b8bf50, type: 3}
     - target: {fileID: 6349905476745520326, guid: 428866d28ea409c44ad7b010ca935c53, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

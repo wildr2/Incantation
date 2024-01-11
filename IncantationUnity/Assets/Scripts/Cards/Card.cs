@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Reflection;
+using System.Linq;
 
 [RequireComponent(typeof(CommonCardData))]
 public class Card : SpellTarget
@@ -24,9 +25,20 @@ public class Card : SpellTarget
 		return false;
 	}
 
-	public virtual float GetGlowIntensity()
+	public float GetGlowIntensity()
 	{
-		return 0.0f;
+		return glows.Count > 0 ? glows.Max(x => x.Intensity) : 0;
+	}
+
+	public Color GetGlowColor()
+	{
+		Color c = Color.clear;
+		foreach (CardGlow glow in glows)
+		{
+			Color c1 = glow.Color;
+			c = new Color(c.r + c1.r, c.g + c1.g, c.b + c1.b, c.a + c1.a);
+		}
+		return c;
 	}
 
 	public void Glow(SpriteRenderer spriteRenderer)
@@ -139,6 +151,8 @@ public class Card : SpellTarget
 
 public class CardGlow
 {
+	public float Intensity => spriteRenderer.color.a;
+	public Color Color => spriteRenderer.color;
 	private SpriteRenderer spriteRenderer;
 	private float startTime;
 	private float duration;

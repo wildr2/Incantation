@@ -10,8 +10,11 @@ public class DoorCard : Card
 	public Statum exploded;
 
 	public SpriteRenderer openSprite;
+	public SpriteRenderer openGlowSprite;
 	public SpriteRenderer closedSprite;
+	public SpriteRenderer closedGlowSprite;
 	public SpriteRenderer explodedSprite;
+	public SpriteRenderer explodedGlowSprite;
 
 	public AudioClip openSFX;
 	public AudioClip closeSFX;
@@ -87,6 +90,10 @@ public class DoorCard : Card
 		open = goalSpellID == SpellID.Lock;
 		locked = goalSpellID == SpellID.Unlock;
 		exploded = false;
+
+		openGlowSprite.enabled = false;
+		closedGlowSprite.enabled = false;
+		explodedGlowSprite.enabled = false;
 	}
 
 	protected override void Update()
@@ -112,6 +119,7 @@ public class DoorCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Open();
+			Target.Glow(Target.openGlowSprite);
 		}
 	}
 	public ActivateSE activateSE;
@@ -131,6 +139,7 @@ public class DoorCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Close();
+			Target.Glow(Target.closedGlowSprite);
 		}
 	}
 	public DeactivateSE deactivateSE;
@@ -150,8 +159,15 @@ public class DoorCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.Unlock();
-			DoDelayed(Spell.openDelay, Target.Open);
+			Target.Glow(Target.closedGlowSprite);
+			DoDelayed(Spell.unlockDelay, Target.Unlock);
+			DoDelayed(Spell.openDelay, Open);
+		}
+
+		private void Open()
+		{
+			Target.Open();
+			Target.Glow(Target.openGlowSprite);
 		}
 	}
 	public UnlockSE unlockSE;
@@ -171,7 +187,13 @@ public class DoorCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Close();
-			DoDelayed(0.2f, Target.Lock);
+			DoDelayed(0.2f, Lock);
+		}
+
+		public void Lock()
+		{
+			Target.Lock();
+			Target.Glow(Target.closedGlowSprite);
 		}
 	}
 	public LockSE lockSE;
@@ -191,6 +213,7 @@ public class DoorCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Explode();
+			//Target.Glow(Target.explodedGlowSprite);
 		}
 	}
 	public ExplodeSE explodeSE;
@@ -211,7 +234,14 @@ public class DoorCard : Card
 			base.Apply(spellCast);
 			Target.exploded = false;
 			Target.locked = false;
-			DoDelayed(spellCast.spell.EffectDuration, Target.Close);
+			Target.Glow(Target.openGlowSprite);
+			DoDelayed(spellCast.spell.EffectDuration, Close);
+		}
+
+		private void Close()
+		{
+			Target.Close();
+			//Target.Glow(Target.closedGlowSprite);
 		}
 	}
 	public MendSE mendSE;

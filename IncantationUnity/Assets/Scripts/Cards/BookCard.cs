@@ -10,10 +10,14 @@ public class BookCard : Card
 	public Statum levitating;
 	public Statum vanished;
 
-	public SpriteRenderer openSprite;
 	public SpriteRenderer closedSprite;
-	public SpriteRenderer burningOpenSprite;
-	public SpriteRenderer burningClosedSprite;
+	public SpriteRenderer closedGlowSprite;
+	public SpriteRenderer closedFlameSprite;
+	public SpriteRenderer closedFlameGlowSprite;
+	public SpriteRenderer openSprite;
+	public SpriteRenderer openGlowSprite;
+	public SpriteRenderer openFlameSprite;
+	public SpriteRenderer openFlameGlowSprite;
 
 	public AudioClip openSFX;
 	public AudioClip closeSFX;
@@ -32,6 +36,12 @@ public class BookCard : Card
 			goalSpellID == SpellID.Activate ? vanished :
 			goalSpellID == SpellID.Deactivate ? vanished :
 			false;
+	}
+
+	public void SetFire()
+	{
+		burning = true;
+		Glow(open ? openFlameGlowSprite : closedFlameGlowSprite);
 	}
 
 	public void Open()
@@ -54,15 +64,21 @@ public class BookCard : Card
 		burning = false;
 		levitating = false;
 		vanished = false;
+
+		closedGlowSprite.enabled = false;
+		closedFlameGlowSprite.enabled = false;
+		openGlowSprite.enabled = false;
+		openFlameGlowSprite.enabled = false;
 	}
 
 	protected override void Update()
 	{
 		base.Update();
-		openSprite.enabled = open && !burning;
-		closedSprite.enabled = !open && !burning;
-		burningOpenSprite.enabled = open && burning;
-		burningClosedSprite.enabled = !open && burning;
+
+		closedSprite.enabled = !open;
+		closedFlameSprite.enabled = !open && burning;
+		openSprite.enabled = open;
+		openFlameSprite.enabled = open && burning;
 	}
 
 	[System.Serializable]
@@ -79,7 +95,7 @@ public class BookCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.burning = true;
+			Target.SetFire();
 		}
 	}
 	public IgniteSE igniteSE;
@@ -117,6 +133,7 @@ public class BookCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
+			Target.Glow(Target.open ? Target.openGlowSprite : Target.closedGlowSprite);
 		}
 	}
 	public LevitateSE levitateSE;
@@ -136,6 +153,7 @@ public class BookCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Open();
+			Target.Glow(Target.openGlowSprite);
 		}
 	}
 	public ActivateSE activateSE;
@@ -155,6 +173,7 @@ public class BookCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Close();
+			Target.Glow(Target.closedGlowSprite);
 		}
 	}
 	public DeactivateSE deactivateSE;
@@ -175,6 +194,7 @@ public class BookCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
+			Target.Glow(Target.openGlowSprite);
 			DoDelayed(Spell.openDelay, () =>
 			{
 				Target.Open();
@@ -199,6 +219,7 @@ public class BookCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Close();
+			Target.Glow(Target.closedGlowSprite);
 		}
 	}
 	public LockSE lockSE;

@@ -17,7 +17,6 @@ public class GameManager : Singleton<GameManager>
 	public float skippableDelay;
 	public float spawnCardDelay;
 	public float preRoundDuration;
-	public SpriteRenderer deskHighlights;
 	public Transform cardDealPos;
 	public float maxCardDealPosOffset;
 	public float maxCardDealRotationDeg; 
@@ -28,7 +27,6 @@ public class GameManager : Singleton<GameManager>
 
 	private GameState state = GameState.Init;
 	private Deck deck;
-	private BookProp book;
 	private float enterStateTime;
 	private bool dealingNextCard;
 	public Card CurrentCard { get; private set; }
@@ -41,12 +39,10 @@ public class GameManager : Singleton<GameManager>
 	private void Awake()
 	{
 		deck = GetComponent<Deck>();
-		book = FindObjectOfType<BookProp>();
 	}
 
 	private void Update()
 	{
-		UpdateDeskHighlights();
 		UpdateCardDealing();
 		UpdateText();
 
@@ -54,11 +50,6 @@ public class GameManager : Singleton<GameManager>
 		{
 			CurrentCard = FindAnyObjectByType<Card>();
 		}
-	}
-
-	private void UpdateDeskHighlights()
-	{
-		deskHighlights.color = Util.SetAlpha(deskHighlights.color, CurrentCard ? CurrentCard.GetGlowIntensity() : 0.0f);
 	}
 
 	private void UpdateCardDealing()

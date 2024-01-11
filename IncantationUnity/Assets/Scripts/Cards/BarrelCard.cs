@@ -10,8 +10,10 @@ public class BarrelCard: Card
 	public Statum vanished;
 	public Statum raining;
 
-	public SpriteRenderer unexplodedSprite;
-	public SpriteRenderer explodedSprite;
+	public SpriteRenderer barrelSprite;
+	public SpriteRenderer barrelGlowSprite;
+	public SpriteRenderer rubbleSprite;
+	public SpriteRenderer rubbleGlowSprite;
 
 	public AudioClip[] explodeSFX;
 
@@ -46,13 +48,17 @@ public class BarrelCard: Card
 		levitating = false;
 		vanished = false;
 		raining = false;
+
+		barrelGlowSprite.enabled = false;
+		rubbleGlowSprite.enabled = false;
 	}
 
 	protected override void Update()
 	{
 		base.Update();
-		unexplodedSprite.enabled = !exploded;
-		explodedSprite.enabled = exploded;
+
+		barrelSprite.enabled = !exploded;
+		rubbleSprite.enabled = exploded;
 	}
 
 	[System.Serializable]
@@ -69,6 +75,7 @@ public class BarrelCard: Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
+			Target.Glow(Target.barrelGlowSprite);
 		}
 
 		protected override bool CanLandLevitation()
@@ -103,6 +110,7 @@ public class BarrelCard: Card
 		{
 			base.Apply(spellCast);
 			Target.exploded = false;
+			Target.Glow(Target.barrelGlowSprite);
 		}
 	}
 	public MendSE mendSE;
@@ -143,6 +151,7 @@ public class BarrelCard: Card
 		{
 			base.Apply(spellCast);
 			Target.Explode();
+			Target.Glow(Target.rubbleGlowSprite);
 		}
 	}
 	public ExplodeSE explodeSE;
@@ -162,6 +171,7 @@ public class BarrelCard: Card
 		{
 			base.Apply(spellCast);
 			Target.Explode();
+			Target.Glow(Target.rubbleGlowSprite);
 		}
 	}
 	public Fill fill;
@@ -181,6 +191,7 @@ public class BarrelCard: Card
 		{
 			base.Apply(spellCast);
 			Target.Explode();
+			Target.Glow(Target.rubbleGlowSprite);
 		}
 	}
 	public IgniteSE igniteSE;

@@ -290,6 +290,44 @@ public class Util : MonoBehaviour
 		float second = (int)((total_minutes - minute) * 60);
 		return minute + ":" + (second < 10 ? "0" + second : second.ToString());
 	}
+
+	public static Color LerpColorHSV(Color a, Color b, float t)
+	{
+		Color.RGBToHSV(a, out float ha, out float sa, out float va);
+		Color.RGBToHSV(b, out float hb, out float sb, out float vb);
+		float h = LerpHue(ha, hb, t);
+		float s = Mathf.Lerp(sa, sb, t);
+		float v = Mathf.Lerp(va, vb, t);
+		return Color.HSVToRGB(h, s, v);
+	}
+
+	public static Color LerpColorHSVA(Color a, Color b, float t)
+	{
+		Color.RGBToHSV(a, out float ha, out float sa, out float va);
+		Color.RGBToHSV(b, out float hb, out float sb, out float vb);
+		float h = LerpHue(ha, hb, t);
+		float s = Mathf.Lerp(sa, sb, t);
+		float v = Mathf.Lerp(va, vb, t);
+		Color ret = Color.HSVToRGB(h, s, v);
+		ret.a = Mathf.Lerp(a.a, b.a, t);
+		return ret;
+	}
+
+	public static float LerpHue(float a, float b, float t)
+	{
+		float dist = Mathf.Abs(b - a);
+		if (dist <= 0.5f)
+		{
+			return Mathf.Lerp(a, b, t);
+		}
+
+		float x = a < b ?
+			Mathf.Lerp(a, a - (1.0f - dist), t) :
+			Mathf.Lerp(a, a + (1.0f - dist), t);
+
+		return Util.Modulo(x, 1.0f);
+	}
+
 }
 
 public static class Extensions
