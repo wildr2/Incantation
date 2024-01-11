@@ -43,6 +43,12 @@ public class Card : SpellTarget
 
 	public void Glow(SpriteRenderer spriteRenderer)
 	{
+		// TODO: multiple glows at once? interrupts?
+		foreach (CardGlow glow in glows)
+		{
+			glow.End();
+		}
+		glows.Clear();
 		glows.Add(new CardGlow(spriteRenderer, 2.0f));
 	}
 

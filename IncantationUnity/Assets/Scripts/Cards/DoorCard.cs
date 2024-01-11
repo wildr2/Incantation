@@ -187,6 +187,7 @@ public class DoorCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Close();
+			Target.Glow(Target.closedGlowSprite);
 			DoDelayed(0.2f, Lock);
 		}
 
