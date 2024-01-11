@@ -16,6 +16,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlantpotMendCard
       objectReference: {fileID: 0}
+    - target: {fileID: 4016279024605151837, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
+      propertyPath: m_Color.b
+      value: 0.85098046
+      objectReference: {fileID: 0}
+    - target: {fileID: 4016279024605151837, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
+      propertyPath: m_Color.g
+      value: 0.98823535
+      objectReference: {fileID: 0}
+    - target: {fileID: 4016279024605151837, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8941177
+      objectReference: {fileID: 0}
     - target: {fileID: 7156408783031867904, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -55,6 +67,18 @@ PrefabInstance:
     - target: {fileID: 7156408783031867904, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560954892380140804, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
+      propertyPath: m_Color.b
+      value: 0.85098046
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560954892380140804, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
+      propertyPath: m_Color.g
+      value: 0.98823535
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560954892380140804, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8941177
       objectReference: {fileID: 0}
     - target: {fileID: 8063552758156916096, guid: 7713cdba6e56f264f87c89548d5242eb, type: 3}
       propertyPath: m_Text

@@ -54,7 +54,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 6931198372959997535}
   litSprite: {fileID: 21300000, guid: 5b0fbd9c544fff54599898428ee431ea, type: 3}
   unlitSprite: {fileID: 21300000, guid: a26ad3830947c1e4c95c486417fd0137, type: 3}
-  newSpellOpenDelay: 0.1
+  newSpellOpenDelay: 0.08
   newSpellOpenDisplayDelay: 0
   openDisplayDelay: 0.97
   turnDisplayDelay: 0.1
