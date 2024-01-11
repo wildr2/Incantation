@@ -35,7 +35,7 @@ public class LampProp : Prop
 
 		public override bool AreConditionsMet()
 		{
-			return !Target.broken;
+			return !Target.broken && !Target.on;
 		}
 
 		public override void Apply(SpellCast spellCast)

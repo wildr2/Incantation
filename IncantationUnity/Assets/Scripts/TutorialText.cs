@@ -22,7 +22,6 @@ public class TutorialText : MonoBehaviour
 	private Player player;
 	private BookProp book;
 	private TutorialState state = TutorialState.Init;
-	private bool scoreCompletedCard;
 	private const float textLag = 0.5f;
 	private string pendingText;
 	private float pendingTextChangedTime;
@@ -58,6 +57,10 @@ public class TutorialText : MonoBehaviour
 			{
 				SetState(TutorialState.TurnPages);
 			}
+			else if (state == TutorialState.Score)
+			{
+				SetState(TutorialState.Done);
+			}
 		};
 		player.OnTurnedPage += () =>
 		{
@@ -68,9 +71,9 @@ public class TutorialText : MonoBehaviour
 		};
 		GameManager.Instance.onCardCompleted += () =>
 		{
-			if (state == TutorialState.Score)
+			if (state == TutorialState.TurnPagesDone)
 			{
-				scoreCompletedCard = true;
+				SetState(TutorialState.Score);
 			}
 		};
 	}
@@ -113,18 +116,14 @@ public class TutorialText : MonoBehaviour
 		else if (state == TutorialState.TurnPagesDone)
 		{
 			PendingText = "";
-			if (!book.open)
-			{
-				SetState(TutorialState.Score);
-			}
 		}
 		else if (state == TutorialState.Score)
 		{
 			PendingText = tutorialScore;
-			if (scoreCompletedCard && Time.time - pendingTextChangedTime > 3.0f)
-			{
-				SetState(TutorialState.Done);
-			}
+			//if (Time.time - pendingTextChangedTime > 4.0f)
+			//{
+			//	SetState(TutorialState.Done);
+			//}
 		}
 		else if (state == TutorialState.Done)
 		{
