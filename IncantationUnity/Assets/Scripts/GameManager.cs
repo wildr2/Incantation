@@ -151,6 +151,10 @@ public class GameManager : Singleton<GameManager>
 		if (CurrentCard)
 		{
 			Destroy(CurrentCard.gameObject);
+			if (currentCardBecameSkippableTime < 0)
+			{
+				OnCardCompletion();
+			}
 
 			int newCardCount = deck.Count >= 5 ? 2 : 1;
 			for (int i = 0; i < newCardCount; ++i)
@@ -182,11 +186,7 @@ public class GameManager : Singleton<GameManager>
 			{
 				if (currentCardBecameSkippableTime < 0)
 				{
-					++cardsCompleted;
-					if (onCardCompleted != null)
-					{
-						onCardCompleted();
-					}
+					OnCardCompletion();
 				}
 				Destroy(CurrentCard.gameObject);
 			}
@@ -201,6 +201,15 @@ public class GameManager : Singleton<GameManager>
 			currentCardBecameSkippableTime = -1;
 			dealingNextCard = false;
 		}, spawnCardDelay));
+	}
+
+	private void OnCardCompletion()
+	{
+		++cardsCompleted;
+		if (onCardCompleted != null)
+		{
+			onCardCompleted();
+		}
 	}
 
 	private void SetState(GameState state)
