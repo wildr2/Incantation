@@ -414,10 +414,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 483624126698273152, guid: 6473c338521dc04428edf136a6810fde, type: 3}
-      propertyPath: shuffleDeckSFX
-      value: 
-      objectReference: {fileID: 8300000, guid: f0a841be726aaa14782d58319f262e9b, type: 3}
     - target: {fileID: 1967226156817053802, guid: 6473c338521dc04428edf136a6810fde, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -536,10 +532,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Music
       objectReference: {fileID: 0}
-    - target: {fileID: 3665759003230714285, guid: 428866d28ea409c44ad7b010ca935c53, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: b846594ad7179364d9d886d8429cfeda, type: 3}
     - target: {fileID: 6349905476745520326, guid: 428866d28ea409c44ad7b010ca935c53, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -864,18 +856,6 @@ PrefabInstance:
     - target: {fileID: 7260646581786950255, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
       propertyPath: m_Name
       value: DebugSettings
-      objectReference: {fileID: 0}
-    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
-      propertyPath: enableCardDealing
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
-      propertyPath: enableIncantationRules
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7698163950636516260, guid: cf73afeaca3c9ea418ff3585025ae3d3, type: 3}
-      propertyPath: enableDebugIncantations
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

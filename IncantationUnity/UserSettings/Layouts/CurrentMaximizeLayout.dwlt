@@ -25,7 +25,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 1238
+  controlID: 2934
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -187,9 +187,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: e0faffff
-      m_LastClickedID: -1312
-      m_ExpandedIDs: 1afbffff
+      m_SelectedIDs: 8c620000
+      m_LastClickedID: 0
+      m_ExpandedIDs: e0fafffff6fafffffcfaffff1afbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -232,8 +232,8 @@ MonoBehaviour:
     y: 0
     width: 709.5272
     height: 1134.2909
-  m_MinSize: {x: 277, y: 71}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -345,7 +345,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 1239
+  controlID: 2935
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1114,7 +1114,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Sounds/Card
+    - Assets/Misc
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1122,15 +1122,15 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Sounds/Card
+  - Assets/Misc
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\Robert\Lodge\GitHub\Incantation\IncantationUnity
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 154.63635}
-    m_SelectedIDs: 1a5f0000
-    m_LastClickedID: 24346
+    m_SelectedIDs: 88620000
+    m_LastClickedID: 25224
     m_ExpandedIDs: 00000000505e0000525e0000545e0000565e0000585e000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1184,8 +1184,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: e0faffff
-    m_LastClickedInstanceID: -1312
+    m_SelectedInstanceIDs: 8c620000
+    m_LastClickedInstanceID: 25228
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000145f00009a7000000000000098540000
     m_RenameOverlay:

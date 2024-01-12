@@ -2,22 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Text.RegularExpressions;
 
 public class Incantor : MonoBehaviour
 {
+	// Words must be uppercase, delimited by newlines, and sorted in ascending order.
 	public Text incantationText;
+	public TextAsset validWordsTextAsset;
+	public System.Action onCastSpell;
+
 	private BookProp book;
 	private string inputText;
 	private string incantation;
 	private float startFadeTime = -1;
 	private ScoreIncantationResponse scoreResponse;
+	// Words are uppercase.
 	private Dictionary<string, int> wordUseCount = new Dictionary<string, int>();
-	public System.Action onCastSpell;
+	// Words are uppercase.
+	private string[] validWords;
+
+	public bool IsValidWord(string word)
+	{
+		string wordUpper = word.ToUpper();
+		return System.Array.BinarySearch(validWords, wordUpper) >= 0;
+	}
+
+	public bool AreWordsValid(string incantation)
+	{
+		string[] words = incantation.Split(' ');
+		foreach (string word in words)
+		{
+			if (!IsValidWord(word))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 
 	private void Awake()
 	{
 		book = FindObjectOfType<BookProp>();
+
+		string text = validWordsTextAsset.ToString();
+		validWords = text.Split(System.Environment.NewLine);
 	}
 
 	private void Update()
@@ -106,7 +133,7 @@ public class Incantor : MonoBehaviour
 		int count = Util.GetEnumCount<SpellID>();
 		response.spellScores = new float[count];
 
-		bool incantationCastable = GetMaxWordUseCount(incantation) == 0 && !ContainsDuplicateWords(incantation);
+		bool incantationCastable = IsIncantationCastable(incantation);
 
 		for (int i = 0; i < count; ++i)
 		{
@@ -258,7 +285,7 @@ public class Incantor : MonoBehaviour
 		{
 			for (int j = i + 1; j < words.Length; ++j)
 			{
-				if (words[i] == words[j])
+				if (words[i].ToUpper() == words[j].ToUpper())
 				{
 					return true;
 				}
@@ -273,7 +300,8 @@ public class Incantor : MonoBehaviour
 		string[] words = incantation.Split(' ');
 		foreach (string word in words)
 		{
-			wordUseCount.TryGetValue(word, out int count);
+			string wordUpper = word.ToUpper();
+			wordUseCount.TryGetValue(wordUpper, out int count);
 			max = Mathf.Max(max, count);
 		}
 		return max;
@@ -284,9 +312,16 @@ public class Incantor : MonoBehaviour
 		string[] words = incantation.Split(' ');
 		foreach (string word in words)
 		{
-			wordUseCount.TryGetValue(word, out int count);
-			wordUseCount[word] = count + 1;
+			string wordUpper = word.ToUpper();
+			wordUseCount.TryGetValue(wordUpper, out int count);
+			wordUseCount[wordUpper] = count + 1;
 		}
+	}
+
+	// Are words valid and unused.
+	private bool IsIncantationCastable(string incantation)
+	{
+		return AreWordsValid(incantation) && GetMaxWordUseCount(incantation) == 0 && !ContainsDuplicateWords(incantation);;
 	}
 
 	private IEnumerator UpdateSpellCast(SpellCast spellCast)

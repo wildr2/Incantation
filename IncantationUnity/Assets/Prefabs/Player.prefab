@@ -365,3 +365,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   incantationText: {fileID: 544170890710204021}
+  validWordsTextAsset: {fileID: 4900000, guid: aa49a595f7ceece4da084858714313a4, type: 3}
