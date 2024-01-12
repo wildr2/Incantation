@@ -213,7 +213,7 @@ public class GameManager : Singleton<GameManager>
 			onCardCompleted();
 		}
 
-		if (cardsCompleted == 1 && !book.HasPage(SpellID.SummonStendarii))
+		if (cardsCompleted == 5 && !book.HasPage(SpellID.SummonStendarii))
 		{
 			book.AddPage(SpellID.SummonStendarii);
 		}
