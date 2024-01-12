@@ -106,7 +106,7 @@ public class Incantor : MonoBehaviour
 		int count = Util.GetEnumCount<SpellID>();
 		response.spellScores = new float[count];
 
-		bool incantationCastable = GetMaxWordUseCount(incantation) == 0;
+		bool incantationCastable = GetMaxWordUseCount(incantation) == 0 && !ContainsDuplicateWords(incantation);
 
 		for (int i = 0; i < count; ++i)
 		{
@@ -249,6 +249,22 @@ public class Incantor : MonoBehaviour
 				onCastSpell();
 			}
 		}
+	}
+
+	private bool ContainsDuplicateWords(string incantation)
+	{
+		string[] words = incantation.Split(' ');
+		for (int i = 0; i < words.Length; ++i)
+		{
+			for (int j = i + 1; j < words.Length; ++j)
+			{
+				if (words[i] == words[j])
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private int GetMaxWordUseCount(string incantation)

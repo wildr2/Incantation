@@ -414,6 +414,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 483624126698273152, guid: 6473c338521dc04428edf136a6810fde, type: 3}
+      propertyPath: shuffleDeckSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: f0a841be726aaa14782d58319f262e9b, type: 3}
     - target: {fileID: 1967226156817053802, guid: 6473c338521dc04428edf136a6810fde, type: 3}
       propertyPath: m_Name
       value: GameManager
