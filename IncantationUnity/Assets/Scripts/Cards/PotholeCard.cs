@@ -44,7 +44,7 @@ public class PotholeCard : Card
 	{
 		base.Update();
 		potholeSprite.enabled = !mended && !filledWithWater;
-		potholeWithWaterSprite.enabled = filledWithWater;
+		potholeWithWaterSprite.enabled = !mended && filledWithWater;
 	}
 
 	[System.Serializable]
