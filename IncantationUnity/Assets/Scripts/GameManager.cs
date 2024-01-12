@@ -27,6 +27,7 @@ public class GameManager : Singleton<GameManager>
 
 	private GameState state = GameState.Init;
 	private Deck deck;
+	private BookProp book;
 	private float enterStateTime;
 	private bool dealingNextCard;
 	public Card CurrentCard { get; private set; }
@@ -40,6 +41,7 @@ public class GameManager : Singleton<GameManager>
 	private void Awake()
 	{
 		deck = GetComponent<Deck>();
+		book = FindObjectOfType<BookProp>();
 	}
 
 	private void Update()
@@ -209,6 +211,11 @@ public class GameManager : Singleton<GameManager>
 		if (onCardCompleted != null)
 		{
 			onCardCompleted();
+		}
+
+		if (cardsCompleted == 1 && !book.HasPage(SpellID.SummonStendarii))
+		{
+			book.AddPage(SpellID.SummonStendarii);
 		}
 	}
 

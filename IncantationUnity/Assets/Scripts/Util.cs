@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 public class Util : MonoBehaviour
 {
@@ -367,6 +368,11 @@ public static class Extensions
 	public static void SetY(this Transform transform, float y)
 	{
 		transform.position = new Vector3(transform.position.x, y, transform.position.z);
+	}
+
+	public static string ToFriendlyCase(this string PascalString)
+	{
+		return Regex.Replace(PascalString, "(?!^)([A-Z])", " $1");
 	}
 }
 

@@ -134,6 +134,7 @@ public class Incantor : MonoBehaviour
 		response.spellScores = new float[count];
 
 		bool incantationCastable = IsIncantationCastable(incantation);
+		IncantationCircumstance circumstances = CircumstancesChecker.Instance.GetCircumstances();
 
 		for (int i = 0; i < count; ++i)
 		{
@@ -145,10 +146,11 @@ public class Incantor : MonoBehaviour
 				}
 				else
 				{
-					bool castable = incantationCastable && spell.CheckIncantation(incantation) && spell.IsTargettable(targets);
+					bool castable = incantationCastable && spell.CheckIncantation(incantation, circumstances) && spell.IsTargettable(targets);
 					response.spellScores[i] = !castable ? 0 : 1 +
 						(spell.SpellID != goalSpellID ? 1 : 0) + // Overlapping incantations consistently result in the wrong spell!
-						(spell.seen ? 2 : 0);
+						(spell.seen ? 2 : 0) + 
+						(spell.priority * 100);
 				}
 			}
 			else
@@ -167,7 +169,7 @@ public class Incantor : MonoBehaviour
 		response.spellScores = new float[count];
 		for (int i = 0; i < count; ++i)
 		{
-			response.spellScores[i] = Random.Range(0.0f, 0.9f);
+			response.spellScores[i] = 0.0f;
 		}
 		return response;
 	}
@@ -175,11 +177,13 @@ public class Incantor : MonoBehaviour
 	private void DebugScoreIncantation(ScoreIncantationResponse response)
 	{
 		Player player = Player.Instance;
+		IncantationCircumstance circumstances = CircumstancesChecker.Instance.GetCircumstances();
+
 		foreach (Spell spell in player.spells.Values)
 		{
-			if (spell.debugIncantation == incantation)
+			if (spell.CheckDebugIncantation(incantation, circumstances))
 			{
-				response.spellScores[(int)spell.SpellID] = Random.Range(0.9f, 1.2f);
+				response.spellScores[(int)spell.SpellID] = float.MaxValue;
 			}
 		}
 	}
@@ -248,7 +252,10 @@ public class Incantor : MonoBehaviour
 				Debug.Log(string.Format("Cast '{0}' => {1} ({2}) at {3}", incantation, spell.SpellID, intensity, spellCast.target));
 			}
 
-			IncrementWordUseCounts(incantation);
+			if (spell.SpellID != SpellID.Generic)
+			{
+				IncrementWordUseCounts(incantation);
+			}
 		}
 		else
 		{

@@ -88,6 +88,28 @@ public class BookProp : Prop
 		return false;
 	}
 
+	public bool HasPage(SpellID spellID)
+	{
+		return pages.FindIndex(p => p.SpellID == spellID) >= 0;
+	}
+
+	public void AddPage(SpellID spellID, bool openToPage=false)
+	{
+		Spell spell = Player.Instance.spells[spellID];
+		pages.Add(spell);
+		pages.Sort(new Spell.NameComparer());
+
+		pageIndex = pages.FindIndex(p => p.SpellID == spellID);
+
+		if (openToPage)
+		{
+			StartCoroutine(CoroutineUtil.DoAfterDelay(() =>
+			{
+				Open(quick: true);
+			}, newSpellOpenDelay));
+		}
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();
@@ -121,22 +143,9 @@ public class BookProp : Prop
 		}
 
 		Spell spell = Player.Instance.spells[card.goalSpellID];
-		if (!spell.seen)
+		if (!spell.seen && !HasPage(spell.SpellID))
 		{
-			spell.seen = true;
-
-			pages.Add(spell);
-			pages.Sort(new Spell.NameComparer());
-
-			pageIndex = pages.FindIndex(p => p.SpellID == spell.SpellID);
-
-			if (pages.Count > 1)
-			{
-				StartCoroutine(CoroutineUtil.DoAfterDelay(() =>
-				{
-					Open(quick: true);
-				}, newSpellOpenDelay));
-			}
+			AddPage(spell.SpellID, openToPage: PageCount != 0);
 		}
 	}
 
@@ -153,13 +162,16 @@ public class BookProp : Prop
 		}
 		else
 		{
+			// Display page.
 			Spell pageSpell = pages[pageIndex];
+			pageSpell.seen = true;
 
-			bookText.text = string.Format("{0}\n\n", pageSpell.SpellID.ToString());
-			foreach (IncantationRule rule in pageSpell.incantationDef.rules)
+			bookText.text = string.Format("{0}\n\n", pageSpell.SpellID.ToString().ToFriendlyCase());
+			foreach (IncantationRule rule in pageSpell.IncantationDef.rules)
 			{
 				bookText.text += string.Format("{0}\n", rule.GetDescription());
 			}
+			bookText.text += pageSpell.IncantationDef.GetCircumstancesDescription();
 		}
 	}
 

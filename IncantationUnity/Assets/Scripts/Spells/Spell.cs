@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
 
+// Add at end to not break data.
 public enum SpellID
 {
 	Activate,
@@ -20,19 +21,24 @@ public enum SpellID
 	Fill,
 	Unlock,
 	Vanish,
+	SummonStendarii,
 }
 
 [System.Serializable]
 public class Spell
 {
-	public SpellID SpellID { get; private set; }
+	public int priority;
+	public IncantationDefConfig incantationDefConfig;
 	public string debugIncantation;
 	public AudioClip[] castSFX;
 	// Seconds after the cast start time after which the spell effect is applied.
 	public float effectStartTime;
 	// Seconds after the cast start time after which the spell effect should end, or -1 if not applicable.
 	public float effectEndTime = -1;
-	public IncantationDef incantationDef;
+
+	public SpellID SpellID { get; private set; }
+	public IncantationDef IncantationDef { get; private set; }
+	[HideInInspector]
 	public bool seen;
 
 	public float EffectDuration => effectEndTime >= 0 ? effectEndTime - effectStartTime : 0.0f;
@@ -44,12 +50,17 @@ public class Spell
 
 	public void Init(IncantationDef incantationDef)
 	{
-		this.incantationDef = incantationDef;
+		this.IncantationDef = incantationDef;
 	}
 
-	public bool CheckIncantation(string incantation)
+	public bool CheckIncantation(string incantation, IncantationCircumstance circumstances)
 	{
-		return incantationDef == null || incantationDef.Passes(incantation);
+		return IncantationDef == null || IncantationDef.Passes(incantation, circumstances);
+	}
+
+	public bool CheckDebugIncantation(string incantation, IncantationCircumstance circumstances)
+	{
+		return incantation == debugIncantation && IncantationDef.PassesCircumstances(circumstances);
 	}
 
 	public bool IsTargettable(SpellTarget target)
@@ -149,18 +160,56 @@ public enum IncantationRuleType
 	TwoWords,
 }
 
+[System.Flags]
+public enum IncantationCircumstance
+{
+	Dark = 1 << 0,
+	PitchBlack = 1 << 1,
+	Raining = 1 << 2,
+}
+
 public class IncantationDef
 {
 	public IncantationRule[] rules;
+	public IncantationCircumstance requiredCircumstances;
 
-	public IncantationDef()
+	public IncantationDef(IncantationDefConfig config)
 	{
-		rules = new IncantationRule[1];
-		rules[0] = new IncantationRule();
+		int n = config.custom ? config.customRuleTypes.Length : 1;
+		rules = new IncantationRule[n];
+		for (int i = 0; i < n; ++i)
+		{
+			if (config.custom)
+			{
+				rules[i] = IncantationRule.Random(config.customRuleTypes[i]);
+			}
+			else
+			{ 
+				rules[i] = IncantationRule.Random();
+			}	
+		}
+
+		requiredCircumstances = config.custom ? config.customCircumstances : 0;
 	}
 
-	public bool Passes(string incantation)
+	public bool PassesCircumstances(IncantationCircumstance circumstances)
 	{
+		foreach (IncantationCircumstance c in System.Enum.GetValues(circumstances.GetType()))
+		{
+			if (requiredCircumstances.HasFlag(c) && !circumstances.HasFlag(c))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public bool Passes(string incantation, IncantationCircumstance circumstances)
+	{
+		if (!PassesCircumstances(circumstances))
+		{
+			return false;
+		}
 		foreach (IncantationRule rule in rules)
 		{
 			if (!rule.Passes(incantation))
@@ -173,15 +222,29 @@ public class IncantationDef
 
 	public bool IsEquivalent(IncantationDef other)
 	{
-		return rules[0].IsEquivalent(other.rules[0]);
+		if (rules.Length != other.rules.Length)
+		{
+			return false;
+		}
+		foreach (IncantationRule rule in rules)
+		{
+			foreach (IncantationRule otherRule in other.rules)
+			{
+				if (!rule.IsEquivalent(otherRule))
+				{
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
-	public static IncantationDef CreateUnique(List<IncantationDef> defs)
+	public static IncantationDef CreateUnique(IncantationDefConfig config, List<IncantationDef> defs)
 	{
 		IncantationDef newDef = null;
-		for (int i = 0; i < 40 && newDef == null; ++i)
+		for (int i = 0; i < 100 && newDef == null; ++i)
 		{
-			newDef = new IncantationDef();
+			newDef = new IncantationDef(config);
 			foreach (IncantationDef def in defs)
 			{
 				if (newDef.IsEquivalent(def))
@@ -197,6 +260,34 @@ public class IncantationDef
 		}
 		return newDef;
 	}
+
+	public string GetCircumstancesDescription()
+	{
+		string desc = "";
+		foreach (IncantationCircumstance c in System.Enum.GetValues(requiredCircumstances.GetType()))
+		{
+			if (!requiredCircumstances.HasFlag(c))
+			{
+				continue;
+			}
+			switch (c)
+			{
+				case IncantationCircumstance.Dark:
+					desc += string.Format("In darkness\n");
+					break;
+				case IncantationCircumstance.PitchBlack:
+					desc += string.Format("In utter darkness\n");
+					break;
+				case IncantationCircumstance.Raining:
+					desc += string.Format("When the sky weeps\n");
+					break;
+				default:
+					break;
+			}
+		}
+		desc.TrimEnd(System.Environment.NewLine.ToCharArray());
+		return desc;
+	}
 }
 
 public class IncantationRule
@@ -205,7 +296,7 @@ public class IncantationRule
 	public char letter;
 	public int n;
 
-	public IncantationRule()
+	public static IncantationRule Random()
 	{
 		IncantationRuleType[] possibleRuleTypes = new IncantationRuleType[] 
 		{
@@ -214,18 +305,27 @@ public class IncantationRule
 			IncantationRuleType.LongWord,
 			IncantationRuleType.TwoWords,
 		};
-		ruleType = possibleRuleTypes[Random.Range(0, possibleRuleTypes.Length)];
+		IncantationRuleType ruleType = possibleRuleTypes[UnityEngine.Random.Range(0, possibleRuleTypes.Length)];
+		return Random(ruleType);
+	}
 
-		if (ruleType == IncantationRuleType.ContainsLetter || 
-			ruleType == IncantationRuleType.StartsWithLetter ||
-			ruleType == IncantationRuleType.EndsWithLetter)
+	public static IncantationRule Random(IncantationRuleType type)
+	{
+		IncantationRule rule = new IncantationRule();
+		rule.ruleType = type;
+
+		if (rule.ruleType == IncantationRuleType.ContainsLetter || 
+			rule.ruleType == IncantationRuleType.StartsWithLetter ||
+			rule.ruleType == IncantationRuleType.EndsWithLetter)
 		{
-			letter = Util.RandomLetter();
+			rule.letter = Util.RandomLetter();
 		}
-		if (ruleType == IncantationRuleType.NLettersLong)
+		if (rule.ruleType == IncantationRuleType.NLettersLong)
 		{
-			n = Random.Range(3, 5);
+			rule.n = UnityEngine.Random.Range(3, 5);
 		}
+
+		return rule;
 	}
 
 	public bool Passes(string incantation)
@@ -285,4 +385,12 @@ public class IncantationRule
 	{
 		return ruleType == other.ruleType && letter == other.letter && n == other.n;
 	}
+}
+
+[System.Serializable]
+public class IncantationDefConfig
+{
+	public bool custom;
+	public IncantationCircumstance customCircumstances;
+	public IncantationRuleType[] customRuleTypes;
 }

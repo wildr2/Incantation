@@ -25,7 +25,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 2934
+  controlID: 6839
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -187,9 +187,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 8c620000
-      m_LastClickedID: 0
-      m_ExpandedIDs: e0fafffff6fafffffcfaffff1afbffff
+      m_SelectedIDs: ea740000
+      m_LastClickedID: 29930
+      m_ExpandedIDs: 0ed9ffff40d9ffff36dbffff1afbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -345,7 +345,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 2935
+  controlID: 6840
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -373,7 +373,7 @@ MonoBehaviour:
   - {fileID: 11}
   - {fileID: 2}
   m_Selected: 2
-  m_LastSelected: 0
+  m_LastSelected: 1
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -884,7 +884,7 @@ MonoBehaviour:
     x: 968.72723
     y: 72.436356
     width: 1264.4543
-    height: 692.0181
+    height: 726.92725
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -898,7 +898,7 @@ MonoBehaviour:
   m_MixersTreeState:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
-    m_LastClickedID: 21594
+    m_LastClickedID: 21610
     m_ExpandedIDs: 12eb343c
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1014,7 +1014,7 @@ MonoBehaviour:
       oldMaxSizes: 
       oldSplitSize: 0
     m_HorizontalSplitter:
-      ID: 11450
+      ID: 6818
       splitterInitialOffset: 0
       currentActiveSplitter: -1
       realSizes:
@@ -1114,7 +1114,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Misc
+    - Assets/Sounds/Spell
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1122,16 +1122,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Misc
+  - Assets/Sounds/Spell
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\Robert\Lodge\GitHub\Incantation\IncantationUnity
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 154.63635}
-    m_SelectedIDs: 88620000
-    m_LastClickedID: 25224
-    m_ExpandedIDs: 00000000505e0000525e0000545e0000565e0000585e000000ca9a3b
+    scrollPos: {x: 0, y: 118.63635}
+    m_SelectedIDs: a25e0000
+    m_LastClickedID: 24226
+    m_ExpandedIDs: 00000000645e0000665e0000685e00006a5e00006c5e000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1159,7 +1159,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000505e0000525e0000545e0000565e0000585e000000ca9a3b
+    m_ExpandedIDs: 00000000645e0000665e0000685e00006a5e00006c5e000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1184,10 +1184,10 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 8c620000
-    m_LastClickedInstanceID: 25228
+    m_SelectedInstanceIDs: ea740000
+    m_LastClickedInstanceID: 29930
     m_HadKeyboardFocusLastEvent: 0
-    m_ExpandedInstanceIDs: c6230000145f00009a7000000000000098540000
+    m_ExpandedInstanceIDs: c6230000145f00009a70000000000000985400006a540000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

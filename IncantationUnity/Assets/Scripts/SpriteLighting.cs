@@ -16,6 +16,6 @@ public class SpriteLighting : MonoBehaviour
 	private void Update()
 	{
 		RoomLighting rl = RoomLighting.Instance;
-		spriteRenderer.color = Color.Lerp(rl.darkTint, initialColor, rl.Brightness);
+		spriteRenderer.color = Color.Lerp(Color.black, rl.TintColor(initialColor), rl.Brightness);
 	}
 }

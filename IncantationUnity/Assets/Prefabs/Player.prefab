@@ -209,6 +209,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activateSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: on
     castSFX:
     - {fileID: 8300000, guid: 772cf7dfe8734e546b18ae938660159f, type: 3}
@@ -216,6 +221,11 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   breakSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: break
     castSFX:
     - {fileID: 8300000, guid: 16fc539b89ae79a4ea25daf02e456fff, type: 3}
@@ -223,6 +233,11 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   deactivateSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: off
     castSFX:
     - {fileID: 8300000, guid: 6e8b94b154752cc469aa781e9e5d0cc4, type: 3}
@@ -230,6 +245,11 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   explodeSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: explode
     castSFX:
     - {fileID: 8300000, guid: bc3d6b8cb32c22846808eb4ca36a5766, type: 3}
@@ -237,6 +257,11 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   extinguishSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: out
     castSFX:
     - {fileID: 8300000, guid: dea0deb11a683674e9612ac328ea879f, type: 3}
@@ -244,6 +269,11 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   fillSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: fill
     castSFX:
     - {fileID: 8300000, guid: c3715f8e62f53b149a71aa2942148517, type: 3}
@@ -251,6 +281,11 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   genericSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 1
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: generic
     castSFX:
     - {fileID: 8300000, guid: 743da39a002f50049844dc80d2d5d516, type: 3}
@@ -260,6 +295,11 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   growSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: grow
     castSFX:
     - {fileID: 8300000, guid: 1ca1b4a60fd3d6a4a98c22d609328212, type: 3}
@@ -267,6 +307,11 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   igniteSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: ignite
     castSFX:
     - {fileID: 8300000, guid: 2d0edff026af26a4e859161154b074f5, type: 3}
@@ -274,6 +319,11 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   levitateSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: levitate
     castSFX:
     - {fileID: 8300000, guid: b6f737402b23019489e5c067dd7e1aee, type: 3}
@@ -283,6 +333,11 @@ MonoBehaviour:
     castSFXIntro:
     - {fileID: 8300000, guid: f29fc11ff076caf418c8f2fa7f1c3931, type: 3}
   lockSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: lock
     castSFX:
     - {fileID: 8300000, guid: 7fe1a051409596e4b9adf3eb00daadd6, type: 3}
@@ -290,6 +345,11 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   mendSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: mend
     castSFX:
     - {fileID: 8300000, guid: 4a9a36fee4168c342aa67ca694f10f05, type: 3}
@@ -297,13 +357,35 @@ MonoBehaviour:
     effectEndTime: 1.9
     seen: 0
   rainSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: rain
     castSFX:
     - {fileID: 8300000, guid: 519a6801a168ce3489594abd9fc30f10, type: 3}
     effectStartTime: 0
     effectEndTime: -1
     seen: 0
+  summonStendariiSpell:
+    priority: 1
+    incantationDefConfig:
+      custom: 1
+      customCircumstances: 2
+      customRuleTypes: 010000000400000005000000
+    debugIncantation: summon
+    castSFX:
+    - {fileID: 8300000, guid: 01725e0d45bcad04db27f2c6dcdfb0f8, type: 3}
+    effectStartTime: 0
+    effectEndTime: -1
+    seen: 0
   unlockSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: unlock
     castSFX:
     - {fileID: 8300000, guid: 0366e70b6a7408d42b1371726f48c109, type: 3}
@@ -313,6 +395,11 @@ MonoBehaviour:
     unlockDelay: 0.2
     openDelay: 0.7
   vanishSpell:
+    priority: 0
+    incantationDefConfig:
+      custom: 0
+      customCircumstances: 0
+      customRuleTypes: 
     debugIncantation: vanish
     castSFX:
     - {fileID: 8300000, guid: bd74508c93d4ae54c82f1adfc3de1e68, type: 3}

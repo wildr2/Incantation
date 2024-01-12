@@ -18,6 +18,7 @@ public class Player : Singleton<Player>
 	public Spell lockSpell = new Spell(SpellID.Lock);
 	public Spell mendSpell = new Spell(SpellID.Mend);
 	public Spell rainSpell = new Spell(SpellID.Rain);
+	public Spell summonStendariiSpell = new Spell(SpellID.SummonStendarii);
 	public UnlockSpell unlockSpell = new UnlockSpell();
 	public Spell vanishSpell = new Spell(SpellID.Vanish);
 
@@ -39,12 +40,8 @@ public class Player : Singleton<Player>
 			Spell spell = field.GetValue(this) as Spell;
 			if (spell != null)
 			{
-				IncantationDef incantationDef = null;
-				if (spell.SpellID != SpellID.Generic)
-				{
-					incantationDef = IncantationDef.CreateUnique(incantationDefs);
-					incantationDefs.Add(incantationDef);
-				}
+				IncantationDef incantationDef = IncantationDef.CreateUnique(spell.incantationDefConfig, incantationDefs);
+				incantationDefs.Add(incantationDef);
 				spell.Init(incantationDef);
 				spells[spell.SpellID] = spell;
 			}

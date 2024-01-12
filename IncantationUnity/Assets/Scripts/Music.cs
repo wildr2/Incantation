@@ -5,6 +5,7 @@ using UnityEngine;
 public class Music : MonoBehaviour
 {
 	private AudioSource source;
+	public bool tmpMute;
 
 	private void Awake()
 	{
@@ -23,7 +24,14 @@ public class Music : MonoBehaviour
 			else
 			{
 				source.Play();
+				source.volume = 1.0f;
+				tmpMute = false;
 			}
+		}
+
+		if (tmpMute)
+		{
+			source.volume = Mathf.Lerp(source.volume, 0.0f, Time.deltaTime * 2.0f);
 		}
 	}
 }

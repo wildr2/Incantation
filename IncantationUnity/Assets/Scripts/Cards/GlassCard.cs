@@ -30,6 +30,7 @@ public class GlassCard : Card
 	{
 		return
 			goalSpellID == SpellID.Fill ? (filledWithWater || filledWithPlant) && !vanished && !broken :
+			goalSpellID == SpellID.Grow ? filledWithPlant && !vanished :
 			false;
 	}
 
@@ -37,6 +38,7 @@ public class GlassCard : Card
 	{
 		return
 			goalSpellID == SpellID.Fill ? vanished || broken :
+			goalSpellID == SpellID.Grow ? vanished || broken :
 			false;
 	}
 
