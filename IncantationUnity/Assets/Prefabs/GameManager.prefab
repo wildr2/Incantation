@@ -131,8 +131,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextCardDelay: 1.5
   removeCardDelay: 0.3
-  skippableDelay: 0
   spawnCardDelay: 0.45
+  secondsBeforeCanSkip: 30
   preRoundDuration: 2
   cardDealPos: {fileID: 5101672855853455402}
   maxCardDealPosOffset: 1
@@ -212,7 +212,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b3695c6fcfad641bb80808d7a76e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  darkTint: {r: 0, g: 0, b: 0, a: 1}
   fireProp: {fileID: 0}
   lampProp: {fileID: 0}
 --- !u!114 &907886494030276123

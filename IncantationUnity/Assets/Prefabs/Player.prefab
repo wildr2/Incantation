@@ -373,7 +373,7 @@ MonoBehaviour:
     incantationDefConfig:
       custom: 1
       customCircumstances: 2
-      customRuleTypes: 010000000400000005000000
+      customRuleTypes: 010000000100000004000000
     debugIncantation: summon
     castSFX:
     - {fileID: 8300000, guid: 01725e0d45bcad04db27f2c6dcdfb0f8, type: 3}

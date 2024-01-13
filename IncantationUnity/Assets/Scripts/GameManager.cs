@@ -14,8 +14,8 @@ public class GameManager : Singleton<GameManager>
 {
 	public float nextCardDelay;
 	public float removeCardDelay;
-	public float skippableDelay;
 	public float spawnCardDelay;
+	public float secondsBeforeCanSkip;
 	public float preRoundDuration;
 	public Transform cardDealPos;
 	public float maxCardDealPosOffset;
@@ -31,6 +31,7 @@ public class GameManager : Singleton<GameManager>
 	private float enterStateTime;
 	private bool dealingNextCard;
 	public Card CurrentCard { get; private set; }
+	private float currentCardDealTime = -1;
 	private float currentCardDoneTime = -1;
 	private float currentCardBecameSkippableTime = -1;
 	private int cardsCompleted;
@@ -95,13 +96,13 @@ public class GameManager : Singleton<GameManager>
 				{
 					currentCardDoneTime = Time.time;
 				}
-				else if (CurrentCard.IsSkippable())
+				else if (CurrentCard.IsSkippable() || Time.time - currentCardDealTime > secondsBeforeCanSkip)
 				{
 					if (currentCardBecameSkippableTime < 0)
 					{
 						currentCardBecameSkippableTime = Time.time;
 					}
-					else if (Time.time - currentCardBecameSkippableTime >= skippableDelay && Input.GetKeyDown(KeyCode.Space))
+					else if (Input.GetKeyDown(KeyCode.Space))
 					{
 						currentCardDoneTime = Time.time - nextCardDelay;
 					}
@@ -132,16 +133,15 @@ public class GameManager : Singleton<GameManager>
 		bool showSkipText =
 			state == GameState.Round &&
 			currentCardDoneTime < 0 &&
-			currentCardBecameSkippableTime >= 0 &&
-			Time.time - currentCardBecameSkippableTime > skippableDelay;
+			currentCardBecameSkippableTime >= 0;
 
-		if (tutorialText.Text != "")
-		{
-			helpText.text = tutorialText.Text;
-		}
-		else if (showSkipText)
+		if (showSkipText)
 		{
 			helpText.text = skipCardText;
+		}
+		else if (tutorialText.Text != "")
+		{
+			helpText.text = tutorialText.Text;
 		}
 
 		scoreText.text = string.Format("{0}\t\t{1}", Util.FormatTimeAsMinSec(Time.timeSinceLevelLoad), cardsCompleted);
@@ -202,6 +202,7 @@ public class GameManager : Singleton<GameManager>
 			currentCardDoneTime = -1;
 			currentCardBecameSkippableTime = -1;
 			dealingNextCard = false;
+			currentCardDealTime = Time.time;
 		}, spawnCardDelay));
 	}
 

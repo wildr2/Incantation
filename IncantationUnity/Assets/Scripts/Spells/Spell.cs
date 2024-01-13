@@ -175,8 +175,11 @@ public class IncantationDef
 
 	public IncantationDef(IncantationDefConfig config)
 	{
-		int n = config.custom ? config.customRuleTypes.Length : 1;
+		int n = config.custom ? 
+			config.customRuleTypes.Length : 
+			Random.value < 0.2f ? 2 : 1;
 		rules = new IncantationRule[n];
+
 		for (int i = 0; i < n; ++i)
 		{
 			if (config.custom)
@@ -185,11 +188,18 @@ public class IncantationDef
 			}
 			else
 			{ 
-				rules[i] = IncantationRule.Random();
+				rules[i] = i == 0 ? IncantationRule.Random() : IncantationRule.Random(IncantationRuleType.ContainsLetter);
 			}	
 		}
 
-		requiredCircumstances = config.custom ? config.customCircumstances : 0;
+		if (config.custom)
+		{
+			requiredCircumstances = config.customCircumstances;
+		}
+		else
+		{
+			requiredCircumstances = 0;
+		}
 	}
 
 	public bool PassesCircumstances(IncantationCircumstance circumstances)
@@ -298,14 +308,14 @@ public class IncantationRule
 
 	public static IncantationRule Random()
 	{
-		IncantationRuleType[] possibleRuleTypes = new IncantationRuleType[] 
+		List<IncantationRuleType> possibleRuleTypes = new List<IncantationRuleType>()
 		{
 			IncantationRuleType.ContainsLetter,
 			IncantationRuleType.NLettersLong,
 			IncantationRuleType.LongWord,
 			IncantationRuleType.TwoWords,
 		};
-		IncantationRuleType ruleType = possibleRuleTypes[UnityEngine.Random.Range(0, possibleRuleTypes.Length)];
+		IncantationRuleType ruleType = possibleRuleTypes[UnityEngine.Random.Range(0, possibleRuleTypes.Count)];
 		return Random(ruleType);
 	}
 
@@ -322,7 +332,7 @@ public class IncantationRule
 		}
 		if (rule.ruleType == IncantationRuleType.NLettersLong)
 		{
-			rule.n = UnityEngine.Random.Range(3, 5);
+			rule.n = UnityEngine.Random.Range(3, 6);
 		}
 
 		return rule;
