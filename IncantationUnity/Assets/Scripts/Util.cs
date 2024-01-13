@@ -284,6 +284,43 @@ public class Util : MonoBehaviour
 		return System.Enum.GetValues(typeof(T)).Length;
 	}
 
+	public static int CountFlags(System.Enum flags)
+	{
+		int count = 0;
+		ulong value = System.Convert.ToUInt64(flags);
+
+		while (value > 0)
+		{
+			if ((value & 1) == 1)
+			{
+				count++;
+			}
+
+			value >>= 1;
+		}
+
+		return count;
+	}
+
+	public static T RandomFlag<T>(T flags) where T : System.Enum
+	{
+		T[] values = System.Enum.GetValues(typeof(T)) as T[];
+		if (values.Length == 0)
+		{
+			throw new System.ArgumentException("Enum must have at least one non-zero value.");
+		}
+
+		// Filter out flags that are not set in the provided flags argument.
+		values = System.Array.FindAll(values, value => flags.HasFlag(value));
+
+		if (values.Length == 0)
+		{
+			throw new System.ArgumentException("Provided flags argument has no valid choices");
+		}
+
+		return values[Random.Range(0, values.Length)];
+	}
+
 	public static string FormatTimeAsMinSec(float total_seconds)
 	{
 		float total_minutes = total_seconds / 60f;
@@ -329,7 +366,7 @@ public class Util : MonoBehaviour
 		return Util.Modulo(x, 1.0f);
 	}
 
-	public static int WeightedRandom(float[] weights)
+	public static int WeightedRandom(IList<float> weights)
 	{
 		float total_weight = 0.0f;
 		foreach (float weight in weights)
@@ -340,7 +377,7 @@ public class Util : MonoBehaviour
 		float target_weight_index = Random.value * total_weight;
 		float weight_index = 0;
 
-		for (int i = 0; i < weights.Length; ++i)
+		for (int i = 0; i < weights.Count; ++i)
 		{
 			if (weights[i] == 0.0f)
 			{

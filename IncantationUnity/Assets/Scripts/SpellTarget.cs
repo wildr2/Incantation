@@ -10,6 +10,13 @@ public class SpellTarget : MonoBehaviour
 
 	public float GetSpellDependentPriority(SpellID spellID)
 	{
+		// Don't boost prop priority above card when the spell is the card's goal spell.
+		// Avoids cases where it could be impossible to complete a card, e.g. ignite requires "in darkness" but off lamp takes priority when casting ignite.
+		if (GameManager.Instance.CurrentCard && GameManager.Instance.CurrentCard.goalSpellID == spellID)
+		{
+			return Priority;
+		}
+
 		SpellEffect effect = System.Array.Find(SpellEffects, e => e.SpellID == spellID);
 		return Priority + (effect != null ? effect.TargetPriorityOffset : 0);
 	}

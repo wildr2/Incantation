@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 // Add at end to not break data.
 public enum SpellID
@@ -43,6 +44,23 @@ public class Spell
 
 	public float EffectDuration => effectEndTime >= 0 ? effectEndTime - effectStartTime : 0.0f;
 
+	public static bool CompatibleWithRequiredCircumstances(SpellID spellID, IncantationCircumstance circumstances)
+	{
+		// XXX: It would be a problem if all various spells needed to create the Dark circumstance required the Dark circumstance.
+		//      Avoiding that problem by only assigning each circumstance to a single spell. Also see ArePrerequisitesLearned.
+		switch (spellID)
+		{
+			case SpellID.Rain:
+				return !circumstances.HasFlag(IncantationCircumstance.Raining);
+			case SpellID.Extinguish:
+				return
+					!circumstances.HasFlag(IncantationCircumstance.Dark) &&
+					!circumstances.HasFlag(IncantationCircumstance.PitchBlack);
+			default:
+				return true;
+		}
+	}
+
 	public Spell(SpellID id)
 	{
 		SpellID = id;
@@ -50,17 +68,19 @@ public class Spell
 
 	public void Init(IncantationDef incantationDef)
 	{
-		this.IncantationDef = incantationDef;
+		IncantationDef = incantationDef;
 	}
 
 	public bool CheckIncantation(string incantation, IncantationCircumstance circumstances)
 	{
-		return IncantationDef == null || IncantationDef.Passes(incantation, circumstances);
+		return IncantationDef.Passes(incantation, circumstances);
 	}
 
 	public bool CheckDebugIncantation(string incantation, IncantationCircumstance circumstances)
 	{
-		return incantation == debugIncantation && IncantationDef.PassesCircumstances(circumstances);
+		return 
+			incantation == debugIncantation &&
+			(DebugSettings.Instance.debugIncantationsBypassCirumstances || IncantationDef.PassesCircumstances(circumstances));
 	}
 
 	public bool IsTargettable(SpellTarget target)
@@ -125,6 +145,14 @@ public class Spell
 		return spellCast;
 	}
 
+	public string GetDescription()
+	{
+		string desc = "";
+		desc = string.Format("{0}\n\n", SpellID.ToString().ToFriendlyCase());
+		desc += IncantationDef.GetDescription();
+		return desc;
+	}
+
 	// Alphabetical ascending.
 	public class NameComparer : IComparer<Spell>
 	{
@@ -172,34 +200,79 @@ public class IncantationDef
 {
 	public IncantationRule[] rules;
 	public IncantationCircumstance requiredCircumstances;
+	public int ConditionCount => rules.Length + Util.CountFlags(requiredCircumstances);
 
-	public IncantationDef(IncantationDefConfig config)
+	public IncantationDef()
 	{
+	}
+
+	public IncantationDef(IncantationDefConfig config, IList<IncantationCircumstance> possibleCircumstances)
+	{
+		// Rules.
 		int n = config.custom ? 
 			config.customRuleTypes.Length : 
 			Random.value < 0.2f ? 2 : 1;
-		rules = new IncantationRule[n];
 
+		List<IncantationRule> rulesList = new List<IncantationRule>(n);
 		for (int i = 0; i < n; ++i)
 		{
-			if (config.custom)
+			// TODO: Fine for now.
+			const int tries = 20;
+			for (int t = 0; t < tries; ++t)
 			{
-				rules[i] = IncantationRule.Random(config.customRuleTypes[i]);
+				IncantationRule rule;
+				if (config.custom)
+				{
+					rule = config.customRuleLetters.Length > 0 ?
+						IncantationRule.Custom(config.customRuleTypes[i], config.customRuleLetters[i]) :
+						IncantationRule.Random(config.customRuleTypes[i]);
+				}
+				else
+				{
+					rule = i == 0 ? IncantationRule.Random() : IncantationRule.Random(IncantationRuleType.ContainsLetter);
+				}
+				if (rule.IsUnique(rulesList))
+				{
+					rulesList.Add(rule);
+					break;
+				}
 			}
-			else
-			{ 
-				rules[i] = i == 0 ? IncantationRule.Random() : IncantationRule.Random(IncantationRuleType.ContainsLetter);
-			}	
+		}
+		rules = rulesList.ToArray();
+		if (rulesList.Count != n)
+		{
+			Debug.LogError(string.Format("Failed to create {0} unique incantation def rules.", n));
 		}
 
+
+		// Circumstances.
 		if (config.custom)
 		{
 			requiredCircumstances = config.customCircumstances;
 		}
 		else
 		{
-			requiredCircumstances = 0;
+			// XXX: input spell configs are shuffled + we want to assign all possible circumstances once.
+			if (possibleCircumstances.Count > 0)
+			{
+				requiredCircumstances = possibleCircumstances[Random.Range(0, possibleCircumstances.Count)];
+			}
+			else
+			{
+				requiredCircumstances = 0;
+			}
 		}
+	}
+
+	public static IncantationDef TestDef(int rulesCount)
+	{
+		IncantationDef def = new IncantationDef();
+		def.rules = new IncantationRule[rulesCount];
+		for (int i = 0; i < rulesCount; ++i)
+		{
+			def.rules[i] = new IncantationRule();
+		}
+		return def;
 	}
 
 	public bool PassesCircumstances(IncantationCircumstance circumstances)
@@ -230,45 +303,164 @@ public class IncantationDef
 		return true;
 	}
 
+	public bool ArePrerequisitesLearned(IEnumerable<Spell> learned)
+	{
+		if (requiredCircumstances.HasFlag(IncantationCircumstance.Dark))
+		{
+			Spell spell = learned.FirstOrDefault((s) =>
+			{
+				bool rightSpell =
+					s.SpellID == SpellID.Deactivate ||
+					s.SpellID == SpellID.Extinguish ||
+					s.SpellID == SpellID.Break ||
+					s.SpellID == SpellID.Explode;
+				bool rightSpellCircumstances = !s.IncantationDef.CircumstancesInclude(IncantationCircumstance.Dark);
+				return rightSpell && rightSpellCircumstances;
+			});
+			if (spell == null)
+			{
+				return false;
+			}
+		}
+		if (requiredCircumstances.HasFlag(IncantationCircumstance.PitchBlack))
+		{
+			if (learned.FirstOrDefault(s => s.SpellID == SpellID.Extinguish) == null)
+			{
+				return false;
+			}
+		}
+		if (requiredCircumstances.HasFlag(IncantationCircumstance.Raining))
+		{
+			if (learned.FirstOrDefault(s => s.SpellID == SpellID.Rain) == null)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public bool IsEquivalent(IncantationDef other)
 	{
+		if (other.requiredCircumstances != requiredCircumstances)
+		{
+			return false;
+		}
 		if (rules.Length != other.rules.Length)
 		{
 			return false;
 		}
 		foreach (IncantationRule rule in rules)
 		{
-			foreach (IncantationRule otherRule in other.rules)
+			if (System.Array.Find(other.rules, r => r.IsEquivalent(rule)) == null)
 			{
-				if (!rule.IsEquivalent(otherRule))
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 		return true;
 	}
 
-	public static IncantationDef CreateUnique(IncantationDefConfig config, List<IncantationDef> defs)
+	// Does this def include the conditions of a given other def and possibly have additional conditions.
+	// If true, anything that passes this def also passes other, but not necessarily vice versa.
+	public bool Includes(IncantationDef other)
 	{
-		IncantationDef newDef = null;
-		for (int i = 0; i < 100 && newDef == null; ++i)
+		if (!CircumstancesInclude(other.requiredCircumstances))
 		{
-			newDef = new IncantationDef(config);
-			foreach (IncantationDef def in defs)
+			return false;
+		}
+		foreach (IncantationRule otherRule in other.rules)
+		{
+			if (rules.Length == 0)
 			{
-				if (newDef.IsEquivalent(def))
+				return false;
+			}
+			if (System.Array.Find(rules, r => r.Includes(otherRule)) == null)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// Do these circumstances include the conditions of a given other rule and possibly have additional conditions.
+	// If true, anything that passes these circumstances also passes other, but not necessarily vice versa.
+	public bool CircumstancesInclude(IncantationCircumstance other)
+	{
+		// TODO: clearer if circumstances were not flags... possibly make Circumstance incantation rule type
+		foreach (IncantationCircumstance c in System.Enum.GetValues(other.GetType()))
+		{
+			if (other.HasFlag(c))
+			{
+				if (requiredCircumstances.HasFlag(c))
 				{
-					newDef = null;
+					continue;
+				}
+				if (c == IncantationCircumstance.Dark && requiredCircumstances.HasFlag(IncantationCircumstance.PitchBlack))
+				{
+					continue;
+				}
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static IList<IncantationDef> CreateUniqueDefs(IList<SpellID> spellIDs, IList<IncantationDefConfig> configs)
+	{
+		List<IncantationDef> defs = new List<IncantationDef>(configs.Count);
+		List<IncantationCircumstance> possibleCircumstances = new List<IncantationCircumstance>() 
+		{
+			IncantationCircumstance.Dark,
+			IncantationCircumstance.Raining,
+		};
+		foreach (IncantationDefConfig config in configs)
+		{
+			// TODO: Fine for now.
+			IncantationDef def = null;
+			const int tries = 100;
+			for (int i = 0; i < tries; ++i)
+			{
+				def = new IncantationDef(config, possibleCircumstances);
+				if (def.IsUnique(defs))
+				{
 					break;
 				}
 			}
+
+			defs.Add(def);
+
+			if (def != null)
+			{
+				possibleCircumstances.Remove(def.requiredCircumstances);
+			}
+			else
+			{
+				Debug.LogError("Failed to create unique incantation def.");
+			}
 		}
-		if (newDef == null)
+		return defs;
+	}
+
+	public bool IsUnique(IList<IncantationDef> others)
+	{
+		foreach (IncantationDef other in others)
 		{
-			Debug.LogError("Failed to create unique IncatationDef.");
+			if (IsEquivalent(other))
+			{
+				return false;
+			}
 		}
-		return newDef;
+		return true;
+	}
+
+	public string GetDescription()
+	{
+		string desc = "";
+		foreach (IncantationRule rule in rules)
+		{
+			desc += string.Format("{0}\n", rule.GetDescription());
+		}
+		desc += GetCircumstancesDescription();
+		return desc;
 	}
 
 	public string GetCircumstancesDescription()
@@ -289,7 +481,7 @@ public class IncantationDef
 					desc += string.Format("In utter darkness\n");
 					break;
 				case IncantationCircumstance.Raining:
-					desc += string.Format("When the sky weeps\n");
+					desc += string.Format("In the rain\n");
 					break;
 				default:
 					break;
@@ -333,6 +525,25 @@ public class IncantationRule
 		if (rule.ruleType == IncantationRuleType.NLettersLong)
 		{
 			rule.n = UnityEngine.Random.Range(3, 6);
+		}
+
+		return rule;
+	}
+
+	public static IncantationRule Custom(IncantationRuleType type, char letter)
+	{
+		IncantationRule rule = new IncantationRule();
+		rule.ruleType = type;
+
+		if (rule.ruleType == IncantationRuleType.ContainsLetter || 
+			rule.ruleType == IncantationRuleType.StartsWithLetter ||
+			rule.ruleType == IncantationRuleType.EndsWithLetter)
+		{
+			rule.letter = letter;
+		}
+		else
+		{
+			Debug.LogError("Invalid custom rule.");
 		}
 
 		return rule;
@@ -395,6 +606,33 @@ public class IncantationRule
 	{
 		return ruleType == other.ruleType && letter == other.letter && n == other.n;
 	}
+
+	// Does this rule include the conditions of a given other rule and possibly have additional conditions.
+	// If true, anything that passes this rule also passes other, but not necessarily vice versa.
+	public bool Includes(IncantationRule other)
+	{
+		if (IsEquivalent(other))
+		{
+			return true;
+		}
+		if (ruleType == IncantationRuleType.StartsWithLetter || ruleType == IncantationRuleType.EndsWithLetter)
+		{
+			return other.ruleType == IncantationRuleType.ContainsLetter && letter == other.letter;
+		}
+		return false;
+	}
+
+	public bool IsUnique(IList<IncantationRule> others)
+	{
+		foreach (IncantationRule other in others)
+		{
+			if (IsEquivalent(other))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 }
 
 [System.Serializable]
@@ -403,4 +641,5 @@ public class IncantationDefConfig
 	public bool custom;
 	public IncantationCircumstance customCircumstances;
 	public IncantationRuleType[] customRuleTypes;
+	public char[] customRuleLetters;
 }

@@ -11,7 +11,7 @@ public class Incantor : MonoBehaviour
 	public System.Action onCastSpell;
 
 	private BookProp book;
-	private string inputText;
+	private string inputText = "";
 	private string incantation;
 	private float startFadeTime = -1;
 	private ScoreIncantationResponse scoreResponse;
@@ -130,32 +130,57 @@ public class Incantor : MonoBehaviour
 		SpellID goalSpellID = GameManager.Instance.CurrentCard ? GameManager.Instance.CurrentCard.goalSpellID : SpellID.Generic;
 
 		ScoreIncantationResponse response = new ScoreIncantationResponse();
-		int count = Util.GetEnumCount<SpellID>();
-		response.spellScores = new float[count];
+		Spell[] spells = Player.Instance.GetSpellsArray();
+		response.spellScores = new float[spells.Length];
 
 		bool incantationCastable = IsIncantationCastable(incantation);
 		IncantationCircumstance circumstances = CircumstancesChecker.Instance.GetCircumstances();
 
-		for (int i = 0; i < count; ++i)
+		for (int i = 0; i < spells.Length; ++i)
 		{
-			if (Player.Instance.spells.TryGetValue((SpellID)i, out Spell spell))
+			Spell spell = spells[i];
+			if (spell == null)
 			{
-				if (spell.SpellID == SpellID.Generic)
-				{
-					response.spellScores[i] = 0.1f;
-				}
-				else
-				{
-					bool castable = incantationCastable && spell.CheckIncantation(incantation, circumstances) && spell.IsTargettable(targets);
-					response.spellScores[i] = !castable ? 0 : 1 +
-						(spell.SpellID != goalSpellID ? 1 : 0) + // Overlapping incantations consistently result in the wrong spell!
-						(spell.seen ? 2 : 0) + 
-						(spell.priority * 100);
-				}
+				response.spellScores[i] = 0.0f;
+				continue;
+			}
+			if (spell.SpellID == SpellID.Generic)
+			{
+				response.spellScores[i] = 0.1f;
 			}
 			else
 			{
-				response.spellScores[i] = 0.0f;
+				// TODO: sort with comparer to avoid edge cases (e.g. >= 10 ConditionCount).
+				bool castable = incantationCastable && spell.CheckIncantation(incantation, circumstances) && spell.IsTargettable(targets);
+				response.spellScores[i] = !castable ? 0 : 1 +
+					(spell.seen ? 1000 : 0) +
+					(spell.priority * 100) +
+					(spell.SpellID != goalSpellID ? 1 : 0); // Overlapping incantations should consistently result in the wrong spell!
+			}
+		}
+
+		// A spell whose incantation includes that of the highest scoring spell should be favored regardless of whether the goal spell.
+		// Example:
+		//		Spell A: contains 'a', contains 'b', is the goal spell
+		//		Spell B: contains 'a'
+		//		Spell C: contains 'c'
+		//
+		//		incantation: "bat"		=> spell A should be picked
+		//		incantation: "batch"		=> spell C should be picked
+		SpellID bestSpellID = GetHighestScoreSpellID(response.spellScores);
+		if (response.spellScores[(int)bestSpellID] > 0)
+		{
+			Spell bestSpell = spells[(int)bestSpellID];
+			for (int i = 0; i < spells.Length; ++i)
+			{
+				Spell spell = spells[i];
+				if (spell != null &&
+					spell.SpellID != bestSpellID &&
+					response.spellScores[i] > 0 &&
+					spell.IncantationDef.Includes(bestSpell.IncantationDef))
+				{
+					response.spellScores[i] += 2;
+				}
 			}
 		}
 
@@ -204,23 +229,26 @@ public class Incantor : MonoBehaviour
 		SpellID spellID = GetHighestScoreSpellID(scoreResponse.spellScores);
 		float score = scoreResponse.spellScores[(int)spellID];
 
-		// TODO: possibly handle score thresholding/normalization on server.
-		const float minSuccessScore = 0.9f;
-		const float maxIntensityScore = 1.2f;
-		if (score <= 0.0f)
-		{
-		}
-		if (score < minSuccessScore)
-		{
-			spellID = SpellID.Generic;
-			intensity = Util.Map(0.0f, minSuccessScore, 0.0f, 1.0f, score);
-		}
-		else
-		{
-			intensity = Util.Map(minSuccessScore, maxIntensityScore, 0.0f, 1.0f, score);
-		}
+		//// TODO: possibly handle score thresholding/normalization on server.
+		//const float minSuccessScore = 0.9f;
+		//const float maxIntensityScore = 1.2f;
+		//if (score <= 0.0f)
+		//{
+		//}
+		//if (score < minSuccessScore)
+		//{
+		//	spellID = SpellID.Generic;
+		//	intensity = Util.Map(0.0f, minSuccessScore, 0.0f, 1.0f, score);
+		//}
+		//else
+		//{
+		//	intensity = Util.Map(minSuccessScore, maxIntensityScore, 0.0f, 1.0f, score);
+		//}
 
-		return intensity > 0 ? Player.Instance.spells[spellID] : null;
+		//return intensity > 0 ? Player.Instance.spells[spellID] : null;
+
+		intensity = 1.0f;
+		return score > 0 ? Player.Instance.spells[spellID] : null;
 	}
 
 	private void TryCastSpell()

@@ -171,12 +171,7 @@ public class BookProp : Prop
 			Spell pageSpell = pages[pageIndex];
 			pageSpell.seen = true;
 
-			bookText.text = string.Format("{0}\n\n", pageSpell.SpellID.ToString().ToFriendlyCase());
-			foreach (IncantationRule rule in pageSpell.IncantationDef.rules)
-			{
-				bookText.text += string.Format("{0}\n", rule.GetDescription());
-			}
-			bookText.text += pageSpell.IncantationDef.GetCircumstancesDescription();
+			bookText.text = pageSpell.GetDescription();
 		}
 	}
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
+using System.Linq;
 
 public class Player : Singleton<Player>
 {
@@ -27,12 +28,28 @@ public class Player : Singleton<Player>
 	public System.Action OnOpenedBook;
 	public System.Action OnTurnedPage;
 
+	// Indexed by SpellID.
+	public Spell[] GetSpellsArray()
+	{
+		int n = Util.GetEnumCount<SpellID>();
+		Spell[] arr = new Spell[n];
+		foreach (Spell spell in spells.Values)
+		{
+			arr[(int)spell.SpellID] = spell;
+		}
+		return arr;
+	}
+
+	public IEnumerable<Spell> GetLearnedSpells()
+	{
+		return spells.Values.Where(s => s.seen);
+	}
+
 	private void Awake()
 	{
 		book = FindObjectOfType<BookProp>();
 
-		// Init spells, and create dictionary of spells using reflection.
-		List<IncantationDef> incantationDefs = new List<IncantationDef>();
+		// Create dictionary of spells using reflection.
 		spells = new Dictionary<SpellID, Spell>();
 		System.Type playerType = typeof(Player);
 		foreach (FieldInfo field in playerType.GetFields(BindingFlags.Public | BindingFlags.Instance))
@@ -40,11 +57,29 @@ public class Player : Singleton<Player>
 			Spell spell = field.GetValue(this) as Spell;
 			if (spell != null)
 			{
-				IncantationDef incantationDef = IncantationDef.CreateUnique(spell.incantationDefConfig, incantationDefs);
-				incantationDefs.Add(incantationDef);
-				spell.Init(incantationDef);
 				spells[spell.SpellID] = spell;
 			}
+		}
+
+		// Create incantation defs and init spells.
+		Spell[] spellArray = spells.Values.ToArray();
+		Util.Shuffle(spellArray);
+		IncantationDefConfig[] incantationDefConfigs = spellArray.Select(s => s.incantationDefConfig).ToArray();
+		SpellID[] spellIDArray = spellArray.Select(s => s.SpellID).ToArray();
+		IncantationDef[] incantationDefs = IncantationDef.CreateUniqueDefs(spellIDArray, incantationDefConfigs).ToArray();
+		for (int i = 0; i < spells.Values.Count; ++i)
+		{
+			spellArray[i].Init(incantationDefs[i]);
+		}
+
+		if (DebugSettings.Instance.debugIncantationDefs)
+		{
+			string str = "INCANTATION DEF DEBUG:\n";
+			foreach (Spell spell in spells.Values)
+			{
+				str += string.Format("{0}\n---------\n", spell.GetDescription());
+			}
+			Debug.Log(str);
 		}
 	}
 

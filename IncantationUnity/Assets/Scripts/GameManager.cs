@@ -54,6 +54,29 @@ public class GameManager : Singleton<GameManager>
 		{
 			CurrentCard = FindAnyObjectByType<Card>();
 		}
+
+		if (DebugSettings.Instance.debugDeckBuilding)
+		{
+			DebugDeckBuilding();
+		}
+	}
+
+	private void DebugDeckBuilding()
+	{
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			deck.AddRandomCard(Player.Instance.GetLearnedSpells());
+			Card cardPrefab = deck.DeckCardPrefabs[deck.DeckCardPrefabs.Count - 1];
+			Spell spell = Player.Instance.spells[cardPrefab.goalSpellID];
+
+			string str = string.Format("{0}\n---------\n", spell.GetDescription());
+			Debug.Log(str);
+
+			foreach (Card card in deck.DeckCardPrefabs)
+			{
+				Player.Instance.spells[card.goalSpellID].seen = true;
+			}
+		}
 	}
 
 	private void UpdateCardDealing()
@@ -161,7 +184,7 @@ public class GameManager : Singleton<GameManager>
 			int newCardCount = deck.Count >= 5 ? 2 : 1;
 			for (int i = 0; i < newCardCount; ++i)
 			{
-				deck.AddRandomCard();
+				deck.AddRandomCard(Player.Instance.GetLearnedSpells());
 			}
 			deck.ReShuffle();
 		}
