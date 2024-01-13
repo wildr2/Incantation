@@ -31,6 +31,7 @@ public class LampProp : Prop
 	{
 		public override SpellID SpellID => SpellID.Ignite;
 		public new TargetType Target => (TargetType)base.Target;
+		// Higher priority than card when off.
 		public override float TargetPriorityOffset => !Target.on ? 2 : base.TargetPriorityOffset;
 
 		public override bool AreConditionsMet()
@@ -89,6 +90,7 @@ public class LampProp : Prop
 	{
 		public override SpellID SpellID => SpellID.Activate;
 		public new TargetType Target => (TargetType)base.Target;
+		// Higher priority than card when off.
 		public override float TargetPriorityOffset => !Target.on ? 2 : base.TargetPriorityOffset;
 
 		public override bool AreConditionsMet()

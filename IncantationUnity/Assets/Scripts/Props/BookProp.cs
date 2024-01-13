@@ -30,6 +30,11 @@ public class BookProp : Prop
 	public bool DisplayingPage => bookText.text.Length > 0;
 	public int PageCount => pages.Count;
 
+	public bool CanOpen()
+	{
+		return !open && PageCount > 0;
+	}
+
 	public void Toggle()
 	{
 		if (open)
@@ -183,7 +188,7 @@ public class BookProp : Prop
 
 		public override bool AreConditionsMet()
 		{
-			return !Target.open;
+			return Target.CanOpen();
 		}
 
 		public override void Apply(SpellCast spellCast)
@@ -203,7 +208,7 @@ public class BookProp : Prop
 
 		public override bool AreConditionsMet()
 		{
-			return !Target.open;
+			return Target.CanOpen();
 		}
 
 		public override void Apply(SpellCast spellCast)

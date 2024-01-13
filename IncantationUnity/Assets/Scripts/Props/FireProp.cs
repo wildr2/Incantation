@@ -27,8 +27,8 @@ public class FireProp : Prop
 		public override SpellID SpellID => SpellID.Ignite;
 		public new TargetType Target => (TargetType)base.Target;
 
-		// When dark, higher priority than card but lower than lamp.
-		public override float TargetPriorityOffset => RoomLighting.Instance.Brightness < 0.5f ? 1.5f : base.TargetPriorityOffset;
+		// When dark, higher priority than card and lamp.
+		public override float TargetPriorityOffset => RoomLighting.Instance.Brightness < 0.5f ? 2.5f : base.TargetPriorityOffset;
 
 		public override bool AreConditionsMet()
 		{
