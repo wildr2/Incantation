@@ -103,7 +103,10 @@ public class PotholeCard : Card
 			if (!Target.vanished && !Target.filledWithWater)
 			{
 				Target.filledWithWater = true;
-				Target.Glow(Target.waterGlowSprite);
+				if (!Target.mended)
+				{
+					Target.Glow(Target.waterGlowSprite);
+				}
 			}
 		}
 	}
