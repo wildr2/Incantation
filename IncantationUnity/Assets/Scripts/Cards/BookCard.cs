@@ -133,7 +133,8 @@ public class BookCard : Card
 		public override void Apply(SpellCast spellCast)
 		{
 			base.Apply(spellCast);
-			Target.Glow(Target.open ? Target.openGlowSprite : Target.closedGlowSprite);
+			Target.Open();
+			Target.Glow(Target.openGlowSprite);
 		}
 	}
 	public LevitateSE levitateSE;
