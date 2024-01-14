@@ -132,6 +132,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextCardDelay: 1.5
   removeCardDelay: 0.3
+  removeCardDelaySkipped: 0
+  dealCardDelay: 0
+  dealCardDelaySkipped: 0.2
   spawnCardDelay: 0.45
   secondsBeforeCanSkip: 30
   preRoundDuration: 2
@@ -140,6 +143,7 @@ MonoBehaviour:
   maxCardDealRotationDeg: 3
   dealCardSFX: {fileID: 8300000, guid: 7029a0d62b2874642a72553d4ec02164, type: 3}
   shuffleDeckSFX: {fileID: 8300000, guid: f0a841be726aaa14782d58319f262e9b, type: 3}
+  skipCardSFX: {fileID: 8300000, guid: f483444cceca8cc41943186d262661ef, type: 3}
   helpText: {fileID: 8832295672545834588}
   scoreText: {fileID: 3432934754605361509}
 --- !u!114 &8851642431030399940
@@ -329,7 +333,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: press space to skip card
+  m_Text: press shift to skip card
 --- !u!1 &7820311060900080152
 GameObject:
   m_ObjectHideFlags: 0

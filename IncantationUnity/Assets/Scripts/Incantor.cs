@@ -45,6 +45,8 @@ public class Incantor : MonoBehaviour
 
 		string text = validWordsTextAsset.ToString();
 		validWords = text.Split(System.Environment.NewLine);
+
+		GameManager.Instance.onCardSkipped += ClearInput;
 	}
 
 	private void Update()
@@ -69,7 +71,7 @@ public class Incantor : MonoBehaviour
 		else if (fading)
 		{
 			incantationText.color = Util.SetAlpha(incantationText.color, 0);
-			inputText = "";
+			ClearInput();
 			startFadeTime = -1;
 			TryCastSpell();
 		}
@@ -97,7 +99,7 @@ public class Incantor : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.Escape) || book.open)
 		{
-			inputText = "";
+			ClearInput();
 		}
 		if (Input.GetKeyDown(KeyCode.Return))
 		{
@@ -122,6 +124,11 @@ public class Incantor : MonoBehaviour
 		}
 
 		incantationText.text = inputText;
+	}
+
+	private void ClearInput()
+	{
+		inputText = "";
 	}
 
 	private ScoreIncantationResponse CreateIncantationRulesResponse()

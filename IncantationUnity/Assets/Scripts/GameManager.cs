@@ -12,8 +12,17 @@ public enum GameState
 
 public class GameManager : Singleton<GameManager>
 {
+	// Delay after card completion before the start of the next card sequence.
 	public float nextCardDelay;
+	// Delay from the start of the next card sequence before the removal of the card.
 	public float removeCardDelay;
+	// Replaces removeCardDelaySkipped when card was skipped.
+	public float removeCardDelaySkipped;
+	// Delay from start of the next card sequence before the playing of dealCardSFX;
+	public float dealCardDelay;
+	// Replaces dealCardDelay when card was skipped.
+	public float dealCardDelaySkipped;
+	// Delay from the playing of dealCardSFX before spawning the next card.
 	public float spawnCardDelay;
 	public float secondsBeforeCanSkip;
 	public float preRoundDuration;
@@ -22,6 +31,7 @@ public class GameManager : Singleton<GameManager>
 	public float maxCardDealRotationDeg; 
 	public AudioClip dealCardSFX;
 	public AudioClip shuffleDeckSFX;
+	public AudioClip skipCardSFX;
 	public Text helpText;
 	public Text scoreText;
 
@@ -33,9 +43,11 @@ public class GameManager : Singleton<GameManager>
 	public Card CurrentCard { get; private set; }
 	private float currentCardDealTime = -1;
 	private float currentCardDoneTime = -1;
+	private bool skippedCurrentCard;
 	private float currentCardBecameSkippableTime = -1;
 	private int cardsCompleted;
 	public System.Action onCardCompleted;
+	public System.Action onCardSkipped;
 
 	private float StateTime => Time.time - enterStateTime;
 
@@ -125,9 +137,9 @@ public class GameManager : Singleton<GameManager>
 					{
 						currentCardBecameSkippableTime = Time.time;
 					}
-					else if (Input.GetKeyDown(KeyCode.Space))
+					if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
 					{
-						currentCardDoneTime = Time.time - nextCardDelay;
+						SkipCard();
 					}
 				}
 			}
@@ -147,7 +159,7 @@ public class GameManager : Singleton<GameManager>
 
 	private void UpdateText()
 	{
-		const string skipCardText = "press space to skip card";
+		const string skipCardText = "press shift to skip card";
 
 		helpText.text = "";
 
@@ -170,13 +182,24 @@ public class GameManager : Singleton<GameManager>
 		scoreText.text = string.Format("{0}\t\t{1}", Util.FormatTimeAsMinSec(Time.timeSinceLevelLoad), cardsCompleted);
 	}
 
+	private void SkipCard()
+	{
+		currentCardDoneTime = Time.time - nextCardDelay;
+		skippedCurrentCard = true;
+		if (onCardSkipped != null)
+		{
+			onCardSkipped();
+		}
+		SFXManager.Play(skipCardSFX);
+	}
+
 	private void NextRound()
 	{
 		Debug.Log("Next round");
 		if (CurrentCard)
 		{
 			Destroy(CurrentCard.gameObject);
-			if (currentCardBecameSkippableTime < 0)
+			if (!skippedCurrentCard)
 			{
 				OnCardCompletion();
 			}
@@ -198,35 +221,44 @@ public class GameManager : Singleton<GameManager>
 		Debug.Log(string.Format("Next card ({0}/{1})", deck.DiscardPileCount + 1, deck.Count));
 
 		dealingNextCard = true;
-		SFXManager.Play(dealCardSFX);
 
 		// Spawn card in advance of displaying it to hide visual initialization issue.
 		Card cardPrefab = deck.Draw();
 		Card newCard = Instantiate(cardPrefab, transform);
 		newCard.transform.localScale = Vector3.zero;
 
+		float removeDelay = skippedCurrentCard ? removeCardDelaySkipped : removeCardDelay;
+		float dealDelay = skippedCurrentCard ? dealCardDelaySkipped : dealCardDelay;
+
 		StartCoroutine(CoroutineUtil.DoAfterDelay(() =>
 		{
 			if (CurrentCard)
 			{
-				if (currentCardBecameSkippableTime < 0)
+				if (!skippedCurrentCard)
 				{
 					OnCardCompletion();
 				}
 				Destroy(CurrentCard.gameObject);
 			}
-		}, removeCardDelay));
+		}, removeDelay));
+
 		StartCoroutine(CoroutineUtil.DoAfterDelay(() =>
 		{
-			CurrentCard = newCard;
-			CurrentCard.transform.localScale = Vector3.one;
-			CurrentCard.transform.position = cardDealPos.position + (Vector3)Util.RandomDir2D() * maxCardDealPosOffset;
-			CurrentCard.transform.rotation = Quaternion.Euler(0, 0, Random.Range(-maxCardDealRotationDeg, maxCardDealRotationDeg));
-			currentCardDoneTime = -1;
-			currentCardBecameSkippableTime = -1;
-			dealingNextCard = false;
-			currentCardDealTime = Time.time;
-		}, spawnCardDelay));
+			SFXManager.Play(dealCardSFX);
+
+			StartCoroutine(CoroutineUtil.DoAfterDelay(() =>
+			{
+				CurrentCard = newCard;
+				CurrentCard.transform.localScale = Vector3.one;
+				CurrentCard.transform.position = cardDealPos.position + (Vector3)Util.RandomDir2D() * maxCardDealPosOffset;
+				CurrentCard.transform.rotation = Quaternion.Euler(0, 0, Random.Range(-maxCardDealRotationDeg, maxCardDealRotationDeg));
+				currentCardDoneTime = -1;
+				currentCardBecameSkippableTime = -1;
+				skippedCurrentCard = false;
+				dealingNextCard = false;
+				currentCardDealTime = Time.time;
+			}, spawnCardDelay));
+		}, dealDelay));
 	}
 
 	private void OnCardCompletion()
