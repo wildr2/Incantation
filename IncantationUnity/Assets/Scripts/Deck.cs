@@ -19,9 +19,10 @@ public class Deck : MonoBehaviour
 	private void Awake()
 	{
 		DeckCardPrefabs = new List<Card>(initialCount);
+		Player.Instance.OnInit += Init;
 	}
 
-	private void Start()
+	private void Init()
 	{
 		for (int i = 0; i < initialCount; ++i)
 		{

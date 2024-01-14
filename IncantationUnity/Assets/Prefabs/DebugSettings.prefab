@@ -54,3 +54,5 @@ MonoBehaviour:
   debugIncantationDefs: 0
   debugDeckBuilding: 0
   runTests: 0
+  enableSeed: 0
+  seed: -1

@@ -27,6 +27,7 @@ public class Player : Singleton<Player>
 	private BookProp book;
 	public System.Action OnOpenedBook;
 	public System.Action OnTurnedPage;
+	public System.Action OnInit;
 
 	// Indexed by SpellID.
 	public Spell[] GetSpellsArray()
@@ -48,7 +49,16 @@ public class Player : Singleton<Player>
 	private void Awake()
 	{
 		book = FindObjectOfType<BookProp>();
+	}
 
+	private void Start()
+	{
+		// Init after DebugSettings sets seed.
+		Init();
+	}
+
+	private void Init()
+	{
 		// Create dictionary of spells using reflection.
 		spells = new Dictionary<SpellID, Spell>();
 		System.Type playerType = typeof(Player);
@@ -80,6 +90,11 @@ public class Player : Singleton<Player>
 				str += string.Format("{0}\n---------\n", spell.GetDescription());
 			}
 			Debug.Log(str);
+		}
+
+		if (OnInit != null)
+		{
+			OnInit();
 		}
 	}
 
