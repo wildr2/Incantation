@@ -15,7 +15,7 @@ public class Statum
 	public Statum(bool value)
 	{
 		this.value = value;
-		time = Time.time;
+		time = Application.isEditor ? 0 : Time.time;
 	}
 
 	public static implicit operator Statum(bool value) => new Statum(value);

@@ -2,10 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Music : MonoBehaviour
+public class Music : Singleton<Music>
 {
 	private AudioSource source;
 	public bool tmpMute;
+
+	public void SetEnabled(bool enabled)
+	{
+		if (enabled)
+		{
+			source.Play();
+			source.volume = 1;
+			tmpMute = false;
+		}
+		else
+		{
+			source.Stop();
+			source.volume = 0;
+		}
+	}
 
 	private void Awake()
 	{
@@ -14,21 +29,6 @@ public class Music : MonoBehaviour
 
 	private void Update()
 	{
-		bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-		if (shift && Input.GetKeyDown(KeyCode.M))
-		{
-			if (source.isPlaying)
-			{
-				source.Stop();
-			}
-			else
-			{
-				source.Play();
-				source.volume = 1.0f;
-				tmpMute = false;
-			}
-		}
-
 		if (tmpMute)
 		{
 			source.volume = Mathf.Lerp(source.volume, 0.0f, Time.deltaTime * 2.0f);

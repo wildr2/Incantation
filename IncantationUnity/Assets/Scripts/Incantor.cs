@@ -19,6 +19,8 @@ public class Incantor : Singleton<Incantor>
 	private Dictionary<string, int> wordUseCount = new Dictionary<string, int>();
 	// Words are uppercase.
 	private string[] validWords;
+	private DebugCommander debugCommander;
+	private DebugCommand debugCommand;
 
 	public bool IsValidWord(string word)
 	{
@@ -42,6 +44,7 @@ public class Incantor : Singleton<Incantor>
 	private void Awake()
 	{
 		book = FindObjectOfType<BookProp>();
+		debugCommander = GetComponent<DebugCommander>();
 		ClearInput();
 
 		string text = validWordsTextAsset.ToString();
@@ -74,7 +77,14 @@ public class Incantor : Singleton<Incantor>
 			incantationText.color = Util.SetAlpha(incantationText.color, 0);
 			ClearInput();
 			startFadeTime = -1;
-			TryCastSpell();
+			if (debugCommand != DebugCommand.None)
+			{
+				CastDebugCommand();
+			}
+			else
+			{
+				TryCastSpell();
+			}
 		}
 		else
 		{
@@ -108,7 +118,11 @@ public class Incantor : Singleton<Incantor>
 			{
 				incantation = InputText;
 
-				if (DebugSettings.Instance.enableMagicServer)
+				if (debugCommander.CheckIncantation(incantation, out debugCommand))
+				{
+					startFadeTime = Time.time;
+				}
+				else if (DebugSettings.Instance.enableMagicServer)
 				{
 					MagicClient magicClient = FindObjectOfType<MagicClient>();
 					magicClient.ScoreIncantation(incantation, ScoreIncantationCallback);
@@ -319,6 +333,12 @@ public class Incantor : Singleton<Incantor>
 				onCastSpell();
 			}
 		}
+	}
+
+	private void CastDebugCommand()
+	{
+		debugCommander.CastDebugCommand(debugCommand);
+		debugCommand = DebugCommand.None;
 	}
 
 	private bool ContainsDuplicateWords(string incantation)
