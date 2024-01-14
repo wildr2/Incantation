@@ -209,6 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activateSpell:
+    fancyName: Activation
     priority: 0
     incantationDefConfig:
       custom: 0
@@ -222,6 +223,7 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   breakSpell:
+    fancyName: Breaking
     priority: 0
     incantationDefConfig:
       custom: 0
@@ -235,6 +237,7 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   deactivateSpell:
+    fancyName: Deactivation
     priority: 0
     incantationDefConfig:
       custom: 0
@@ -248,6 +251,7 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   explodeSpell:
+    fancyName: Explosion
     priority: 0
     incantationDefConfig:
       custom: 0
@@ -261,6 +265,7 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   extinguishSpell:
+    fancyName: Extinguishment
     priority: 0
     incantationDefConfig:
       custom: 0
@@ -274,6 +279,7 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   fillSpell:
+    fancyName: Replenishment
     priority: 0
     incantationDefConfig:
       custom: 0
@@ -287,6 +293,7 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   genericSpell:
+    fancyName: 
     priority: 0
     incantationDefConfig:
       custom: 1
@@ -302,6 +309,7 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   growSpell:
+    fancyName: Vegetation
     priority: 0
     incantationDefConfig:
       custom: 0
@@ -315,6 +323,7 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   igniteSpell:
+    fancyName: Combustion
     priority: 0
     incantationDefConfig:
       custom: 0
@@ -328,6 +337,7 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   levitateSpell:
+    fancyName: Levitation
     priority: 0
     incantationDefConfig:
       custom: 0
@@ -343,6 +353,7 @@ MonoBehaviour:
     castSFXIntro:
     - {fileID: 8300000, guid: f29fc11ff076caf418c8f2fa7f1c3931, type: 3}
   lockSpell:
+    fancyName: Locking
     priority: 0
     incantationDefConfig:
       custom: 0
@@ -356,6 +367,7 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   mendSpell:
+    fancyName: Mending
     priority: 0
     incantationDefConfig:
       custom: 0
@@ -369,6 +381,7 @@ MonoBehaviour:
     effectEndTime: 1.9
     seen: 0
   rainSpell:
+    fancyName: Precipitation
     priority: 0
     incantationDefConfig:
       custom: 0
@@ -382,6 +395,7 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   summonStendariiSpell:
+    fancyName: Summon Stendarii
     priority: 1
     incantationDefConfig:
       custom: 1
@@ -395,6 +409,7 @@ MonoBehaviour:
     effectEndTime: -1
     seen: 0
   unlockSpell:
+    fancyName: Unlocking
     priority: 0
     incantationDefConfig:
       custom: 0
@@ -410,6 +425,7 @@ MonoBehaviour:
     unlockDelay: 0.2
     openDelay: 0.7
   vanishSpell:
+    fancyName: 
     priority: 0
     incantationDefConfig:
       custom: 0

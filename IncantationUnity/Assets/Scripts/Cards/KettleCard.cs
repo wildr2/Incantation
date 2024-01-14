@@ -22,7 +22,7 @@ public class KettleCard : Card
 	public override bool IsComplete()
 	{
 		return
-			goalSpellID == SpellID.Activate ? !vanished && GetTemp() > 0.02f :
+			goalSpellID == SpellID.Activate ? !vanished && GetTemp() > 0.015f :
 			goalSpellID == SpellID.Deactivate ? !on || vanished || broken :
 			false;
 	}

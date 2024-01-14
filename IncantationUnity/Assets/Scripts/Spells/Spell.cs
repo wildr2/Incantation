@@ -28,6 +28,7 @@ public enum SpellID
 [System.Serializable]
 public class Spell
 {
+	public string fancyName;
 	public int priority;
 	public IncantationDefConfig incantationDefConfig;
 	public string debugIncantation;
@@ -148,7 +149,7 @@ public class Spell
 	public string GetDescription()
 	{
 		string desc = "";
-		desc = string.Format("{0}\n\n", SpellID.ToString().ToFriendlyCase());
+		desc = string.Format("Spell of {0}\n\n", fancyName).ToUpper();
 		desc += IncantationDef.GetDescription();
 		return desc;
 	}
@@ -585,17 +586,17 @@ public class IncantationRule
 		switch (ruleType)
 		{
 			case IncantationRuleType.StartsWithLetter:
-				return string.Format("Incantation starts with {0}", letter);
+				return string.Format("Incantations start with '{0}'", letter);
 			case IncantationRuleType.ContainsLetter:
-				return string.Format("Incantation contains {0}", letter);
+				return string.Format("Incantations contain '{0}'", letter);
 			case IncantationRuleType.EndsWithLetter:
-				return string.Format("Incantation ends with {0}", letter);
+				return string.Format("Incantations end with '{0}'", letter);
 			case IncantationRuleType.NLettersLong:
-				return string.Format("Incantation contains {0} letters", n);
+				return string.Format("Incantations contain a word of {0} letters", n);
 			case IncantationRuleType.LongWord:
-				return string.Format("Incantation contains a long word", n);
+				return string.Format("Incantations contain a long word", n);
 			case IncantationRuleType.TwoWords:
-				return string.Format("Incantation is two words", n);
+				return string.Format("Incantations are two words long", n);
 			default:
 				break;
 		}

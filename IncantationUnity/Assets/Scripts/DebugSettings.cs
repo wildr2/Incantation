@@ -42,7 +42,7 @@ public class DebugSettings : Singleton<DebugSettings>
 
 	private void InitSeed()
 	{
-		if (OverrideSeed >= 0)
+		if (OverrideSeed > 0)
 		{
 			Seed = OverrideSeed;
 		}
