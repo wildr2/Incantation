@@ -212,7 +212,7 @@ public class IncantationDef
 		// Rules.
 		int n = config.custom ? 
 			config.customRuleTypes.Length : 
-			Random.value < 0.2f ? 2 : 1;
+			Random.value < 0.1f ? 2 : 1;
 
 		List<IncantationRule> rulesList = new List<IncantationRule>(n);
 		for (int i = 0; i < n; ++i)

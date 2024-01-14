@@ -12,7 +12,8 @@ public class SpellTarget : MonoBehaviour
 	{
 		// Don't boost prop priority above card when the spell is the card's goal spell.
 		// Avoids cases where it could be impossible to complete a card, e.g. ignite requires "in darkness" but off lamp takes priority when casting ignite.
-		if (GameManager.Instance.CurrentCard && GameManager.Instance.CurrentCard.goalSpellID == spellID)
+		GameManager gm = GameManager.Instance;
+		if (gm.CurrentCard && !gm.IsCurrentCardDone() && gm.CurrentCard.goalSpellID == spellID)
 		{
 			return Priority;
 		}

@@ -425,7 +425,7 @@ MonoBehaviour:
     unlockDelay: 0.2
     openDelay: 0.7
   vanishSpell:
-    fancyName: 
+    fancyName: Banishment
     priority: 0
     incantationDefConfig:
       custom: 0

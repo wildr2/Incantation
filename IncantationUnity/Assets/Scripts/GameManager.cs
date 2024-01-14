@@ -51,6 +51,11 @@ public class GameManager : Singleton<GameManager>
 
 	private float StateTime => Time.time - enterStateTime;
 
+	public bool IsCurrentCardDone()
+	{
+		return currentCardDoneTime >= 0;
+	}
+
 	private void Awake()
 	{
 		deck = GetComponent<Deck>();
