@@ -27,9 +27,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 18, y: 18, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2048137723245003362}
   - {fileID: 9086535822723625592}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -45,6 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29d628e4892526046a23548cc2d6f265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  open:
+    value: 0
+    time: 0
   bookText: {fileID: 6937084487590615631}
   openSFX: {fileID: 8300000, guid: 41660f3f0eb6f0443b06e681f5adbfac, type: 3}
   quickOpenSFX: {fileID: 8300000, guid: 1d7f789f36a9c91419782c903d9b38bc, type: 3}
@@ -86,10 +90,9 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 18, y: 18, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2048137723245003362}
+  m_Children: []
   m_Father: {fileID: 7587507212174719786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6931198372959997535
@@ -181,18 +184,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7915205341282658515}
-  m_LocalRotation: {x: -0, y: -0, z: 0.011867944, w: 0.9999296}
+  m_LocalRotation: {x: 0, y: 0, z: 0.013962198, w: 0.9999026}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0010000002, y: 0.0010000002, z: 0.001}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7106615456386735998}
-  m_Father: {fileID: 9086535822723625592}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1.36}
+  m_Father: {fileID: 7587507212174719786}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1.6}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.555, y: 0.017}
-  m_SizeDelta: {x: 400, y: 700}
+  m_AnchoredPosition: {x: 10, y: 0.1}
+  m_SizeDelta: {x: 720, y: 1260}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5792466029843562394
 Canvas:
@@ -307,15 +310,15 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 25
+    m_FontSize: 45
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 40
+    m_MaxSize: 45
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: SPELL OF LEVITATION
