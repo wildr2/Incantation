@@ -79,7 +79,6 @@ public class DoorCard : Card
 	{
 		exploded = true;
 		open = true;
-		locked = false;
 		SFXManager.Play(explodeSFX, parent: transform);
 	}
 

@@ -61,9 +61,6 @@ public class BookCard : Card
 		base.Awake();
 
 		open = goalSpellID == SpellID.Deactivate;
-		burning = false;
-		levitating = false;
-		vanished = false;
 
 		closedGlowSprite.enabled = false;
 		closedFlameGlowSprite.enabled = false;

@@ -46,11 +46,6 @@ public class BottleCard : Card
 	{
 		base.Awake();
 
-		filledWithWine = false;
-		broken = false;
-		levitating = false;
-		vanished = false;
-
 		bottleGlowSprite.enabled = false;
 		bottleBrokenGlowSprite.enabled = false;
 		liquidGlowSprite.enabled = false;

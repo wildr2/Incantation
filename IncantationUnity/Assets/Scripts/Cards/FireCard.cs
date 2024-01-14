@@ -38,8 +38,6 @@ public class FireCard : Card
 		base.Awake();
 
 		lit = goalSpellID == SpellID.Extinguish;
-		vanished = false;
-		raining = false;
 
 		fireGlowSprite.enabled = false;
 	}

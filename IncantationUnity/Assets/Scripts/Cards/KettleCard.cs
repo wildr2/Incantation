@@ -60,9 +60,6 @@ public class KettleCard : Card
 	{
 		base.Awake();
 		on = goalSpellID == SpellID.Deactivate;
-		broken = false;
-		levitating = false;
-		vanished = false;
 
 		kettleGlowSprite.enabled = false;
 	}

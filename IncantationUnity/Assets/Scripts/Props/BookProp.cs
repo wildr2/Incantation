@@ -79,7 +79,7 @@ public class BookProp : Prop
 
 	public bool TurnPage(int dir)
 	{
-		if (open)
+		if (DisplayingPage)
 		{
 			int oldPageIndex = pageIndex;
 			pageIndex = Mathf.Clamp(pageIndex + dir, 0, pages.Count - 1);
@@ -118,7 +118,6 @@ public class BookProp : Prop
 	protected override void Awake()
 	{
 		base.Awake();
-		open = false;
 	}
 
 	protected override void Update()

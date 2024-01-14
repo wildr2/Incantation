@@ -10,12 +10,12 @@ public class Statum
 	public float time;
 	public float TimeSince => Time.time - time;
 
-	public Statum() : this(false) { }
+	public Statum() { }
 
 	public Statum(bool value)
 	{
 		this.value = value;
-		time = Application.isEditor ? 0 : Time.time;
+		time = Time.time;
 	}
 
 	public static implicit operator Statum(bool value) => new Statum(value);

@@ -51,9 +51,6 @@ public class LampCard : Card
 		base.Awake();
 
 		on = goalSpellID == SpellID.Deactivate;
-		broken = false;
-		levitating = false;
-		vanished = false;
 
 		lampGlowSprite.enabled = false;
 		bulbGlowSprite.enabled = false;

@@ -46,11 +46,6 @@ public class BarrelCard: Card
 	{
 		base.Awake();
 
-		exploded = false;
-		levitating = false;
-		vanished = false;
-		raining = false;
-
 		barrelGlowSprite.enabled = false;
 		rubbleGlowSprite.enabled = false;
 	}

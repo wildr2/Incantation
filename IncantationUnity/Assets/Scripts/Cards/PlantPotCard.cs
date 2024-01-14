@@ -62,9 +62,6 @@ public class PlantpotCard : Card
 		base.Awake();
 		sprouted = goalSpellID == SpellID.Grow ? false : Random.value < 0.5f;
 		broken = goalSpellID == SpellID.Mend;
-		levitating = false;
-		vanished = false;
-		raining = false;
 
 		potGlowSprite.enabled = false;
 		potBrokenGlowSprite.enabled = false;

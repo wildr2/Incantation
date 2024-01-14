@@ -16,7 +16,6 @@ public class LampProp : Prop
 	{
 		base.Awake();
 		on = true;
-		broken = false;
 	}
 
 	public void Break()

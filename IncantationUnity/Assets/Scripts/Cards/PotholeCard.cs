@@ -35,11 +35,6 @@ public class PotholeCard : Card
 	protected override void Awake()
 	{
 		base.Awake();
-
-		mended = false;
-		filledWithWater = false;
-		raining = false;
-		vanished = false;
 	}
 
 	protected override void Update()

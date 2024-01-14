@@ -7,12 +7,6 @@ public class RainProp : Prop
 {
 	public Statum raining;
 
-	protected override void Awake()
-	{
-		base.Awake();
-		raining = false;
-	}
-
 	[System.Serializable]
 	public class RainSE : BaseRainSE
 	{

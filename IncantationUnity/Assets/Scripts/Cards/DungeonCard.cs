@@ -32,7 +32,6 @@ public class DungeonCard : Card
 		base.Awake();
 
 		torchLit = true;
-		chrVanished = false;
 
 		torchFlameGlowSprite.enabled = false;
 	}

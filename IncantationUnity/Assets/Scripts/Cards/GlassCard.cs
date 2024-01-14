@@ -66,13 +66,6 @@ public class GlassCard : Card
 	{
 		base.Awake();
 
-		filledWithWater = false;
-		filledWithPlant = false;
-		broken = false;
-		levitating = false;
-		vanished = false;
-		raining = false;
-
 		glassGlowSprite.enabled = false;
 		glassBrokenGlowSprite.enabled = false;
 		plantGlowSprite.enabled = false;
