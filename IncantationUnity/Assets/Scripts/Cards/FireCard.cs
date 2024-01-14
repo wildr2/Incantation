@@ -15,6 +15,8 @@ public class FireCard : Card
 
 	public AudioSource fireSFXSource;
 
+	public override bool Raining => raining;
+
 	public override bool IsComplete()
 	{
 		return

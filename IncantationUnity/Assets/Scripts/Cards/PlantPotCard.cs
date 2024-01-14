@@ -21,6 +21,8 @@ public class PlantpotCard : Card
 	public AudioClip[] breakSFX;
 	public AudioClip growingSFX;
 
+	public override bool Raining => raining;
+
 	public override bool IsComplete()
 	{
 		return
@@ -287,7 +289,10 @@ public class PlantpotCard : Card
 		{
 			base.Apply(spellCast);
 			Target.Grow();
-			Target.Glow(Target.plantGlowSprite);
+			if (Target.sprouted)
+			{
+				Target.Glow(Target.plantGlowSprite);
+			}
 		}
 	}
 	public GrowSE growSE;

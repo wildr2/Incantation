@@ -26,6 +26,8 @@ public class GlassCard : Card
 	public AudioClip[] breakSFX;
 	public AudioClip growingSFX;
 
+	public override bool Raining => raining;
+
 	public override bool IsComplete()
 	{
 		return

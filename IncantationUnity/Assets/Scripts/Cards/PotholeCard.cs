@@ -14,6 +14,8 @@ public class PotholeCard : Card
 	public SpriteRenderer potholeWithWaterSprite;
 	public SpriteRenderer waterGlowSprite;
 
+	public override bool Raining => raining;
+
 	public override bool IsComplete()
 	{
 		return

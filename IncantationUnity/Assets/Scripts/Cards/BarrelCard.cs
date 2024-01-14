@@ -17,6 +17,8 @@ public class BarrelCard: Card
 
 	public AudioClip[] explodeSFX;
 
+	public override bool Raining => raining;
+
 	public override bool IsComplete()
 	{
 		return

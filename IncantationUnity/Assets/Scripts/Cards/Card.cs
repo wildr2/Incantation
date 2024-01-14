@@ -9,6 +9,8 @@ using System.Linq;
 public class Card : SpellTarget
 {
 	public override float Priority => 1;
+	public virtual bool Raining => false;
+
 	public SpellID goalSpellID;
 	private Vector3 initialPos;
 	[HideInInspector]
