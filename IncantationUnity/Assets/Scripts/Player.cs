@@ -100,7 +100,7 @@ public class Player : Singleton<Player>
 
 	private void Update()
 	{
-		bool input_book = Input.GetKeyDown(KeyCode.Tab);
+		bool input_book = Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Escape);
 		bool input_book_page_left = Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Alpha1);
 		bool input_book_page_right = Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.Alpha2);
 		int input_book_page_dir = input_book_page_left ? -1 : input_book_page_right ? 1 : 0;

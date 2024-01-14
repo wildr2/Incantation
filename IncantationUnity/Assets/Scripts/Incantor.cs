@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Incantor : MonoBehaviour
+public class Incantor : Singleton<Incantor>
 {
 	// Words must be uppercase, delimited by newlines, and sorted in ascending order.
 	public Text incantationText;
@@ -11,7 +11,7 @@ public class Incantor : MonoBehaviour
 	public System.Action onCastSpell;
 
 	private BookProp book;
-	private string inputText = "";
+	public string InputText { get; private set; }
 	private string incantation;
 	private float startFadeTime = -1;
 	private ScoreIncantationResponse scoreResponse;
@@ -42,6 +42,7 @@ public class Incantor : MonoBehaviour
 	private void Awake()
 	{
 		book = FindObjectOfType<BookProp>();
+		ClearInput();
 
 		string text = validWordsTextAsset.ToString();
 		validWords = text.Split(System.Environment.NewLine);
@@ -89,11 +90,11 @@ public class Incantor : MonoBehaviour
 			if (c == "\b"[0])
 			{
 				// Backspace.
-				inputText = inputText.Substring(0, Mathf.Max(0, inputText.Length - 1));
+				InputText = InputText.Substring(0, Mathf.Max(0, InputText.Length - 1));
 			}
-			else if (char.IsLetter(c) || (c == ' ' && inputText.Length > 0))
+			else if (char.IsLetter(c) || (c == ' ' && InputText.Length > 0))
 			{
-				inputText += c;
+				InputText += c;
 				book.Close();
 			}
 		}
@@ -103,9 +104,9 @@ public class Incantor : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.Return))
 		{
-			if (inputText.Length > 0)
+			if (InputText.Length > 0)
 			{
-				incantation = inputText;
+				incantation = InputText;
 
 				if (DebugSettings.Instance.enableMagicServer)
 				{
@@ -123,12 +124,12 @@ public class Incantor : MonoBehaviour
 			}
 		}
 
-		incantationText.text = inputText;
+		incantationText.text = InputText;
 	}
 
 	private void ClearInput()
 	{
-		inputText = "";
+		InputText = "";
 	}
 
 	private ScoreIncantationResponse CreateIncantationRulesResponse()

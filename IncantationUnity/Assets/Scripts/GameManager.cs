@@ -137,7 +137,7 @@ public class GameManager : Singleton<GameManager>
 					{
 						currentCardBecameSkippableTime = Time.time;
 					}
-					if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+					if (Input.GetKeyDown(KeyCode.Space) && CanSkip())
 					{
 						SkipCard();
 					}
@@ -159,7 +159,7 @@ public class GameManager : Singleton<GameManager>
 
 	private void UpdateText()
 	{
-		const string skipCardText = "press shift to skip card";
+		const string skipCardText = "press space to skip card";
 
 		helpText.text = "";
 
@@ -168,7 +168,8 @@ public class GameManager : Singleton<GameManager>
 		bool showSkipText =
 			state == GameState.Round &&
 			currentCardDoneTime < 0 &&
-			currentCardBecameSkippableTime >= 0;
+			currentCardBecameSkippableTime >= 0 &&
+			CanSkip();
 
 		if (showSkipText)
 		{
@@ -180,6 +181,11 @@ public class GameManager : Singleton<GameManager>
 		}
 
 		scoreText.text = string.Format("{0}\t\t{1}", Util.FormatTimeAsMinSec(Time.timeSinceLevelLoad), cardsCompleted);
+	}
+
+	public bool CanSkip()
+	{
+		return Incantor.Instance.InputText.Length == 0;
 	}
 
 	private void SkipCard()
