@@ -11,12 +11,14 @@ public enum DebugCommand
 	MusicOn,
 	RestartGame,
 	QuitGame,
+	PlaySeed,
 }
 
 public class DebugCommander : MonoBehaviour
 {
 	public AudioClip[] castSFX;
 	public float castDelay;
+	private int seedArg;
 
 	private string[] incantations = new string[]
 	{
@@ -26,6 +28,7 @@ public class DebugCommander : MonoBehaviour
 		"music on",
 		"restart game",
 		"quit game",
+		"play seed",
 	};
 
 	public bool CheckIncantation(string incantation, out DebugCommand command)
@@ -37,6 +40,15 @@ public class DebugCommander : MonoBehaviour
 		}
 		int i = System.Array.FindIndex(incantations, inc => inc == incantation);
 		command = i >= 0 ? (DebugCommand)i : DebugCommand.None;
+
+		if (command == DebugCommand.PlaySeed)
+		{
+			if (!int.TryParse(GUIUtility.systemCopyBuffer, out seedArg))
+			{
+				command = DebugCommand.None;
+			}
+		}
+
 		return i >= 0;
 	}
 
@@ -54,16 +66,21 @@ public class DebugCommander : MonoBehaviour
 				GUIUtility.systemCopyBuffer = DebugSettings.Instance.Seed.ToString();
 				break;
 			case DebugCommand.MusicOff:
-				Music.Instance.SetEnabled(false);
+				DebugSettings.Instance.disableMusic = true;
 				break;
 			case DebugCommand.MusicOn:
-				Music.Instance.SetEnabled(true);
+				DebugSettings.Instance.disableMusic = false;
 				break;
 			case DebugCommand.RestartGame:
+				DebugSettings.Instance.OverrideSeed = -1;
 				SceneManager.LoadScene(0);
 				break;
 			case DebugCommand.QuitGame:
 				Application.Quit();
+				break;
+			case DebugCommand.PlaySeed:
+				DebugSettings.Instance.OverrideSeed = seedArg;
+				SceneManager.LoadScene(0);
 				break;
 		}
 	}

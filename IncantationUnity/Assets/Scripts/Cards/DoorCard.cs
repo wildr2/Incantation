@@ -25,7 +25,7 @@ public class DoorCard : Card
 	public override bool IsComplete()
 	{
 		return
-			goalSpellID == SpellID.Unlock ? !locked :
+			goalSpellID == SpellID.Unlock ? !locked || open :
 			goalSpellID == SpellID.Lock ? locked :
 			false;
 	}
